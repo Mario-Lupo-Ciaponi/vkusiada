@@ -1,0 +1,68 @@
+/* Outer Card Styling */
+.ingredient-details-card {
+  background-color: rgb(251, 241, 223); /* soft cream */
+  max-width: 900px;
+  margin: 60px auto;
+  padding: 60px 50px;
+  border-radius: 40px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  position: relative;
+}
+
+/* Title */
+.ingredient-name {
+  font-size: 3rem;
+  font-weight: bold;
+  color: #e8263f;
+  margin-bottom: 20px;
+}
+
+/* Description Text */
+.ingredient-description {
+  font-size: 1.2rem;
+  color: #333;
+  line-height: 1.8;
+  margin-bottom: 40px;
+  padding: 0 20px;
+}
+
+/* Related Recipes Section */
+.related-recipes-title {
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: #e8263f;
+  margin-bottom: 25px;
+  border-bottom: 3px solid #e8263f;
+  display: inline-block;
+  padding-bottom: 5px;
+}
+
+.related-recipes-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 auto;
+  max-width: 500px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+/* Individual Recipe Link */
+.ingredient-recipe a {
+  display: block;
+  background-color: #fff;
+  padding: 15px 25px;
+  border-radius: 25px;
+  text-decoration: none;
+  color: #333;
+  font-weight: 600;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.06);
+  transition: all 0.25s ease;
+}
+
+.ingredient-recipe a:hover {
+  background-color: #fce1e4;
+  color: #e8263f;
+  transform: translateY(-3px);
+}

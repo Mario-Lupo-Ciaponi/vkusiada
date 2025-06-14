@@ -1,0 +1,39 @@
+{% extends "common/base.html" %}
+
+{% load static %}
+
+{% block title %}
+	{{ ingredient.name }}
+{% endblock %}
+
+{% block styles %}
+  <link rel="stylesheet" href="{% static "css/ingredients/ingredient-details.css" %}">
+{% endblock %}
+
+{% block content %}
+  <article class="ingredient-details-card">
+    <h1 class="ingredient-name">
+      {{ ingredient.name|capfirst }}
+    </h1>
+    <p class="ingredient-description">
+      {{ ingredient.description|default:"No description" }}
+    </p>
+    
+  
+    <div class="related-recipes">
+      <h2 class="related-recipes-title">
+        Recipes using this ingredient:
+      </h2>
+    
+      <ul class="related-recipes-list">
+        {% for recipe_ingredient in ingredient.recipeingredient_set.all %}
+          <li class="ingredient-recipe">
+            <a href="{% url "recipe_details" recipe_ingredient.recipe.slug %}">
+              {{ recipe_ingredient.recipe.name }}
+            </a>
+          </li>
+        {% endfor %}
+      </ul>
+    </div>
+  </article>
+{% endblock %}

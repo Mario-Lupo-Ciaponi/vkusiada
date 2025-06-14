@@ -7,3 +7,9 @@ class IndexView(TemplateView):
     extra_context = {
         "current_page": "index",
     }
+
+class AboutView(TemplateView):
+    template_name = "common/about-us.html"
+    extra_context = {
+        "current_page": "about_us"
+    }

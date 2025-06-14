@@ -10,7 +10,7 @@
       <li><a href="#" class="{% if current_page == "save" %}active{% endif %}">Save</a></li>
       <li><a href="{% url "contact" %}" class="{% if current_page == "contact" %}active{% endif %}">Contact</a></li>
       <li><a href="#">Message</a></li>
-      <li><a href="#">About us</a></li>
+      <li><a href="{% url "about-us" %}" class="{% if current_page == "about_us" %}active{% endif %}">About us</a></li>
     </ul>
     <div class="user-icon">
       <img src="{% static 'images/icon/user-icon.png' %}" alt="User Icon">

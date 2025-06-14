@@ -3,8 +3,8 @@
 {% load static %}
 
 {% block styles %}
-  <link rel="stylesheet" href="{% static "css/recipe-cards.css" %}">
-  <link rel="stylesheet" href="{% static "css/category-recipes.css" %}">
+  <link rel="stylesheet" href="{% static "css/recipes/recipe-cards.css" %}">
+  <link rel="stylesheet" href="{% static "css/recipes/category-recipes.css" %}">
 {% endblock %}
 
 {% block title %}
@@ -24,8 +24,8 @@
   <div class="pagination">
       <span class="step-links">
           {% if page_obj.has_previous %}
-              <a href="?page=1">&laquo; first</a>
-              <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+              <a href="?page=1&query={{ query }}">&laquo; first</a>
+              <a href="?page={{ page_obj.previous_page_number }}&query={{ query }}">previous</a>
           {% endif %}
 
           <span class="current">
@@ -33,8 +33,8 @@
           </span>
 
           {% if page_obj.has_next %}
-              <a href="?page={{ page_obj.next_page_number }}">next</a>
-              <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+              <a href="?page={{ page_obj.next_page_number }}&query={{ query }}">next</a>
+              <a href="?page={{ page_obj.paginator.num_pages }}&query={{ query }}">last &raquo;</a>
           {% endif %}
       </span>
     </div>

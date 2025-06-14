@@ -1,3 +1,4 @@
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.db.models import Q
 from django.http import Http404
 from django.shortcuts import render, redirect
@@ -11,7 +12,7 @@ from .forms import SearchForm, CommentForm
 
 class RecipeDetailView(DetailView, FormMixin):
     model = Recipe
-    template_name = "recipe-details.html"
+    template_name = "recipes/recipe-details.html"
     slug_url_kwarg = "recipe_slug"
     form_class = CommentForm
 
@@ -38,10 +39,11 @@ class RecipeDetailView(DetailView, FormMixin):
             return self.form_valid(form)
 
 
+
 class FilteredCategoryView(ListView):
     model = Recipe
     context_object_name = "recipes"
-    template_name = "category-recipes.html"
+    template_name = "recipes/category-recipes.html"
     query_param = "query"
     paginate_by = 5
     form_class = SearchForm
@@ -72,5 +74,3 @@ class FilteredCategoryView(ListView):
                    .order_by("name"))
 
         return recipes
-
-
