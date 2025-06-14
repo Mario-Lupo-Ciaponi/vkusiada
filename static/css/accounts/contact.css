@@ -1,0 +1,84 @@
+/* Container for the whole form */
+.contact-form-container {
+  max-width: 800px;
+  margin: 60px auto;
+  padding: 40px;
+  background-color: #fff8f3;
+  border-radius: 20px;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.1);
+  font-family: "Segoe UI", sans-serif;
+}
+
+/* Header styling */
+.contact-form-container h1 {
+  text-align: center;
+  color: #e8263f;
+  margin-bottom: 30px;
+}
+
+/* The form itself */
+.contact-form-container form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Row that contains email + subject */
+.form-row {
+  display: flex;
+  gap: 20px;
+}
+
+/* Equal width for each field in the top row */
+.form-row input {
+  flex: 1;
+}
+
+/* Styling all inputs and textarea */
+.contact-form-container input,
+.contact-form-container textarea {
+  padding: 12px 16px;
+  border: 2px solid #e8263f;
+  border-radius: 10px;
+  font-size: 1rem;
+  background-color: #fff;
+  outline: none;
+  width: 100%;
+  transition: border-color 0.3s ease;
+}
+
+/* Placeholder color */
+.contact-form-container input::placeholder,
+.contact-form-container textarea::placeholder {
+  color: #aaa;
+}
+
+/* Focus effect */
+.contact-form-container input:focus,
+.contact-form-container textarea:focus {
+  border-color: #c01e34;
+}
+
+/* Textarea specific styling */
+.contact-form-container textarea {
+  resize: vertical;
+  min-height: 120px;
+}
+
+/* Submit button */
+.contact-form-container button {
+  align-self: flex-end;
+  padding: 12px 24px;
+  background-color: #e8263f;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-weight: bold;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.contact-form-container button:hover {
+  background-color: #c01e34;
+}

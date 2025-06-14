@@ -1,0 +1,68 @@
+.navbar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px 40px;
+  background-color: rgb(251, 241, 223);
+  border-bottom-left-radius: 60% 250px;
+  border-bottom-right-radius: 60% 250px;
+  overflow: hidden;
+  height: 100px;
+}
+
+.nav-center {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+}
+
+.logo {
+  margin-right: 30px;
+  width: 80px;
+  flex-shrink: 0;
+  overflow: visible;
+}
+
+.logo img {
+  height: 75px;
+  transform: scale(1.3); /* make logo bigger */
+  transform-origin: left center;
+  display: block;
+}
+
+.nav-links {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-links li a {
+  text-decoration: none;
+  color: black;
+  font-weight: bold;
+  font-size: 16px;
+  padding: 10px 20px;
+  border-radius: 20px;
+}
+
+.nav-links li a.active {
+  background-color: #e8263f;
+  color: white;
+}
+
+.user-icon {
+  display: flex;
+  justify-content: center;  /* Center horizontally */
+  align-items: center;      /* Center vertically */
+  background-color: #e8263f;
+  height: 40px;
+  width: 40px;
+  border-radius: 25px;
+}
+
+.user-icon img {
+  height: 28px; /* Smaller icon so it fits visually */
+}

@@ -1,0 +1,41 @@
+
+.category-buttons {
+  display: grid;
+  grid-template-columns: repeat(6, 95px);
+  column-gap: 25px;
+  width: max-content;
+  margin: 45px auto;
+  padding: 20px 0;
+  align-items: center;
+}
+
+.category-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-decoration: none;
+  background-color: #e8263f;
+  border-radius: 10px;
+  padding: 10px 0;
+  color: white;
+  font-weight: bold;
+  font-size: 14px;
+  transition: transform 0.2s ease-in-out;
+  cursor: pointer;
+}
+
+.category-box:hover {
+  transform: scale(1.30);
+}
+
+
+.category-box img {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+  margin-bottom: 8px;
+}
+
+.category-box span {
+  text-align: center;
+}

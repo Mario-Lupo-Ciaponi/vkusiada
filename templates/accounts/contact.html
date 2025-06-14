@@ -1,0 +1,30 @@
+{% extends "common/base.html" %}
+
+{% load static %}
+
+{% block title %}
+  Contact
+{% endblock %}
+
+{% block styles %}
+  <link rel="stylesheet" href="{% static "css/accounts/contact.css" %}">
+{% endblock %}
+
+{% block content %}
+  <section class="contact-form-container">
+    <h1>Contact Us</h1>
+
+    <form method="post">
+      {% csrf_token %}
+
+      <div class="form-row">
+        {{ contact_form.email }}
+        {{ contact_form.subject }}
+      </div>
+
+      {{ contact_form.content }}
+
+      <button type="submit">Send</button>
+    </form>
+  </section>
+{% endblock %}

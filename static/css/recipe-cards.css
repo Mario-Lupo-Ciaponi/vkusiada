@@ -1,0 +1,37 @@
+.recipe-card {
+  background-color: rgb(251, 241, 223);
+  border-radius: 25px;
+  padding: 20px;
+  max-width: 320px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  margin: 30px auto;
+  transition: transform 0.2s ease;
+}
+
+.recipe-card a {
+  text-decoration: none;
+}
+
+.recipe-card:hover {
+  transform: scale(1.03);
+}
+
+.recipe-img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 18px;
+  margin-bottom: 15px;
+}
+
+.recipe-name {
+  font-size: 1.5rem;
+  color: #e8263f;
+  margin-bottom: 8px;
+}
+
+.recipe-meta {
+  color: #444;
+  margin: 2px 0;
+}

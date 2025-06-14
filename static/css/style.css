@@ -1,0 +1,8 @@
+@import "navbar.css";
+@import "footer.css";
+
+body {
+  margin: 0;
+  background-color: rgb(255, 255, 255);
+  font-family: 'Arial', sans-serif;
+}

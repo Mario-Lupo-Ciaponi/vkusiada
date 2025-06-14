@@ -1,0 +1,70 @@
+{% extends "common/base.html" %}
+
+{% load static %}
+
+{% block styles %}
+  <link rel="stylesheet" href="{% static 'css/recipe-details.css' %}">
+{% endblock %}
+
+{% block title %}
+  {{ recipe.name }}
+{% endblock %}
+
+{% block content %}
+  <section class="recipe-details-card">
+    <img src="{{ recipe.image_url }}" alt="{{ recipe.name }}" class="recipe-detail-img">
+
+    <div class="recipe-detail-content">
+      <header>
+        <h1 class="recipe-title">{{ recipe.name }}</h1>
+      </header>
+
+      <div class="recipe-tags">
+        <span class="tag">🍽 {{ recipe.category }}</span>
+        <span class="tag">🌍 {{ recipe.cuisine }}</span>
+      </div>
+
+      {% if recipe.youtube_link %}
+        <p class="youtube-link">
+          🎥 <a href="{{ recipe.youtube_link }}" target="_blank">Watch video</a>
+        </p>
+      {% endif %}
+
+      <h3>Ingredients</h3>
+      <ul class="ingredient-list">
+        {% for recipe_ingredient in recipe.recipeingredient_set.all %}
+          <li>
+              {{ recipe_ingredient.measure }}
+                -
+              <a href="{% url "ingredient_details" ingredient_slug=recipe_ingredient.ingredient.slug %}">
+                {{ recipe_ingredient.ingredient.name }}
+              </a>
+          </li>
+        {% endfor %}
+      </ul>
+
+      <h3>📖 Instructions:</h3>
+      <p class="instructions">{{ recipe.instructions }}</p>
+    </div>
+  </section>
+  <section class="comment-section">
+
+    <h2>Comments({{ recipe.comments.count }}):</h2>
+    <form class="comment-form" method="post">
+      {% csrf_token %}
+      {{ form }}
+      <button>Add</button>
+    </form>
+
+    {% for comment in recipe.comments.all %}
+      <article id="{{ comment.pk }}">
+        <img src="{% static "images/icon/user-icon.png" %}" alt="user-icon">
+        <p>{{ comment.content }}</p>
+        <p>{{ comment.added_on|date:"d.m.Y H:i" }}</p>
+      </article>
+    {% empty %}
+      <p>No comments yet. Be the first to comment this meal!</p>
+    {% endfor %}
+
+  </section>
+{% endblock %}

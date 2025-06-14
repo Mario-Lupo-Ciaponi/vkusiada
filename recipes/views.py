@@ -1,0 +1,76 @@
+from django.db.models import Q
+from django.http import Http404
+from django.shortcuts import render, redirect
+from django.urls import reverse_lazy
+from django.views.generic import TemplateView, DetailView, ListView
+from django.views.generic.edit import FormMixin
+
+from .models import Ingredient, Recipe, Comment
+from .forms import SearchForm, CommentForm
+
+
+class RecipeDetailView(DetailView, FormMixin):
+    model = Recipe
+    template_name = "recipe-details.html"
+    slug_url_kwarg = "recipe_slug"
+    form_class = CommentForm
+
+    def get_context_data(self, **kwargs):
+        kwargs.update({
+            "form": self.get_form_class()(),
+        })
+        
+        return super().get_context_data(**kwargs)
+
+    def get_success_url(self):
+        return reverse_lazy("recipe_details", kwargs={"recipe_slug": self.kwargs.get(self.slug_url_kwarg)})
+
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        form = self.get_form_class()(request.POST)
+
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.author = request.user.username
+            comment.recipe = self.object
+            comment.save()
+
+            return self.form_valid(form)
+
+
+class FilteredCategoryView(ListView):
+    model = Recipe
+    context_object_name = "recipes"
+    template_name = "category-recipes.html"
+    query_param = "query"
+    paginate_by = 5
+    form_class = SearchForm
+
+    def get_context_data(
+        self, *, object_list=None, **kwargs
+    ):
+        kwargs.update({
+            "category": self.kwargs.get("category"),
+            "search_form": self.form_class(),
+            "query": self.request.GET.get(self.query_param, "")
+        })
+
+        return super().get_context_data(object_list=object_list,**kwargs)
+
+    def get_queryset(self):
+        category = self.kwargs.get("category")
+        search_value = self.request.GET.get("query")
+
+        category_query = Q(category=category)
+        name_query = Q(name__icontains="")
+
+        if search_value:
+            name_query = Q(name__icontains=search_value)
+
+        recipes = (Recipe.objects
+                   .filter(category_query, name_query)
+                   .order_by("name"))
+
+        return recipes
+
+

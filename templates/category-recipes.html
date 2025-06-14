@@ -1,0 +1,41 @@
+{% extends "common/base.html" %}
+
+{% load static %}
+
+{% block styles %}
+  <link rel="stylesheet" href="{% static "css/recipe-cards.css" %}">
+  <link rel="stylesheet" href="{% static "css/category-recipes.css" %}">
+{% endblock %}
+
+{% block title %}
+  {{ category }} recipes
+{% endblock %}
+
+{% block content %}
+  {% include "common/search-bar.html" %}
+
+  <header class="category-header">
+    <h1>{{ category }} recipes:</h1>
+  </header>
+
+  {% for recipe in recipes %}
+    {% include "common/recipe-card.html" with recipe=recipe %}
+  {% endfor %}
+  <div class="pagination">
+      <span class="step-links">
+          {% if page_obj.has_previous %}
+              <a href="?page=1">&laquo; first</a>
+              <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+          {% endif %}
+
+          <span class="current">
+              Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+          </span>
+
+          {% if page_obj.has_next %}
+              <a href="?page={{ page_obj.next_page_number }}">next</a>
+              <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+          {% endif %}
+      </span>
+    </div>
+{% endblock %}

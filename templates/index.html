@@ -1,0 +1,43 @@
+{% extends "common/base.html" %}
+
+{% load static %}
+
+{% block styles %}
+  <link rel="stylesheet" href="{% static 'css/index.css' %}">
+{% endblock %}
+
+{% block title %}
+  Home
+{% endblock %}
+
+{% block content %}
+  <main>
+    <article class="category-buttons">
+      <a href="{% url "category_recipes" category="Breakfast" %}" class="category-box">
+        <img src="{% static 'images/icon/bread-icon.png' %}" alt="bread icon">
+        <span>Breakfast</span>
+      </a>
+      <a href="{% url "category_recipes" category="Salad" %}" class="category-box">
+        <img src="{% static 'images/icon/salad-icon.svg' %}" alt="salad icon">
+        <span>Salad</span>
+      </a>
+      <a href="{% url "category_recipes" category="Soup" %}" class="category-box">
+        <img src="{% static 'images/icon/soup-icon.png' %}" alt="soup icon">
+        <span>Soup</span>
+      </a>
+      <a href="{% url "category_recipes" category="Entrees" %}" class="category-box">
+        <img src="{% static 'images/icon/cloche-icon.png' %}" alt="cloche icon">
+        <span>Entrees</span>
+      </a>
+      <a href="{% url "category_recipes" category="Dessert" %}" class="category-box">
+        <img src="{% static 'images/icon/cake-icon.png' %}" alt="dessert icon">
+        <span>Dessert</span>
+      </a>
+      <a href="{% url "category_recipes" category="Vegan" %}" class="category-box">
+        <img src="{% static 'images/icon/vegan-icon.png' %}" alt="vegan icon">
+        <span>Vegan</span>
+      </a>
+    </article>
+
+  </main>
+{% endblock %}

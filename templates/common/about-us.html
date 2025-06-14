@@ -1,0 +1,41 @@
+{% extends "common/base.html" %}
+
+{% load static %}
+
+{% block title %}
+  About Us
+{% endblock %}
+
+{% block styles %}
+  <link rel="stylesheet" href="{% static "css/common/about-us.css" %}">
+{% endblock %}
+
+{% block content %}
+  <section class="about-container">
+    <header class="about-header">
+      <h1>About Us</h1>
+      <p>Cooking smart, eating better.</p>
+    </header>
+
+    <article class="about-body">
+      <p>
+        Ever opened your fridge and thought, <em>"What can I cook with just this?"</em>
+        Our app was built exactly for that moment.
+      </p>
+
+      <p>
+        We help you turn your ingredients into delicious meals. By adding what you already have at home, our system matches
+        you with curated recipes from our database — handpicked and tested by us.
+      </p>
+
+      <p>
+        Whether you're a seasoned chef or a kitchen newbie, we’re here to simplify mealtime, reduce food waste, and bring
+        inspiration to your table.
+      </p>
+
+      <p>
+        🍳 Sign up to save favorites, contact us for ideas or suggestions, and never worry about what’s for dinner again!
+      </p>
+    </article>
+  </section>
+{% endblock %}

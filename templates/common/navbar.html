@@ -1,0 +1,19 @@
+{% load static %}
+
+<nav class="navbar">
+  <div class="nav-center">
+    <div class="logo">
+      <img src="{% static 'images/logo.png' %}" alt="Vkusciada Logo">
+    </div>
+    <ul class="nav-links">
+      <li><a href="{% url "index" %}" class="{% if current_page == "index" %}active{% endif %}">Home</a></li>
+      <li><a href="#" class="{% if current_page == "save" %}active{% endif %}">Save</a></li>
+      <li><a href="{% url "contact" %}" class="{% if current_page == "contact" %}active{% endif %}">Contact</a></li>
+      <li><a href="#">Message</a></li>
+      <li><a href="#">About us</a></li>
+    </ul>
+    <div class="user-icon">
+      <img src="{% static 'images/icon/user-icon.png' %}" alt="User Icon">
+    </div>
+  </div>
+</nav>
