@@ -3,5 +3,6 @@ from ingredients import views
 
 
 urlpatterns = [
-    path("<slug:ingredient_slug>/", views.IngredientDetailsView.as_view(), name="ingredient_details"),
+    path("add-ingredient/", views.AddIngredientView.as_view(), name="add-ingredient"),
+    path("<slug:ingredient_slug>/", views.IngredientDetailsView.as_view(), name="ingredient-details"),
 ]

@@ -1,0 +1,76 @@
+.ingredient-card {
+  background-color: #fffdf8;
+  border: 2px solid #f3e5d8;
+  border-radius: 20px;
+  padding: 20px 25px;
+  margin: 20px auto;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.05);
+  max-width: 500px;
+  transition: transform 0.2s ease;
+  position: relative;
+}
+
+.ingredient-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+}
+
+.ingredient-name {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #e8263f;
+  margin-bottom: 10px;
+}
+
+.ingredient-desc {
+  font-size: 1rem;
+  color: #555;
+  font-style: italic;
+  margin-bottom: 15px;
+}
+
+.ingredient-actions {
+  display: flex;
+  justify-content: space-between;
+  gap: 15px;
+}
+
+.details-btn,
+.add-btn {
+  all: unset;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: inherit;
+  font-weight: bold;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.details-btn {
+  padding: 10px 20px;
+  background-color: #e8263f;
+  color: white;
+  border-radius: 20px;
+}
+
+.details-btn:hover {
+  background-color: #c01e34;
+}
+
+.add-btn {
+  width: 40px;
+  height: 40px;
+  background-color: #fff;
+  color: #e8263f;
+  border: 2px solid #e8263f;
+  border-radius: 50%;
+  font-size: 1.2rem;
+  line-height: 1;
+}
+
+.add-btn:hover {
+  background-color: #e8263f;
+  color: white;
+}

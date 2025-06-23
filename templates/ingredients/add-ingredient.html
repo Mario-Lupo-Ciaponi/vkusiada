@@ -1,0 +1,22 @@
+{% extends "common/base.html" %}
+
+{% load static %}
+{% load url_query_append %}
+
+{% block styles %}
+  <link rel="stylesheet" href="{% static "css/ingredients/add-ingredient.css" %}">
+{% endblock %}
+
+{% block title %}
+	Add ingredient
+{% endblock %}
+
+{% block content %}
+  {% include "common/search-bar.html" %}
+
+  {% for ingredient in ingredient_list %}
+  	{% include "ingredients/ingredients-card.html" %}
+  {% endfor %}
+
+  {% include "common/paginator.html" %}
+{% endblock %}

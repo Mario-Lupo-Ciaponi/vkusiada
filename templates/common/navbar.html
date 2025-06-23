@@ -8,9 +8,17 @@
     <ul class="nav-links">
       <li><a href="{% url "index" %}" class="{% if current_page == "index" %}active{% endif %}">Home</a></li>
       <li><a href="#" class="{% if current_page == "save" %}active{% endif %}">Save</a></li>
-      <li><a href="{% url "contact" %}" class="{% if current_page == "contact" %}active{% endif %}">Contact</a></li>
-      <li><a href="#">Message</a></li>
+      <li class="dropdown">
+        <a href="#" class="{% if current_page == "ingredients" %}active{% endif %}">Ingredients ▾</a>
+        <ul class="dropdown-menu">
+          <li><a href="{% url "add-ingredient" %}">Add</a></li>
+          <li><a href="#">Fruits</a></li>
+          <li><a href="#">Meats</a></li>
+          <li><a href="#">Spices</a></li>
+        </ul>
+      </li>
       <li><a href="{% url "about-us" %}" class="{% if current_page == "about_us" %}active{% endif %}">About us</a></li>
+      <li><a href="{% url "contact" %}" class="{% if current_page == "contact" %}active{% endif %}">Contact</a></li>
     </ul>
     <div class="user-icon">
       <img src="{% static 'images/icon/user-icon.png' %}" alt="User Icon">

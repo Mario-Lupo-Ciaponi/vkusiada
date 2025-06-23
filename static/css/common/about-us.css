@@ -1,30 +1,71 @@
-.about-container {
-  max-width: 800px;
-  margin: 50px auto;
-  background-color: #fffdf9;
-  padding: 40px;
-  border-radius: 25px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.05);
-  font-family: 'Segoe UI', sans-serif;
+.about-wrapper {
+  display: flex;
+  justify-content: center;
+  padding: 60px 20px;
 }
 
-.about-header h1 {
-  font-size: 2.5rem;
+.about-card {
+  background-color: #fdf1dd;
+  border-radius: 40px;
+  padding: 50px;
+  max-width: 900px;
+  width: 100%;
+  text-align: center;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.07);
+}
+
+.about-title {
+  font-size: 2.8rem;
   color: #e8263f;
-  margin-bottom: 10px;
-  text-align: center;
-}
-
-.about-header p {
-  font-size: 1.2rem;
-  text-align: center;
-  color: #666;
-  margin-bottom: 30px;
-}
-
-.about-body p {
-  font-size: 1.1rem;
-  line-height: 1.7;
   margin-bottom: 20px;
+}
+
+.about-intro {
+  font-size: 1.2rem;
+  color: #444;
+  margin-bottom: 40px;
+  line-height: 1.8;
+}
+
+.about-section {
+  margin-bottom: 40px;
+}
+
+.about-heading {
+  color: #e8263f;
+  font-size: 1.6rem;
+  margin-bottom: 15px;
+}
+
+.about-list {
+  list-style: disc;
+  padding-left: 20px;
+  margin: 0 auto;
+  max-width: 500px;
+  text-align: left;
+}
+
+.about-list li {
+  margin-bottom: 12px;
+  font-size: 1.1rem;
   color: #333;
+}
+
+.contact-section {
+  margin-top: 30px;
+}
+
+.about-contact-btn {
+  display: inline-block;
+  background-color: #e8263f;
+  color: white;
+  padding: 12px 24px;
+  border-radius: 30px;
+  font-weight: bold;
+  text-decoration: none;
+  transition: background-color 0.3s ease;
+}
+
+.about-contact-btn:hover {
+  background-color: #c51f34;
 }

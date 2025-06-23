@@ -36,7 +36,7 @@
           <li>
               {{ recipe_ingredient.measure }}
                 -
-              <a href="{% url "ingredient_details" ingredient_slug=recipe_ingredient.ingredient.slug %}">
+              <a href="{% url "ingredient-details" ingredient_slug=recipe_ingredient.ingredient.slug %}">
                 {{ recipe_ingredient.ingredient.name }}
               </a>
           </li>

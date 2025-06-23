@@ -1,0 +1,9 @@
+<div class="ingredient-card">
+  <h3 class="ingredient-name">{{ ingredient.name|capfirst }}</h3>
+  <p class="ingredient-description">{{ ingredient.description|default:"No description"|truncatewords:5 }}</p>
+
+  <div class="ingredient-actions">
+    <a href="{% url "ingredient-details" ingredient.slug %}" class="details-btn">Details</a>
+    <a class="add-btn">+</a>
+  </div>
+</div>
