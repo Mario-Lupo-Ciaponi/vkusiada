@@ -1,7 +1,8 @@
+from django.db.models import QuerySet
 from django.shortcuts import render
 from django.views.generic import DetailView, ListView
 
-from recipes.forms import SearchForm
+from common.forms import SearchForm
 from .models import Ingredient
 
 
@@ -29,11 +30,12 @@ class AddIngredientView(ListView):
 
         return super().get_context_data(object_list=object_list, **kwargs)
 
-    def get_queryset(self):
-        ingredients = Ingredient.objects.all()
+    def get_queryset(self) -> QuerySet:
         search_value = self.request.GET.get("query")
 
         if search_value:
             ingredients = Ingredient.objects.filter(name__icontains=search_value)
+        else:
+            ingredients = Ingredient.objects.all()
 
-        return ingredients
+        return ingredients.order_by("name")

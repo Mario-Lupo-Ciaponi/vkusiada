@@ -7,7 +7,8 @@ from django.views.generic import TemplateView, DetailView, ListView
 from django.views.generic.edit import FormMixin
 
 from .models import Ingredient, Recipe, Comment
-from .forms import SearchForm, CommentForm
+from .forms import CommentForm
+from common.forms import  SearchForm
 
 
 class RecipeDetailView(DetailView, FormMixin):
