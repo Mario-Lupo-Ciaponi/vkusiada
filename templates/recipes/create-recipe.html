@@ -1,0 +1,106 @@
+{% extends "common/base.html" %}
+{% load static %}
+
+{% block styles %}
+  <link rel="stylesheet" href="{% static 'css/recipes/create-recipe.css' %}">
+{% endblock %}
+
+{% block content %}
+<main>
+  <div class="form-container">
+    <form method="post" novalidate>
+      {% csrf_token %}
+      {{ form.as_p }}
+
+      <div id="ingredients-formset">
+        {{ formset.management_form }}
+        {% for form in formset %}
+          <div class="ingredient-form">
+            {{ form.ingredient.label_tag }} {{ form.ingredient }}
+            {{ form.measure.label_tag }} {{ form.measure }}
+            <label>
+              <input type="checkbox" class="delete-selector">
+              Mark for deletion
+            </label>
+            {{ form.DELETE }}
+          </div>
+        {% endfor %}
+      </div>
+
+      <div class="button-group">
+        <button type="button" id="add-ingredient">Add Ingredient</button>
+        <button type="button" id="mark-deletions">Delete Selected</button>
+      </div>
+
+      <button type="submit">Save</button>
+    </form>
+  </div>
+</main>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const addButton = document.getElementById('add-ingredient');
+    const formsetDiv = document.getElementById('ingredients-formset');
+    const prefix = 'recipeingredient_set';
+    const totalFormsInput = document.querySelector(`input[name="${prefix}-TOTAL_FORMS"]`);
+    const deleteSelectedButton = document.getElementById('mark-deletions');
+
+    function updateRemoveButtons() {
+      const ingredientForms = formsetDiv.querySelectorAll('.ingredient-form');
+      ingredientForms.forEach((form, index) => {
+        // Add visible delete checkbox if not already added
+        if (!form.querySelector('.delete-selector')) {
+          const label = document.createElement('label');
+          label.innerHTML = `
+            <input type="checkbox" class="delete-selector">
+            Mark for deletion
+          `;
+          form.appendChild(label);
+        }
+      });
+    }
+
+    addButton.addEventListener('click', () => {
+      const currentFormCount = parseInt(totalFormsInput.value);
+      const lastForm = formsetDiv.querySelector('.ingredient-form:last-of-type');
+      const newForm = lastForm.cloneNode(true);
+
+      newForm.querySelectorAll('input, select, label').forEach(el => {
+        ['name', 'id', 'for'].forEach(attr => {
+          if (el.hasAttribute(attr)) {
+            el.setAttribute(attr, el.getAttribute(attr).replace(/-(\d+)-/, `-${currentFormCount}-`));
+          }
+        });
+      });
+
+      newForm.querySelectorAll('input, select').forEach(input => {
+        if (input.type === 'checkbox' || input.type === 'radio') {
+          input.checked = false;
+        } else {
+          input.value = '';
+        }
+      });
+
+      formsetDiv.appendChild(newForm);
+      totalFormsInput.value = currentFormCount + 1;
+      updateRemoveButtons();
+    });
+
+    deleteSelectedButton.addEventListener('click', () => {
+      const forms = document.querySelectorAll('.ingredient-form');
+      forms.forEach(form => {
+        const visibleCheckbox = form.querySelector('.delete-selector');
+        const hiddenDeleteInput = form.querySelector('input[name$="-DELETE"]');
+
+        if (visibleCheckbox && visibleCheckbox.checked && hiddenDeleteInput) {
+          hiddenDeleteInput.checked = true;
+          form.style.display = 'none';
+        }
+      });
+    });
+
+    updateRemoveButtons();
+  });
+</script>
+
+{% endblock %}

@@ -3,11 +3,11 @@ from django.db.models import Q
 from django.http import Http404
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
-from django.views.generic import TemplateView, DetailView, ListView
+from django.views.generic import TemplateView, DetailView, ListView, CreateView
 from django.views.generic.edit import FormMixin
 
-from .models import Ingredient, Recipe, Comment
-from .forms import CommentForm
+from .models import Ingredient, Recipe, Comment, RecipeIngredient
+from .forms import CommentForm, CreateRecipeForm, RecipeIngredientFormSet
 from common.forms import  SearchForm
 
 
@@ -75,3 +75,33 @@ class FilteredCategoryView(ListView):
                    .order_by("name"))
 
         return recipes
+
+
+class CreateRecipeView(CreateView):
+    model = Recipe
+    form_class = CreateRecipeForm
+    template_name = "recipes/create-recipe.html"
+    success_url = reverse_lazy("index")
+
+    def get_context_data(self, **kwargs):
+        data = super().get_context_data(**kwargs)
+        prefix = 'recipeingredient_set'
+
+        if self.request.POST:
+            data["formset"] = RecipeIngredientFormSet(self.request.POST, prefix=prefix)
+        else:
+            data["formset"] = RecipeIngredientFormSet(prefix=prefix)
+
+        return data
+
+    def form_valid(self, form):
+        context = self.get_context_data()
+        formset = context["formset"]
+
+        if formset.is_valid():
+            self.object = form.save()
+            formset.instance = self.object
+            formset.save()  # handles deletions!
+            return redirect(self.success_url)
+
+        return self.render_to_response(self.get_context_data(form=form))

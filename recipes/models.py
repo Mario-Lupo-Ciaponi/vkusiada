@@ -1,5 +1,7 @@
 from django.db import models
 
+from .choices import CategoryChoices
+
 from ingredients.models import Ingredient
 from accounts.models import User
 from common.mixins import SlugMixIn, AddedOnMixIn
@@ -13,6 +15,7 @@ class Recipe(SlugMixIn):
     )
     category = models.CharField(
         max_length=100,
+        choices=CategoryChoices
     )
     cuisine = models.CharField(
         max_length=100,

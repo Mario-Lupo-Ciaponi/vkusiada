@@ -1,0 +1,140 @@
+.form-container {
+  max-width: 500px; /* narrower width */
+  margin: 60px auto;
+  padding: 30px 40px; /* balanced padding */
+  background-color: rgb(251, 241, 223);
+  border-radius: 20px;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.1);
+  font-family: "Segoe UI", sans-serif;
+  box-sizing: border-box;
+}
+
+.form-container h1,
+.form-container h2 {
+  text-align: center;
+  color: #e8263f;
+  margin-bottom: 30px;
+}
+
+.form-container form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.form-container label {
+  font-weight: 600;
+  color: #e8263f;
+  margin-bottom: 6px;
+  user-select: none;
+  display: block;
+}
+
+.form-container input[type="text"],
+.form-container input[type="url"],
+.form-container input[type="password"],
+.form-container textarea,
+.form-container select {
+  padding: 10px 14px; /* slightly smaller padding */
+  border: 2px solid #e8263f;
+  border-radius: 10px;
+  font-size: 1rem;
+  background-color: #fff;
+  outline: none;
+  width: 100%;
+  transition: border-color 0.3s ease;
+  font-family: inherit;
+  resize: vertical;
+  box-sizing: border-box;
+}
+
+.form-container input::placeholder,
+.form-container textarea::placeholder {
+  color: #aaa;
+  font-style: italic;
+}
+
+.form-container input:focus,
+.form-container textarea:focus,
+.form-container select:focus {
+  border-color: #c01e34;
+}
+
+.form-container textarea {
+  min-height: 100px; /* a bit shorter */
+}
+
+.form-container button[type="submit"] {
+  align-self: flex-end;
+  padding: 12px 28px;
+  background-color: #e8263f;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-weight: bold;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  user-select: none;
+  box-sizing: border-box;
+  margin-top: 10px;
+}
+
+.form-container button[type="submit"]:hover {
+  background-color: #c01e34;
+}
+
+.errorlist {
+  color: #c01e34;
+  font-weight: 700;
+  margin-top: -15px;
+  margin-bottom: 10px;
+  list-style-type: none;
+  padding-left: 0;
+}
+
+input.error,
+textarea.error,
+select.error {
+  border-color: #c01e34;
+}
+/* your CSS */
+input[type="checkbox"][name$="-DELETE"] {
+  display: none;
+}
+
+
+.button-group {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.button-group button {
+  padding: 6px 14px;
+  font-size: 14px;
+  border-radius: 4px;
+  font-weight: 500;
+  cursor: pointer;
+  border: none;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.2s ease;
+}
+
+#add-ingredient {
+  background-color: #28a745;
+  color: white;
+}
+
+#add-ingredient:hover {
+  background-color: #218838;
+}
+
+#mark-deletions {
+  background-color: #dc3545;
+  color: white;
+}
+
+#mark-deletions:hover {
+  background-color: #c82333;
+}
