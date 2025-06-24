@@ -1,12 +1,12 @@
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.db.models import Q
 from django.http import Http404
-from django.shortcuts import render, redirect
-from django.urls import reverse_lazy
-from django.views.generic import TemplateView, DetailView, ListView, CreateView
+from django.shortcuts import redirect
+from django.urls import reverse_lazy, reverse
+from django.views.generic import DetailView, ListView, CreateView
 from django.views.generic.edit import FormMixin
 
-from .models import Ingredient, Recipe, Comment, RecipeIngredient
+from .models import Recipe
 from .forms import CommentForm, CreateRecipeForm, RecipeIngredientFormSet
 from common.forms import  SearchForm
 
@@ -81,7 +81,14 @@ class CreateRecipeView(CreateView):
     model = Recipe
     form_class = CreateRecipeForm
     template_name = "recipes/create-recipe.html"
-    success_url = reverse_lazy("index")
+
+    def get_success_url(self):
+        return reverse(
+            "recipe_details",
+            kwargs={
+                "recipe_slug": self.object.slug
+            }
+        )
 
     def get_context_data(self, **kwargs):
         data = super().get_context_data(**kwargs)
@@ -102,6 +109,6 @@ class CreateRecipeView(CreateView):
             self.object = form.save()
             formset.instance = self.object
             formset.save()  # handles deletions!
-            return redirect(self.success_url)
+            return redirect(self.get_success_url())
 
         return self.render_to_response(self.get_context_data(form=form))
