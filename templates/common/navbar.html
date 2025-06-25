@@ -10,7 +10,7 @@
       <li class="dropdown">
         <a href="#" class="{% if current_page == "ingredients" %}active{% endif %}">Recipe ▾</a>
         <ul class="dropdown-menu">
-          <li><a href="{% url "add-ingredient" %}">Add to libray</a></li>
+          <li><a href="{% url "add-ingredient" %}">Save</a></li>
           <li><a href="{% url "create-recipe" %}">Create</a></li>
           <li><a href="{% url "search-recipe" %}">Browse</a></li>
         </ul>
@@ -27,8 +27,16 @@
       <li><a href="{% url "about-us" %}" class="{% if current_page == "about_us" %}active{% endif %}">About us</a></li>
       <li><a href="{% url "contact" %}" class="{% if current_page == "contact" %}active{% endif %}">Contact</a></li>
     </ul>
-    <div class="user-icon">
-      <img src="{% static 'images/icon/user-icon.png' %}" alt="User Icon">
+    <div class="user-dropdown">
+      <div class="user-icon">
+        <img src="{% static 'images/icon/user-icon.png' %}" alt="User Icon">
+      </div>
+      <ul class="user-dropdown-menu">
+        <li><a href="#">Profile</a></li>
+        <li><a href="#">Logout</a></li>
+      </ul>
     </div>
+
+
   </div>
 </nav>
