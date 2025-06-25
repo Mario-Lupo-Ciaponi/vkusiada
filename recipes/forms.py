@@ -34,8 +34,14 @@ class BaseRecipeForm(forms.ModelForm):
             "instructions": forms.Textarea(attrs={"placeholder": "Instructions"}),
         }
 
+
 class CreateRecipeForm(BaseRecipeForm):
     ...
+
+
+class EditRecipeForm(BaseRecipeForm):
+    ...
+
 
 RecipeIngredientFormSet = inlineformset_factory(
     Recipe,

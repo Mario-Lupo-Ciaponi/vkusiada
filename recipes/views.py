@@ -3,11 +3,11 @@ from django.db.models import Q
 from django.http import Http404
 from django.shortcuts import redirect
 from django.urls import reverse_lazy, reverse
-from django.views.generic import DetailView, ListView, CreateView
+from django.views.generic import DetailView, ListView, CreateView, UpdateView
 from django.views.generic.edit import FormMixin
 
 from .models import Recipe
-from .forms import CommentForm, CreateRecipeForm, RecipeIngredientFormSet
+from .forms import CommentForm, CreateRecipeForm, EditRecipeForm, RecipeIngredientFormSet
 from common.forms import  SearchForm
 
 
@@ -111,4 +111,58 @@ class CreateRecipeView(CreateView):
             formset.save()  # handles deletions!
             return redirect(self.get_success_url())
 
+        return self.render_to_response(self.get_context_data(form=form))
+
+
+class EditRecipeView(UpdateView):
+    model = Recipe
+    form_class = EditRecipeForm
+    template_name = "recipes/edit-recipe.html"
+    slug_url_kwarg = "recipe_slug"
+
+    def get_success_url(self):
+        return reverse(
+            "recipe_details",
+            kwargs={
+                "recipe_slug": self.object.slug
+            }
+        )
+
+    def get_context_data(self, **kwargs):
+        data = super().get_context_data(**kwargs)
+        prefix = 'recipeingredient_set'
+
+        if self.request.POST:
+            data["formset"] = RecipeIngredientFormSet(
+                self.request.POST,
+                instance=self.object,
+                prefix=prefix
+            )
+        else:
+            data["formset"] = RecipeIngredientFormSet(
+                instance=self.object,
+                prefix=prefix
+            )
+
+        return data
+
+    def form_valid(self, form):
+        context = self.get_context_data()
+        formset = context["formset"]
+
+        # Print for debugging (optional)
+        print("Form is valid?", form.is_valid())
+        print("Formset is valid?", formset.is_valid())
+        print("Formset errors:", formset.errors)
+
+        # Clear id field value for new forms (to avoid "This field is required" error)
+        # But cleaned_data only exists after is_valid(), so do this inside clean() or rely on JS fix below.
+
+        if formset.is_valid():
+            self.object = form.save()
+            formset.instance = self.object
+            formset.save()  # handles deletions!
+            return redirect(self.get_success_url())
+
+        print("Formset is invalid, re-rendering form")
         return self.render_to_response(self.get_context_data(form=form))

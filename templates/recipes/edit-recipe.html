@@ -1,8 +1,12 @@
 {% extends "common/base.html" %}
 {% load static %}
 
+{% block title %}
+  Edit Recipe
+{% endblock %}
+
 {% block styles %}
-  <link rel="stylesheet" href="{% static 'css/recipes/recipe-forms.css' %}">
+  <link rel="stylesheet" href="{% static "css/recipes/recipe-forms.css" %}">
 {% endblock %}
 
 {% block content %}
@@ -13,26 +17,41 @@
       {{ form.as_p }}
 
       <div id="ingredients-formset">
-        {{ formset.management_form }}
-        {% for form in formset %}
-          <div class="ingredient-form">
-            {{ form.ingredient.label_tag }} {{ form.ingredient }}
-            {{ form.measure.label_tag }} {{ form.measure }}
-            <label>
-              <input type="checkbox" class="delete-selector">
-              Mark for deletion
-            </label>
-            {{ form.DELETE }}
-          </div>
-        {% endfor %}
+      {{ formset.management_form }}
+      {% for form in formset %}
+        <div class="ingredient-form">
+          {{ form.id }}
+          {{ form.ingredient.label_tag }} {{ form.ingredient }}
+          {{ form.measure.label_tag }} {{ form.measure }}
+          <label>
+            <input type="checkbox" class="delete-selector">
+            Mark for deletion
+          </label>
+          {{ form.DELETE }}
+        </div>
+      {% endfor %}
+    </div>
+
+    <div id="empty-form" style="display:none;">
+      <div class="ingredient-form">
+        {{ formset.empty_form.id }}
+        {{ formset.empty_form.ingredient.label_tag }} {{ formset.empty_form.ingredient }}
+        {{ formset.empty_form.measure.label_tag }} {{ formset.empty_form.measure }}
+        <label>
+          <input type="checkbox" class="delete-selector">
+          Mark for deletion
+        </label>
+        {{ formset.empty_form.DELETE }}
       </div>
+    </div>
+
 
       <div class="button-group">
         <button type="button" id="add-ingredient">Add Ingredient</button>
         <button type="button" id="mark-deletions">Delete Selected</button>
       </div>
 
-      <button type="submit">Save</button>
+      <button type="submit">Update Recipe</button>
     </form>
   </div>
 </main>
@@ -102,5 +121,4 @@
     updateRemoveButtons();
   });
 </script>
-
 {% endblock %}
