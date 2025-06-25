@@ -1,0 +1,17 @@
+{% extends "common/base.html" %}
+
+{% load static %}
+
+{% block styles %}
+  <link rel="stylesheet" href="{% static "css/recipes/search-recipes.css" %}">
+{% endblock %}
+
+{% block content %}
+  {% include "common/search-bar.html" %}
+
+  {% for recipe in recipes %}
+    {% include "recipes/recipe-card.html" with recipe=recipe %}
+  {% endfor %}
+
+  {% include "common/paginator.html" %}
+{% endblock %}

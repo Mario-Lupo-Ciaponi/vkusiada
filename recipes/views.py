@@ -78,6 +78,36 @@ class FilteredCategoryView(ListView):
         return recipes
 
 
+class SearchRecipeView(ListView):
+    model = Recipe
+    paginate_by = 5
+    template_name = "recipes/search-recipe.html"
+    query_param = "query"
+    form_class = SearchForm
+    context_object_name = "recipes"
+
+    def get_context_data(
+        self, *, object_list=None, **kwargs
+    ):
+        kwargs.update({
+            "search_form": self.form_class(),
+            "query": self.request.GET.get(self.query_param, "")
+        })
+        return super().get_context_data(object_list=object_list, **kwargs)
+
+    def get_queryset(self):
+        search_value = self.request.GET.get("query")
+        recipes = Recipe.objects.all()
+
+        print("Query:", search_value)
+        print("Results:", recipes)
+
+        if search_value:
+            recipes = recipes.filter(name__icontains=search_value)
+
+        return recipes
+
+
 class CreateRecipeView(FormValidMixin, CreateView):
     model = Recipe
     form_class = CreateRecipeForm

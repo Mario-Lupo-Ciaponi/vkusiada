@@ -18,7 +18,7 @@
     <h1>{{ category }} recipes:</h1>
   </header>
 
-  {% for recipe in recipes %}
+  {% for recipe in object_list %}
     {% include "recipes/recipe-card.html" with recipe=recipe %}
   {% endfor %}
 
