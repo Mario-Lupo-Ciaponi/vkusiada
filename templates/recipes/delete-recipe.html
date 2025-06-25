@@ -1,0 +1,23 @@
+{% extends "common/base.html" %}
+
+{% load static %}
+
+{% block styles %}
+  <link rel="stylesheet" href="{% static "css/recipes/delete-recipe.css" %}">
+{% endblock %}
+
+{% block title %}
+	Delete Recipe
+{% endblock %}
+
+{% block content %}
+	<main>
+    <section class="delete-container">
+      <h1>Are you sure you want to delete <span class="recipe-name">{{ recipe.name }}</span>?</h1>
+
+      <form method="post">{% csrf_token %}
+        <button class="delete-btn">Delete</button>
+      </form>
+    </section>
+  </main>
+{% endblock %}
