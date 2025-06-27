@@ -1,3 +1,4 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import QuerySet
 from django.shortcuts import render
 from django.views.generic import DetailView, ListView
@@ -13,7 +14,7 @@ class IngredientDetailsView(DetailView):
     slug_url_kwarg = "ingredient_slug"
 
 
-class AddIngredientView(ListView):
+class AddIngredientView(LoginRequiredMixin, ListView):
     model = Ingredient
     template_name = "ingredients/add-ingredient.html"
     query_param = "query"

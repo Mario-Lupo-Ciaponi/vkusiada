@@ -32,11 +32,23 @@
         <img src="{% static 'images/icon/user-icon.png' %}" alt="User Icon">
       </div>
       <ul class="user-dropdown-menu">
-        <li><a href="#">Profile</a></li>
-        <li><a href="#">Logout</a></li>
+        {% if request.user.is_authenticated %}
+        	<li><a href="#">Profile</a></li>
+          <li>
+            <a href="{% url "logout" %}"
+               onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+              Logout
+            </a>
+          </li>
+        {% else %}
+          <li><a href="{% url "register" %}">Register</a></li>
+          <li><a href="{% url "login" %}">Login</a></li>
+        {% endif %} 
       </ul>
     </div>
-
-
   </div>
 </nav>
+
+<form id="logout-form" method="post" action="{% url "logout" %}">
+  {% csrf_token %}
+</form>

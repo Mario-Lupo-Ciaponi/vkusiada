@@ -1,0 +1,69 @@
+@import url('https://fonts.googleapis.com/css2?family=Alumni+Sans+SC:ital,wght@0,100..900;1,100..900&family=Bitter:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+
+h1 {
+  text-align: center;
+  font-family: "Bitter", serif;
+  font-weight: bold;
+  font-style: normal;
+  font-size: 3em;
+  color: #e8263f;
+}
+
+
+form {
+  max-width: 500px;
+  margin: 60px auto;
+  padding: 40px 30px;
+  background-color: rgb(251, 241, 223);
+  border-radius: 30px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  text-align: center;
+}
+
+form input {
+  width: 100%;
+  padding: 12px;
+  margin-top: 8px;
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  font-size: 1rem;
+  box-sizing: border-box;
+}
+
+form label {
+  display: block;
+  font-weight: bold;
+  text-align: left;
+  color: #333;
+}
+
+button {
+  background-color: #e8263f;
+  color: white;
+  border: none;
+  border-radius: 25px;
+  padding: 12px 30px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #c81f35;
+}
+
+.form-footer {
+  margin-top: 20px;
+  font-size: 0.95rem;
+}
+
+.form-footer a {
+  color: #e8263f;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.form-footer a:hover {
+  text-decoration: underline;
+}

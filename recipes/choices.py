@@ -16,5 +16,6 @@ class CategoryChoices(models.TextChoices):
     PORK = "Pork", "Pork"
     PASTA = "Past", "Past"
     VEGETARIAN = "Vegetarian", "Vegetarian"
+    VEGAN = "Vegan", "Vegan"
     LAMB = "Lamb", "Lamb"
     GOAT = "Goat", "Goat"

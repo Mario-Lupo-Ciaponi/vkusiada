@@ -2,9 +2,20 @@ from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render, redirect
 from django.core.mail import send_mail
 from django.urls import reverse_lazy
-from django.views.generic import FormView
+from django.views.generic import FormView, CreateView
+from django.contrib.auth import get_user_model
 
-from accounts.forms import ContactForm
+from .forms import RegistrationForm, ContactForm
+
+
+user = get_user_model()
+
+
+class RegisterUserView(CreateView):
+    form_class = RegistrationForm
+    template_name = "registration/register-form.html"
+    success_url = reverse_lazy("login")
+
 
 class ContactView(FormView):
     form_class = ContactForm

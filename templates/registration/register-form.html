@@ -1,0 +1,22 @@
+{% extends "common/base.html" %}
+
+{% load static %}
+
+{% block styles %}
+  <link rel="stylesheet" href="{% static "css/accounts/forms.css" %}">
+{% endblock %}
+
+{% block title %}
+  Register
+{% endblock %}
+
+{% block content %}
+  <h1>Register!</h1>
+
+  <form method="post">
+    {% csrf_token %}
+    {{ form }}
+    <button>Register</button>
+    <p class="form-footer">Already have an account? <a href="{% url "login" %}">Login!</a></p>
+  </form>
+{% endblock %}

@@ -3,7 +3,7 @@ from django.db import models
 from .choices import CategoryChoices
 
 from ingredients.models import Ingredient
-from accounts.models import User
+from accounts.models import VkusiadaUser
 from common.mixins import SlugMixIn, AddedOnMixIn
 
 
@@ -27,7 +27,7 @@ class Recipe(SlugMixIn):
     image_url = models.URLField()
     instructions = models.TextField()
     users = models.ManyToManyField(
-        User,
+        VkusiadaUser,
         related_name='favorite_recipes',
         blank=True,
     )
@@ -64,7 +64,7 @@ class RecipeIngredient(models.Model):
 
 class UserRecipe(AddedOnMixIn):
     user = models.ForeignKey(
-        User,
+        VkusiadaUser,
         on_delete=models.CASCADE,
     )
     recipe = models.ForeignKey(

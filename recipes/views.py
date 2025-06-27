@@ -1,7 +1,5 @@
-from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q
-from django.http import Http404
-from django.shortcuts import redirect
 from django.urls import reverse_lazy, reverse
 from django.views.generic import DetailView, ListView, CreateView, UpdateView, DeleteView
 from django.views.generic.edit import FormMixin
@@ -97,10 +95,7 @@ class SearchRecipeView(ListView):
 
     def get_queryset(self):
         search_value = self.request.GET.get("query")
-        recipes = Recipe.objects.all()
-
-        print("Query:", search_value)
-        print("Results:", recipes)
+        recipes = Recipe.objects.order_by("name")
 
         if search_value:
             recipes = recipes.filter(name__icontains=search_value)
@@ -108,7 +103,7 @@ class SearchRecipeView(ListView):
         return recipes
 
 
-class CreateRecipeView(FormValidMixin, CreateView):
+class CreateRecipeView(LoginRequiredMixin, FormValidMixin, CreateView):
     model = Recipe
     form_class = CreateRecipeForm
     template_name = "recipes/create-recipe.html"
