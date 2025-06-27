@@ -4,6 +4,6 @@
 
   <div class="ingredient-actions">
     <a href="{% url "ingredient-details" ingredient.slug %}" class="details-btn">Details</a>
-    <a class="add-btn">+</a>
+    <a href="{% url "save-ingredient" ingredient.pk %}" class="add-btn">+</a>
   </div>
 </div>

@@ -45,6 +45,8 @@
 
       <h3>📖 Instructions:</h3>
       <p class="instructions">{{ recipe.instructions }}</p>
+
+      <p class="recipe-author">Recipe created by {{ recipe.user.username }}</p>
     
       <a href="{% url "edit-recipe" recipe.slug %}">Edit</a>
       <a href="{% url "delete-recipe" recipe.slug %}">Delete</a>

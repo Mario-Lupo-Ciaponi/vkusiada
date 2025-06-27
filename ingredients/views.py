@@ -1,10 +1,12 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.db.models import QuerySet
-from django.shortcuts import render
+from django.db.models import QuerySet, Q
+from django.http import HttpRequest, HttpResponse
+from django.shortcuts import render, redirect
+from django.utils.timezone import now
 from django.views.generic import DetailView, ListView
 
 from common.forms import SearchForm
-from .models import Ingredient
+from .models import Ingredient, UserIngredient
 
 
 class IngredientDetailsView(DetailView):
@@ -40,3 +42,16 @@ class AddIngredientView(LoginRequiredMixin, ListView):
             ingredients = Ingredient.objects.all()
 
         return ingredients.order_by("name")
+
+
+def save_ingredient(request: HttpRequest, ingredient_pk: int) -> HttpResponse:
+    ingredient = Ingredient.objects.get(pk=ingredient_pk)
+    user = request.user
+
+    UserIngredient.objects.create(
+        ingredient=ingredient,
+        user=user,
+        added_on=now
+    )
+
+    return redirect("add-ingredient")

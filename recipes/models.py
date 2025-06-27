@@ -1,4 +1,5 @@
 from django.db import models
+from django.db.models import CASCADE
 
 from .choices import CategoryChoices
 
@@ -26,10 +27,10 @@ class Recipe(SlugMixIn):
     )
     image_url = models.URLField()
     instructions = models.TextField()
-    users = models.ManyToManyField(
-        VkusiadaUser,
-        related_name='favorite_recipes',
-        blank=True,
+    user = models.ForeignKey(
+        "accounts.VkusiadaUser",
+        on_delete=CASCADE,
+        related_name="recipes",
     )
     ingredients = models.ManyToManyField(
         Ingredient,
@@ -60,23 +61,6 @@ class RecipeIngredient(models.Model):
 
     class Meta:
         unique_together = ('recipe', 'ingredient')
-
-
-class UserRecipe(AddedOnMixIn):
-    user = models.ForeignKey(
-        VkusiadaUser,
-        on_delete=models.CASCADE,
-    )
-    recipe = models.ForeignKey(
-        Recipe,
-        on_delete=models.CASCADE,
-    )
-
-    def __str__(self):
-        return f"{self.user.username} - {self.recipe.name}"
-
-    class Meta:
-        unique_together = ('user', 'recipe')
 
 
 class Comment(AddedOnMixIn):

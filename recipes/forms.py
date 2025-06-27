@@ -25,7 +25,7 @@ class CommentForm(forms.ModelForm):
 class BaseRecipeForm(forms.ModelForm):
     class Meta:
         model = Recipe
-        exclude = ["slug", "users", "ingredients"]
+        exclude = ["slug", "user", "ingredients"]
         widgets = {
             "name": forms.TextInput(attrs={"placeholder": "Enter recipe name"}),
             "cuisine": forms.TextInput(attrs={"placeholder": "Cuisine"}),

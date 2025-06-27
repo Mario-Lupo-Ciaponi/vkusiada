@@ -127,6 +127,10 @@ class CreateRecipeView(LoginRequiredMixin, FormValidMixin, CreateView):
 
         return data
 
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        return super().form_valid(form)
+
 
 class EditRecipeView(FormValidMixin, UpdateView):
     model = Recipe
