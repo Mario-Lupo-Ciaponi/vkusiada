@@ -1,0 +1,28 @@
+{% extends "common/base.html" %}
+
+{% load static %}
+
+{% block title %}
+	Saved recipes
+{% endblock %}
+
+{% block styles %}
+  <link rel="stylesheet" href="{% static "css/ingredients/saved-ingredients.css" %}">
+{% endblock %}
+
+{% block content %}
+  <main>
+     {% if ingredients %}
+       {% include "common/search-bar.html" %}
+       <ul class="ingredient-list">
+        {% for ingredient in ingredients %}
+          <li class="ingredient-item">
+            <a href="{% url "ingredient-details" ingredient.ingredient.slug %}">{{ ingredient.ingredient.name }}</a>
+          </li>
+        {% endfor %}
+       </ul>
+     {% else %}
+       <h1>No</h1>
+     {% endif %}
+  </main>
+{% endblock %}

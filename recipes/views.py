@@ -66,10 +66,15 @@ class SuggestedRecipesView(RecipeListViewMixin, ListView):
                                .filter(user=user)
                                .values_list("ingredient_id", flat=True))
 
+        user_recipe_ids = (UserRecipe.objects
+                               .filter(user=user)
+                               .values_list("recipe_id", flat=True))
+
         recipe = (Recipe.objects
                   .filter(recipeingredient__ingredient__in=user_ingredient_ids)
                   .distinct())
 
+        recipe = recipe.exclude(id__in=user_recipe_ids)
 
         return recipe
 

@@ -1,0 +1,39 @@
+@import "../common/search-bar.css";
+
+main {
+  max-width: 800px;
+  margin: 60px auto;
+  padding: 40px;
+  background-color: rgb(251, 241, 223);
+  border-radius: 30px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  text-align: center;
+}
+
+.ingredient-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 16px;
+}
+
+.ingredient-item {
+  background-color: white;
+  padding: 15px 25px;
+  border-radius: 20px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  transition: background-color 0.2s ease;
+}
+
+.ingredient-item:hover {
+  background-color: #f3d6d9;
+}
+
+.ingredient-item a {
+  text-decoration: none;
+  color: #e8263f;
+  font-weight: bold;
+  font-size: 1.1rem;
+  display: block;
+}

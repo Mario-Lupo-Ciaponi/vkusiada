@@ -6,6 +6,7 @@ from django.utils.timezone import now
 from django.views.generic import DetailView, ListView
 
 from common.forms import SearchForm
+from recipes.models import UserRecipe
 from .models import Ingredient, UserIngredient
 
 
@@ -51,6 +52,36 @@ class AddIngredientView(LoginRequiredMixin, ListView):
         return ingredients.order_by("name")
 
 
+class SavedIngredientsView(LoginRequiredMixin, ListView):
+    model = UserIngredient
+    template_name = "ingredients/saved-ingredients.html"
+    query_param = "query"
+    paginate_by = 7
+    form_class = SearchForm
+    context_object_name = "ingredients"
+
+    def get_context_data(
+            self, *, object_list=None, **kwargs
+    ):
+        kwargs.update({
+            "search_form": self.form_class(),
+            "query": self.request.GET.get(self.query_param, ""),
+        })
+
+        return super().get_context_data(object_list=object_list, **kwargs)
+
+    def get_queryset(self):
+        search_value = self.request.GET.get("query")
+        user = self.request.user
+
+        saved_ingredients = UserIngredient.objects.filter(user=user)
+
+        if search_value:
+            saved_ingredients = saved_ingredients.filter(ingredient__name__icontains=search_value)
+
+        return [i for i in saved_ingredients]
+
+
 def save_ingredient(request: HttpRequest, ingredient_pk: int) -> HttpResponse:
     ingredient = Ingredient.objects.get(pk=ingredient_pk)
     user = request.user
@@ -58,7 +89,7 @@ def save_ingredient(request: HttpRequest, ingredient_pk: int) -> HttpResponse:
     UserIngredient.objects.create(
         ingredient=ingredient,
         user=user,
-        added_on=now
+        added_on=now()
     )
 
     return redirect("add-ingredient")
