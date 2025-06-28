@@ -1,12 +1,18 @@
+import django.db.utils
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q
+from django.http import HttpRequest, HttpResponse
+from django.shortcuts import redirect
 from django.urls import reverse_lazy, reverse
+from django.utils.timezone import now
 from django.views.generic import DetailView, ListView, CreateView, UpdateView, DeleteView
 from django.views.generic.edit import FormMixin
+from django.contrib import messages
 
-from .models import Recipe
+from ingredients.models import UserIngredient
+from .models import Recipe, UserRecipe
 from .forms import CommentForm, CreateRecipeForm, EditRecipeForm, RecipeIngredientFormSet
-from .mixins import SlugUrlKwargMixin, FormValidMixin
+from .mixins import SlugUrlKwargMixin, FormValidMixin, RecipeListViewMixin
 
 from common.forms import  SearchForm
 
@@ -39,22 +45,41 @@ class RecipeDetailView(SlugUrlKwargMixin, DetailView, FormMixin):
             return self.form_valid(form)
 
 
-# class SaveRecipeToLibraryView(ListView):
-#     model = Recipe
-#     template_name = ""
-
-
-
-class FilteredCategoryView(ListView):
+class SuggestedRecipesView(RecipeListViewMixin, ListView):
     model = Recipe
-    context_object_name = "recipes"
-    template_name = "recipes/category-recipes.html"
-    query_param = "query"
-    paginate_by = 5
-    form_class = SearchForm
+    template_name = "recipes/suggested-recipes.html"
 
     def get_context_data(
-        self, *, object_list=None, **kwargs
+            self, *, object_list=None, **kwargs
+    ):
+        kwargs.update({
+            "search_form": self.form_class(),
+            "query": self.request.GET.get(self.query_param, "")
+        })
+
+        return super().get_context_data(object_list=object_list, **kwargs)
+
+    def get_queryset(self):
+        user = self.request.user
+
+        user_ingredient_ids = (UserIngredient.objects
+                               .filter(user=user)
+                               .values_list("ingredient_id", flat=True))
+
+        recipe = (Recipe.objects
+                  .filter(recipeingredient__ingredient__in=user_ingredient_ids)
+                  .distinct())
+
+
+        return recipe
+
+
+class FilteredCategoryView(RecipeListViewMixin, ListView):
+    model = Recipe
+    template_name = "recipes/category-recipes.html"
+
+    def get_context_data(
+            self, *, object_list=None, **kwargs
     ):
         kwargs.update({
             "category": self.kwargs.get("category"),
@@ -62,7 +87,7 @@ class FilteredCategoryView(ListView):
             "query": self.request.GET.get(self.query_param, "")
         })
 
-        return super().get_context_data(object_list=object_list,**kwargs)
+        return super().get_context_data(object_list=object_list, **kwargs)
 
     def get_queryset(self):
         category = self.kwargs.get("category")
@@ -133,7 +158,7 @@ class CreateRecipeView(LoginRequiredMixin, FormValidMixin, CreateView):
         return data
 
     def form_valid(self, form):
-        form.instance.user = self.request.user
+        form.instance.author = self.request.user
         return super().form_valid(form)
 
 
@@ -174,3 +199,19 @@ class DeleteRecipeView(SlugUrlKwargMixin, DeleteView):
     model = Recipe
     template_name = "recipes/delete-recipe.html"
     success_url = reverse_lazy("index")
+
+
+def save_recipe(request: HttpRequest, recipe_slug) -> HttpResponse:
+    recipe = Recipe.objects.get(slug=recipe_slug)
+    user = request.user
+
+    try:
+        UserRecipe.objects.create(
+            user=user,
+            recipe=recipe,
+            added_on=now,
+        )
+        return redirect("index")
+    except django.db.utils.IntegrityError:
+        messages.warning(request, "You already saved the recipe!")
+        return redirect("recipe_details", recipe.slug)

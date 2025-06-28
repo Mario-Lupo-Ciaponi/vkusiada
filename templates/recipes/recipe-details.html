@@ -46,10 +46,19 @@
       <h3>📖 Instructions:</h3>
       <p class="instructions">{{ recipe.instructions }}</p>
 
-      <p class="recipe-author">Recipe created by {{ recipe.user.username }}</p>
+      <p class="recipe-author">Recipe created by {{ recipe.author.username }}</p>
     
       <a href="{% url "edit-recipe" recipe.slug %}">Edit</a>
       <a href="{% url "delete-recipe" recipe.slug %}">Delete</a>
+      <a href="{% url "save-recipe" recipe.slug %}">Save</a>
+
+      {% if messages %}
+        <ul class="messages">
+          {% for message in messages %}
+            <li class="{{ message.tags }}">{{ message }}</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
     </div>
 
 

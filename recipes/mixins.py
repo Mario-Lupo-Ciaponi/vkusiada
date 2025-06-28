@@ -1,5 +1,7 @@
 from django.shortcuts import redirect
 
+from common.forms import SearchForm
+
 
 class SlugUrlKwargMixin:
     slug_url_kwarg = "recipe_slug"
@@ -17,3 +19,10 @@ class FormValidMixin:
             return redirect(self.get_success_url())
 
         return self.render_to_response(self.get_context_data(form=form))
+
+
+class RecipeListViewMixin:
+    context_object_name = "recipes"
+    query_param = "query"
+    paginate_by = 5
+    form_class = SearchForm
