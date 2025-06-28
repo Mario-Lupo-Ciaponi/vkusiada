@@ -35,11 +35,18 @@ class AddIngredientView(LoginRequiredMixin, ListView):
 
     def get_queryset(self) -> QuerySet:
         search_value = self.request.GET.get("query")
+        user = self.request.user
+
+        ingredients_added = UserIngredient.objects.filter(user=user)
+        ingredients_name = [i.ingredient.name for i in ingredients_added]
+
+        ingredients_query = ~Q(name__in=ingredients_name) # Filters ingredients where the name is NOT present in ingredients_name
+
 
         if search_value:
-            ingredients = Ingredient.objects.filter(name__icontains=search_value)
-        else:
-            ingredients = Ingredient.objects.all()
+            ingredients_query &= Q(name__icontains=search_value) # Search value is the value of the search form
+
+        ingredients = Ingredient.objects.filter(ingredients_query)
 
         return ingredients.order_by("name")
 

@@ -39,6 +39,11 @@ class RecipeDetailView(SlugUrlKwargMixin, DetailView, FormMixin):
             return self.form_valid(form)
 
 
+# class SaveRecipeToLibraryView(ListView):
+#     model = Recipe
+#     template_name = ""
+
+
 
 class FilteredCategoryView(ListView):
     model = Recipe
