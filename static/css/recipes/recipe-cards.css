@@ -35,3 +35,22 @@
   color: #444;
   margin: 2px 0;
 }
+
+.save-link {
+  display: inline-block;
+  margin-top: 10px;
+  background-color: #e8263f;
+  color: white;
+  text-decoration: none;
+  padding: 10px 20px;
+  border-radius: 20px;
+  font-weight: bold;
+  font-size: 0.95rem;
+  transition: background-color 0.2s ease;
+}
+
+.save-link:hover {
+  background-color: #c51e33;
+}
+
+

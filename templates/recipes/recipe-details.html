@@ -50,37 +50,9 @@
     
       <a href="{% url "edit-recipe" recipe.slug %}">Edit</a>
       <a href="{% url "delete-recipe" recipe.slug %}">Delete</a>
-      <a href="{% url "save-recipe" recipe.slug %}">Save</a>
-
-      {% if messages %}
-        <ul class="messages">
-          {% for message in messages %}
-            <li class="{{ message.tags }}">{{ message }}</li>
-          {% endfor %}
-        </ul>
-      {% endif %}
     </div>
 
 
   </section>
-  <section class="comment-section">
-
-    <h2>Comments({{ recipe.comments.count }}):</h2>
-    <form class="comment-form" method="post">
-      {% csrf_token %}
-      {{ form }}
-      <button>Add</button>
-    </form>
-
-    {% for comment in recipe.comments.all %}
-      <article id="{{ comment.pk }}">
-        <img src="{% static "images/icon/user-icon.png" %}" alt="user-icon">
-        <p>{{ comment.content }}</p>
-        <p>{{ comment.added_on|date:"d.m.Y H:i" }}</p>
-      </article>
-    {% empty %}
-      <p>No comments yet. Be the first to comment this meal!</p>
-    {% endfor %}
-
-  </section>
+  {% include "recipes/comment-section.html" %}
 {% endblock %}

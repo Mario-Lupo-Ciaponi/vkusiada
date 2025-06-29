@@ -12,8 +12,9 @@
 
 {% block content %}
   <main>
-     {% if ingredients %}
-       {% include "common/search-bar.html" %}
+    {% include "common/search-bar.html" %}
+    <section>
+      {% if ingredients %}
        <ul class="ingredient-list">
         {% for ingredient in ingredients %}
           <li class="ingredient-item">
@@ -21,8 +22,11 @@
           </li>
         {% endfor %}
        </ul>
-     {% else %}
-       <h1>No</h1>
-     {% endif %}
+      {% else %}
+        <h1>No Ingredients.</h1>
+        <p>If you haven't added any:</p>
+        <a class="add-button" href="{% url "add-ingredient" %}">Add ingredient</a>
+      {% endif %}
+    </section>
   </main>
 {% endblock %}

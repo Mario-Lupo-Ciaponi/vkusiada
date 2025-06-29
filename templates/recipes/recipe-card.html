@@ -7,4 +7,6 @@
       <p class="recipe-meta"><strong>Category</strong>: {{ recipe.category }}</p>
     </div>
   </a>
+
+  <a href="{% url "save-recipe" recipe.slug %}" class="save-link">Save</a>
 </article>

@@ -1,6 +1,6 @@
 @import "../common/search-bar.css";
 
-main {
+section {
   max-width: 800px;
   margin: 60px auto;
   padding: 40px;
@@ -37,3 +37,33 @@ main {
   font-size: 1.1rem;
   display: block;
 }
+
+main h1 {
+  font-size: 2rem;
+  color: #e8263f;
+  margin-bottom: 10px;
+}
+
+section p {
+  font-size: 1.1rem;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.add-button {
+  display: inline-block;
+  background-color: #e8263f;
+  color: white;
+  padding: 12px 25px;
+  border-radius: 25px;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 1rem;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.2s ease;
+}
+
+.add-button:hover {
+  background-color: #c51e33;
+}
+

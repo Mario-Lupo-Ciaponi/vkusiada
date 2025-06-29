@@ -86,12 +86,13 @@ class UserRecipe(AddedOnMixIn):
 
 class Comment(AddedOnMixIn):
     recipe = models.ForeignKey(
-        to=Recipe,
+        Recipe,
         on_delete=models.CASCADE,
         related_name="comments",
     )
-    author = models.CharField(
-        max_length=50,
-        default="Anonymous",
+    author = models.ForeignKey(
+        "accounts.VkusiadaUser",
+        on_delete=models.CASCADE,
+        related_name="comments"
     )
     content = models.TextField()

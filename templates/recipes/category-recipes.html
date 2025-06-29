@@ -18,6 +18,14 @@
     <h1>{{ category }} recipes:</h1>
   </header>
 
+  {% if messages %}
+    <ul class="messages">
+      {% for message in messages %}
+        <li class="{{ message.tags }}">{{ message }}</li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+
   {% for recipe in object_list %}
     {% include "recipes/recipe-card.html" with recipe=recipe %}
   {% endfor %}

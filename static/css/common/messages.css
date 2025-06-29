@@ -1,0 +1,44 @@
+.messages {
+  list-style: none;
+  padding: 0;
+  margin: 30px auto;
+  max-width: 600px;
+}
+
+.messages li {
+  padding: 15px 20px;
+  margin-bottom: 16px;
+  border-radius: 12px;
+  font-weight: 500;
+  font-size: 1rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  border-left: 6px solid;
+}
+
+/* Success */
+.messages li.success {
+  background-color: #e6f4ea;
+  color: #2d7a46;
+  border-color: #2d7a46;
+}
+
+/* Error */
+.messages li.error {
+  background-color: #fdecea;
+  color: #c62828;
+  border-color: #c62828;
+}
+
+/* Info */
+.messages li.info {
+  background-color: #e8f4fd;
+  color: #1565c0;
+  border-color: #1565c0;
+}
+
+/* Warning */
+.messages li.warning {
+  background-color: #fff4e5;
+  color: #bf360c;
+  border-color: #bf360c;
+}

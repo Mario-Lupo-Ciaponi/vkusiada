@@ -1,0 +1,28 @@
+{% load static %}
+
+<section class="comment-section">
+    <h2>Comments({{ recipe.comments.count }}):</h2>
+    <form class="comment-form" method="post">
+      {% csrf_token %}
+      {{ form }}
+      <button>Add</button>
+    </form>
+
+    {% for comment in recipe.comments.all %}
+      <article id="{{ comment.pk }}">
+        <img src="{% static "images/icon/user-icon.png" %}" alt="user-icon">
+
+        <div class="content-text">
+          <div class="content-header">
+            <p class="comment-author">{{ comment.author }}</p>
+            <p class="comment-date">{{ comment.added_on|date:"d.m.Y H:i" }}</p>
+          </div>
+
+          <p class="comment-content">{{ comment.content }}</p>
+        </div>
+      </article>
+    {% empty %}
+      <p>No comments yet. Be the first to comment this meal!</p>
+    {% endfor %}
+
+  </section>

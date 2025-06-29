@@ -38,7 +38,7 @@ class RecipeDetailView(SlugUrlKwargMixin, DetailView, FormMixin):
 
         if form.is_valid():
             comment = form.save(commit=False)
-            comment.author = request.user.username
+            comment.author = request.user
             comment.recipe = self.object
             comment.save()
 
@@ -64,17 +64,11 @@ class SuggestedRecipesView(RecipeListViewMixin, ListView):
 
         user_ingredient_ids = (UserIngredient.objects
                                .filter(user=user)
-                               .values_list("ingredient_id", flat=True))
-
-        user_recipe_ids = (UserRecipe.objects
-                               .filter(user=user)
-                               .values_list("recipe_id", flat=True))
+                               .values_list("ingredient__id", flat=True))
 
         recipe = (Recipe.objects
                   .filter(recipeingredient__ingredient__in=user_ingredient_ids)
                   .distinct())
-
-        recipe = recipe.exclude(id__in=user_recipe_ids)
 
         return recipe
 
@@ -216,7 +210,7 @@ def save_recipe(request: HttpRequest, recipe_slug) -> HttpResponse:
             recipe=recipe,
             added_on=now,
         )
-        return redirect("index")
     except django.db.utils.IntegrityError:
         messages.warning(request, "You already saved the recipe!")
-        return redirect("recipe_details", recipe.slug)
+
+    return redirect(request.META.get("HTTP_REFERER", "/"))
