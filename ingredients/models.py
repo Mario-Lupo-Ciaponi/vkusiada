@@ -1,7 +1,12 @@
+from django.contrib.auth import get_user_model
 from django.db import models
 
 from common.mixins import SlugMixIn, AddedOnMixIn
 from accounts.models import VkusiadaUser
+
+
+User = get_user_model()
+
 
 class Ingredient(SlugMixIn):
     name = models.CharField(
@@ -24,7 +29,7 @@ class Ingredient(SlugMixIn):
 
 class UserIngredient(AddedOnMixIn):
     user = models.ForeignKey(
-        VkusiadaUser,
+        User,
         on_delete=models.CASCADE,
     )
     ingredient = models.ForeignKey(

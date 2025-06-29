@@ -1,3 +1,4 @@
+from django.contrib.auth import get_user_model
 from django.db import models
 
 from .choices import CategoryChoices
@@ -6,6 +7,8 @@ from ingredients.models import Ingredient
 from accounts.models import VkusiadaUser
 from common.mixins import SlugMixIn, AddedOnMixIn
 
+
+User = get_user_model()
 
 
 class Recipe(SlugMixIn):
@@ -27,12 +30,12 @@ class Recipe(SlugMixIn):
     image_url = models.URLField()
     instructions = models.TextField()
     author = models.ForeignKey(
-        "accounts.VkusiadaUser",
+        User,
         on_delete=models.CASCADE,
         related_name="recipes",
     )
     users = models.ManyToManyField(
-        "accounts.VkusiadaUser",
+        User,
         related_name='saved_recipes',
         blank=True,
     )
@@ -69,7 +72,7 @@ class RecipeIngredient(models.Model):
 
 class UserRecipe(AddedOnMixIn):
     user = models.ForeignKey(
-        VkusiadaUser,
+        User,
         on_delete=models.CASCADE,
     )
     recipe = models.ForeignKey(
@@ -91,7 +94,7 @@ class Comment(AddedOnMixIn):
         related_name="comments",
     )
     author = models.ForeignKey(
-        "accounts.VkusiadaUser",
+        User,
         on_delete=models.CASCADE,
         related_name="comments"
     )

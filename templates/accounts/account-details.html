@@ -1,0 +1,32 @@
+{% extends "common/base.html" %}
+
+{% load static %}
+
+{% block styles %}
+  <link rel="stylesheet" href="{% static "css/accounts/profile-details.css" %}">
+{% endblock %}
+
+{% block title %}
+  {{ user.username }}
+{% endblock %}
+
+{% block content %}
+  <main>
+    <header>
+      <h1 class="username">{{ user.username }}</h1>
+      {% if user.is_authenticated %}
+        <p class="admin-p">Admin</p>
+      {% endif %}
+    </header>
+
+    <section>
+      <p>Date joined: {{ user.date_joined }}</p>
+      <p>Email: {{ user.email }}</p>
+      <p>Last login: {{ user.last_login }}</p>
+
+      <a href="#">Recipes created</a>
+      <a href="#">Saved recipes</a>
+      <a href="{% url "saved-ingredient" %}">Ingredient's library </a>
+    </section>
+  </main>
+{% endblock %}

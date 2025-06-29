@@ -32,7 +32,7 @@
       </div>
       <ul class="user-dropdown-menu">
         {% if request.user.is_authenticated %}
-        	<li><a href="#">Profile</a></li>
+        	<li><a href="{% url "account-details" request.user.pk %}">Profile</a></li>
           <li>
             <a href="{% url "logout" %}"
                onclick="event.preventDefault(); document.getElementById('logout-form').submit();">

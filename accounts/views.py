@@ -2,13 +2,13 @@ from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render, redirect
 from django.core.mail import send_mail
 from django.urls import reverse_lazy
-from django.views.generic import FormView, CreateView
+from django.views.generic import FormView, CreateView, DetailView
 from django.contrib.auth import get_user_model
 
 from .forms import RegistrationForm, ContactForm
+from .models import VkusiadaUser
 
-
-user = get_user_model()
+User = get_user_model()
 
 
 class RegisterUserView(CreateView):
@@ -34,3 +34,10 @@ class ContactView(FormView):
     def form_valid(self, form):
         print("Email sent!")
         super().form_valid(form)
+
+
+class AccountDetails(DetailView):
+    model = User
+    context_object_name = "user"
+    template_name = "accounts/account-details.html"
+
