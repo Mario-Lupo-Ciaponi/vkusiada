@@ -1,6 +1,7 @@
 {% extends "common/base.html" %}
 
 {% load static %}
+{% load has_group %}
 
 {% block styles %}
   <link rel="stylesheet" href="{% static 'css/recipes/recipe-details.css' %}">
@@ -47,9 +48,11 @@
       <p class="instructions">{{ recipe.instructions }}</p>
 
       <p class="recipe-author">Recipe created by {{ recipe.author.username }}</p>
-    
-      <a href="{% url "edit-recipe" recipe.slug %}">Edit</a>
-      <a href="{% url "delete-recipe" recipe.slug %}">Delete</a>
+
+      {% if request.user == recipe.author or request.user.is_staff or request.user|has_group:"Recipe Editor" %}
+        <a href="{% url "edit-recipe" recipe.slug %}">Edit</a>
+        <a href="{% url "delete-recipe" recipe.slug %}">Delete</a>
+      {% endif %}
     </div>
 
 

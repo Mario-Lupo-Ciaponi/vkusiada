@@ -14,7 +14,7 @@
   <main>
     <header>
       <h1 class="username">{{ user.username }}</h1>
-      {% if user.is_authenticated %}
+      {% if user.is_staff %}
         <p class="admin-p">Admin</p>
       {% endif %}
     </header>
