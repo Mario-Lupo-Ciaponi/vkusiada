@@ -1,0 +1,25 @@
+{% extends "common/base.html" %}
+
+{% load static %}
+
+{% block styles %}
+  <link rel="stylesheet" href="{% static "css/accounts/profile-edit.css" %}">
+{% endblock %}
+
+{% block title %}
+  Edit {{ profile.user.username }} profile
+{% endblock %}
+
+{% block content %}
+  <main>
+    <div class="form-container">
+      <form method="post">
+        {% csrf_token %}
+
+        {{ form.as_p }}
+
+        <button type="submit">Edit</button>
+      </form>
+    </div>
+  </main>
+{% endblock %}

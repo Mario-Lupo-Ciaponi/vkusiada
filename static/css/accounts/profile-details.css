@@ -55,3 +55,47 @@ section a {
 section a:hover {
   background-color: #c01e34;
 }
+
+.profile-info {
+  margin-top: 40px;
+  padding: 25px 30px;
+  background-color: #ffe8e8;
+  border-radius: 20px;
+  box-shadow: 0 4px 15px rgba(232, 38, 63, 0.15);
+  text-align: left;
+  max-width: 500px;
+  margin-left: auto;
+  margin-right: auto;
+  font-size: 1rem;
+  color: #6a1a28;
+}
+
+.profile-info h2 {
+  margin-bottom: 20px;
+  font-size: 1.6rem;
+  color: #e8263f;
+  border-bottom: 2px solid #e8263f;
+  padding-bottom: 8px;
+}
+
+.profile-info p {
+  margin: 10px 0;
+  line-height: 1.5;
+}
+
+.profile-info a {
+  display: inline-block;
+  margin-top: 20px;
+  padding: 10px 18px;
+  background-color: #c01e34;
+  color: white;
+  border-radius: 25px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+
+.profile-info a:hover {
+  background-color: #9e1729;
+}
+

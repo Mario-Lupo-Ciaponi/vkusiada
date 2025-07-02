@@ -2,6 +2,8 @@ from django import forms
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UserCreationForm
 from django.core.validators import MinLengthValidator
+
+from .models import Profile
 from .mixins import MakeAllFieldsRequiredMixin, MakeAllFieldNotHavingLabelsMixin
 
 
@@ -9,6 +11,30 @@ class RegistrationForm(UserCreationForm):
     class Meta(UserCreationForm.Meta):
         model = get_user_model()
         fields = ("username", "email",)
+
+
+class ProfileEditForm(forms.ModelForm):
+    class Meta:
+        model = Profile
+        exclude = ["user",]
+
+        widgets = {
+            "bio": forms.widgets.Textarea(
+                attrs={
+                    "placeholder": "Enter bio",
+                }
+            ),
+            "birth_date": forms.widgets.DateInput(
+                attrs={
+                    "type": "date",
+                }
+            ),
+            "favourite_cuisine": forms.widgets.TextInput(
+                attrs={
+                    "placeholder": "Enter favourite cuisine",
+                }
+            ),
+        }
 
 
 class ContactForm(MakeAllFieldsRequiredMixin, MakeAllFieldNotHavingLabelsMixin, forms.Form):

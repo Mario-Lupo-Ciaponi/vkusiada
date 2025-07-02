@@ -1,12 +1,12 @@
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render, redirect
 from django.core.mail import send_mail
-from django.urls import reverse_lazy
-from django.views.generic import FormView, CreateView, DetailView
+from django.urls import reverse_lazy, reverse
+from django.views.generic import FormView, CreateView, DetailView, UpdateView
 from django.contrib.auth import get_user_model
 
-from .forms import RegistrationForm, ContactForm
-from .models import VkusiadaUser
+from .forms import RegistrationForm, ContactForm, ProfileEditForm
+from .models import Profile
 
 User = get_user_model()
 
@@ -41,3 +41,16 @@ class AccountDetails(DetailView):
     context_object_name = "user"
     template_name = "accounts/account-details.html"
 
+
+class EditProfileView(UpdateView):
+    model = Profile
+    form_class = ProfileEditForm
+    template_name = "accounts/profile-edit.html"
+
+    def get_success_url(self):
+        return reverse(
+            "account-details",
+            kwargs={
+                "pk": self.object.user.pk,
+            }
+        )
