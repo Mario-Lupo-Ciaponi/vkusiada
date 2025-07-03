@@ -1,0 +1,12 @@
+<article class="recipe-card-alt">
+  <a href="{% url "recipe_details" user_recipe.recipe.slug %}">
+    <div class="recipe-thumb">
+      <img src="{{ user_recipe.recipe.image_url }}" alt="{{ user_recipe.recipe.name }}">
+    </div>
+    <div class="recipe-body">
+      <h2 class="recipe-name">{{ user_recipe.recipe.name }}</h2>
+      <p class="recipe-meta"><strong>Cuisine</strong>: {{ user_recipe.recipe.cuisine }}</p>
+      <p class="recipe-meta"><strong>Category</strong>: {{ user_recipe.recipe.category }}</p>
+    </div>
+  </a>
+</article>

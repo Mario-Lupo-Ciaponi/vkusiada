@@ -1,4 +1,5 @@
 import django.db.utils
+from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q
 from django.http import HttpRequest, HttpResponse
@@ -103,6 +104,33 @@ class FilteredCategoryView(RecipeListViewMixin, ListView):
                    .order_by("name"))
 
         return recipes
+
+
+class SavedRecipesView(ListView):
+    model = UserRecipe
+    template_name = "recipes/saved-recipes.html"
+    paginate_by = 5
+    query_param = "query"
+    form_class = SearchForm
+    context_object_name = "recipes"
+
+    def get_context_data(
+        self, *, object_list=None, **kwargs
+    ):
+        kwargs.update({
+            "search_form": self.form_class(),
+            "query": self.request.GET.get(self.query_param, "")
+        })
+
+        return super().get_context_data(object_list=object_list, **kwargs)
+
+    def get_queryset(self):
+        # Get the user once
+        user = self.request.user
+
+        users_recipes = UserRecipe.objects.filter(user=user)
+
+        return users_recipes
 
 
 class SearchRecipeView(ListView):

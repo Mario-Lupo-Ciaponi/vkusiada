@@ -59,22 +59,22 @@ section a:hover {
 .profile-info {
   margin-top: 40px;
   padding: 25px 30px;
-  background-color: #ffe8e8;
+  background-color: #fff5e6;
   border-radius: 20px;
-  box-shadow: 0 4px 15px rgba(232, 38, 63, 0.15);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
   text-align: left;
   max-width: 500px;
   margin-left: auto;
   margin-right: auto;
   font-size: 1rem;
-  color: #6a1a28;
+  color: #5c4033;
 }
 
 .profile-info h2 {
   margin-bottom: 20px;
   font-size: 1.6rem;
-  color: #e8263f;
-  border-bottom: 2px solid #e8263f;
+  color: #c01e34;
+  border-bottom: 2px solid #e3b77a;
   padding-bottom: 8px;
 }
 
@@ -87,7 +87,7 @@ section a:hover {
   display: inline-block;
   margin-top: 20px;
   padding: 10px 18px;
-  background-color: #c01e34;
+  background-color: #d35400;
   color: white;
   border-radius: 25px;
   text-decoration: none;
@@ -96,6 +96,5 @@ section a:hover {
 }
 
 .profile-info a:hover {
-  background-color: #9e1729;
+  background-color: #a84300;
 }
-

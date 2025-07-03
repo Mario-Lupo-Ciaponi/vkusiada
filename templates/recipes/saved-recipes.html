@@ -1,0 +1,20 @@
+{% extends "common/base.html" %}
+
+{% load static %}
+
+{% block styles %}
+  <link rel="stylesheet" href="{% static "css/recipes/recipe-card-alternative.css" %}">
+{% endblock %}
+
+{% block title %}
+	Saved Recipes
+{% endblock %}
+
+{% block content %}
+	<main>
+    {% for user_recipe in recipes %}
+    	{% include "recipes/recipe-card-alternative.html" %}
+    {% endfor %}
+    
+  </main>
+{% endblock %}
