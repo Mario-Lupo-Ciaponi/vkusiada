@@ -1,9 +1,11 @@
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import QuerySet, Q
 from django.http import HttpRequest, HttpResponse
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.utils.timezone import now
 from django.views.generic import DetailView, ListView
+from django.contrib import messages
 
 from common.forms import SearchForm
 from recipes.models import UserRecipe
@@ -93,3 +95,14 @@ def save_ingredient(request: HttpRequest, ingredient_pk: int) -> HttpResponse:
     )
 
     return redirect("add-ingredient")
+
+
+@login_required
+def remove_ingredient(request: HttpRequest, ingredient_pk: int) -> HttpResponse:
+    user_ingredient = get_object_or_404(UserIngredient, pk=ingredient_pk, user=request.user)
+
+    user_ingredient.delete()
+
+    messages.success(request, f"Ingredient {user_ingredient.ingredient.name} removed successfully")
+
+    return redirect(request.META.get("HTTP_REFERER", "/"))

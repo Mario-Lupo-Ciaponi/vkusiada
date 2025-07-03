@@ -3,7 +3,7 @@
 {% load static %}
 
 {% block styles %}
-  <link rel="stylesheet" href="{% static "css/recipes/recipe-card-alternative.css" %}">
+  <link rel="stylesheet" href="{% static "css/recipes/saved-recipes.css" %}">
 {% endblock %}
 
 {% block title %}
@@ -12,9 +12,16 @@
 
 {% block content %}
 	<main>
-    {% for user_recipe in recipes %}
-    	{% include "recipes/recipe-card-alternative.html" %}
-    {% endfor %}
-    
+    {% include "common/search-bar.html" %}
+
+    {% if recipes %}
+      {% for user_recipe in recipes %}
+    	  {% include "recipes/recipe-card-alternative.html" %}
+      {% endfor %}
+
+      {% include "common/paginator.html" %}
+    {% else %}
+      <h2 class="no-recipe-h2">No recipes to show</h2>
+    {% endif %}
   </main>
 {% endblock %}

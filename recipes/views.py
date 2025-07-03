@@ -127,8 +127,12 @@ class SavedRecipesView(ListView):
     def get_queryset(self):
         # Get the user once
         user = self.request.user
+        query = self.request.GET.get("query")
 
-        users_recipes = UserRecipe.objects.filter(user=user)
+        user_query = Q(user=user)
+        search_query = Q(recipe__name__icontains=query)
+
+        users_recipes = UserRecipe.objects.filter(user_query, search_query).order_by("recipe__name")
 
         return users_recipes
 

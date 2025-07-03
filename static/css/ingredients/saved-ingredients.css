@@ -23,6 +23,10 @@ section {
   padding: 15px 25px;
   border-radius: 20px;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
   transition: background-color 0.2s ease;
 }
 
@@ -30,12 +34,26 @@ section {
   background-color: #f3d6d9;
 }
 
-.ingredient-item a {
-  text-decoration: none;
-  color: #e8263f;
-  font-weight: bold;
+.ingredient-name a {
   font-size: 1.1rem;
-  display: block;
+  font-weight: bold;
+  color: #e8263f;
+  text-decoration: none;
+}
+
+.remove-btn a {
+  background-color: #e8263f;
+  color: white;
+  padding: 6px 16px;
+  border-radius: 20px;
+  text-decoration: none;
+  font-size: 0.95rem;
+  font-weight: bold;
+  transition: background-color 0.2s ease;
+}
+
+.remove-btn a:hover {
+  background-color: #c51e33;
 }
 
 main h1 {

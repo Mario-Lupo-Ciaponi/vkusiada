@@ -1,0 +1,12 @@
+@import "recipe-card-alternative.css";
+@import "../common/search-bar.css";
+@import "../common/pagination.css";
+
+.no-recipe-h2 {
+  text-align: center;
+  font-family: "Bitter", serif;
+  font-weight: bold;
+  font-style: normal;
+  font-size: 3em;
+  color: #e8263f;
+}

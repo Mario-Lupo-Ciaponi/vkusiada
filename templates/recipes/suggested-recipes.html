@@ -14,6 +14,14 @@
   {% if recipes %}
     {% include "common/search-bar.html" %}
 
+    {% if messages %}
+      <ul class="messages">
+        {% for message in messages %}
+          <li class="{{ message.tags }}">{{ message }}</li>
+          {% endfor %}
+        </ul>
+    {% endif %}
+
   	<h1>Suggested recipes for {{ request.user.username }}</h1>
 
     {% for recipe in recipes %}
