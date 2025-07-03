@@ -103,6 +103,6 @@ def remove_ingredient(request: HttpRequest, ingredient_pk: int) -> HttpResponse:
 
     user_ingredient.delete()
 
-    messages.success(request, f"Ingredient {user_ingredient.ingredient.name} removed successfully")
+    messages.success(request, f"Ingredient {user_ingredient.ingredient.name} was removed successfully")
 
     return redirect(request.META.get("HTTP_REFERER", "/"))

@@ -13,13 +13,7 @@
 {% block content %}
   {% include "common/search-bar.html" %}
 
-  {% if messages %}
-    <ul class="messages">
-      {% for message in messages %}
-        <li class="{{ message.tags }}">{{ message }}</li>
-      {% endfor %}
-    </ul>
-  {% endif %}
+  {% include "common/messages.html" %}
 
   {% for recipe in recipes %}
     {% include "recipes/recipe-card.html" with recipe=recipe %}

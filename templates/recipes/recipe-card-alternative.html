@@ -9,4 +9,6 @@
       <p class="recipe-meta"><strong>Category</strong>: {{ user_recipe.recipe.category }}</p>
     </div>
   </a>
+
+  <a class="remove-recipe-btn" href="{% url "remove-saved-recipe" user_recipe.recipe.slug %}">Remove</a>
 </article>

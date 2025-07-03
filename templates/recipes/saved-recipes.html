@@ -14,6 +14,8 @@
 	<main>
     {% include "common/search-bar.html" %}
 
+    {% include "common/messages.html" %}
+
     {% if recipes %}
       {% for user_recipe in recipes %}
     	  {% include "recipes/recipe-card-alternative.html" %}

@@ -1,9 +1,10 @@
 import django.db.utils
 from django.contrib.auth import get_user_model
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q
 from django.http import HttpRequest, HttpResponse
-from django.shortcuts import redirect
+from django.shortcuts import redirect, get_object_or_404
 from django.urls import reverse_lazy, reverse
 from django.utils.timezone import now
 from django.views.generic import DetailView, ListView, CreateView, UpdateView, DeleteView
@@ -106,7 +107,7 @@ class FilteredCategoryView(RecipeListViewMixin, ListView):
         return recipes
 
 
-class SavedRecipesView(ListView):
+class SavedRecipesView(LoginRequiredMixin, ListView):
     model = UserRecipe
     template_name = "recipes/saved-recipes.html"
     paginate_by = 5
@@ -129,10 +130,10 @@ class SavedRecipesView(ListView):
         user = self.request.user
         query = self.request.GET.get("query")
 
-        user_query = Q(user=user)
-        search_query = Q(recipe__name__icontains=query)
+        users_recipes = UserRecipe.objects.filter(user=user).order_by("recipe__name")
 
-        users_recipes = UserRecipe.objects.filter(user_query, search_query).order_by("recipe__name")
+        if query:
+            users_recipes = users_recipes.filter(recipe__name__icontains=query)
 
         return users_recipes
 
@@ -246,3 +247,16 @@ def save_recipe(request: HttpRequest, recipe_slug) -> HttpResponse:
         messages.warning(request, "You already saved the recipe!")
 
     return redirect(request.META.get("HTTP_REFERER", "/"))
+
+
+@login_required
+def remove_saved_recipe(request: HttpRequest, recipe_slug: str) -> HttpResponse:
+    recipe = Recipe.objects.get(slug=recipe_slug)
+    user_recipe = get_object_or_404(UserRecipe, recipe=recipe, user=request.user)
+
+    user_recipe.delete()
+
+    messages.success(request, f"Recipe {user_recipe.recipe.name} was removed successfully")
+
+    return redirect(request.META.get("HTTP_REFERER", "/"))
+
