@@ -1,9 +1,10 @@
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render, redirect
 from django.core.mail import send_mail
 from django.urls import reverse_lazy, reverse
 from django.views.generic import FormView, CreateView, DetailView, UpdateView
-from django.contrib.auth import get_user_model
+from django.contrib.auth import get_user_model, login
 
 from .forms import RegistrationForm, ContactForm, ProfileEditForm
 from .models import Profile
@@ -15,6 +16,7 @@ class RegisterUserView(CreateView):
     form_class = RegistrationForm
     template_name = "registration/register-form.html"
     success_url = reverse_lazy("login")
+
 
 
 class ContactView(FormView):
@@ -42,7 +44,7 @@ class AccountDetails(DetailView):
     template_name = "accounts/account-details.html"
 
 
-class EditProfileView(UpdateView):
+class EditProfileView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Profile
     form_class = ProfileEditForm
     template_name = "accounts/profile-edit.html"
@@ -54,3 +56,6 @@ class EditProfileView(UpdateView):
                 "pk": self.object.user.pk,
             }
         )
+
+    def test_func(self):
+        return self.request.user.is_superuser or self.request.user.pk == self.kwargs["pk"]

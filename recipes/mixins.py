@@ -26,3 +26,13 @@ class RecipeListViewMixin:
     query_param = "query"
     paginate_by = 5
     form_class = SearchForm
+
+
+class TestFuncMixin:
+    def test_func(self):
+        obj = self.get_object()
+
+        return (
+                self.request.user.pk == obj.author.pk or
+                self.request.user.is_superuser or
+                self.request.user.groups.filter(name="Recipe Editor").exists())

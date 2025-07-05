@@ -1,7 +1,7 @@
 import django.db.utils
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.db.models import Q
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import redirect, get_object_or_404
@@ -14,7 +14,7 @@ from django.contrib import messages
 from ingredients.models import UserIngredient
 from .models import Recipe, UserRecipe
 from .forms import CommentForm, CreateRecipeForm, EditRecipeForm, RecipeIngredientFormSet
-from .mixins import SlugUrlKwargMixin, FormValidMixin, RecipeListViewMixin
+from .mixins import SlugUrlKwargMixin, FormValidMixin, RecipeListViewMixin, TestFuncMixin
 
 from common.forms import  SearchForm
 
@@ -47,7 +47,7 @@ class RecipeDetailView(SlugUrlKwargMixin, DetailView, FormMixin):
             return self.form_valid(form)
 
 
-class SuggestedRecipesView(RecipeListViewMixin, ListView):
+class SuggestedRecipesView(LoginRequiredMixin, RecipeListViewMixin, ListView):
     model = Recipe
     template_name = "recipes/suggested-recipes.html"
 
@@ -194,7 +194,7 @@ class CreateRecipeView(LoginRequiredMixin, FormValidMixin, CreateView):
         return super().form_valid(form)
 
 
-class EditRecipeView(FormValidMixin, UpdateView):
+class EditRecipeView(FormValidMixin, TestFuncMixin, UserPassesTestMixin, UpdateView):
     model = Recipe
     form_class = EditRecipeForm
     template_name = "recipes/edit-recipe.html"
@@ -227,12 +227,13 @@ class EditRecipeView(FormValidMixin, UpdateView):
         return data
 
 
-class DeleteRecipeView(SlugUrlKwargMixin, DeleteView):
+class DeleteRecipeView(SlugUrlKwargMixin, TestFuncMixin, UserPassesTestMixin, DeleteView):
     model = Recipe
     template_name = "recipes/delete-recipe.html"
     success_url = reverse_lazy("index")
 
 
+@login_required
 def save_recipe(request: HttpRequest, recipe_slug) -> HttpResponse:
     recipe = Recipe.objects.get(slug=recipe_slug)
     user = request.user
