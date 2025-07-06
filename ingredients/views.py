@@ -19,7 +19,7 @@ class IngredientDetailsView(DetailView):
     slug_url_kwarg = "ingredient_slug"
 
 
-class AddIngredientView(LoginRequiredMixin, ListView):
+class AddIngredientView(ListView):
     model = Ingredient
     template_name = "ingredients/add-ingredient.html"
     query_param = "query"
@@ -39,6 +39,9 @@ class AddIngredientView(LoginRequiredMixin, ListView):
     def get_queryset(self) -> QuerySet:
         search_value = self.request.GET.get("query")
         user = self.request.user
+
+        if not user.is_authenticated:
+            return Ingredient.objects.all()
 
         ingredients_added = UserIngredient.objects.filter(user=user)
         ingredients_name = [i.ingredient.name for i in ingredients_added]
@@ -84,6 +87,7 @@ class SavedIngredientsView(LoginRequiredMixin, ListView):
         return [i for i in saved_ingredients]
 
 
+@login_required
 def save_ingredient(request: HttpRequest, ingredient_pk: int) -> HttpResponse:
     ingredient = Ingredient.objects.get(pk=ingredient_pk)
     user = request.user

@@ -25,8 +25,11 @@
       <p>Last login: {{ user.last_login }}</p>
 
       <a href="#">Recipes created</a>
-      <a href="#">Saved recipes</a>
-      <a href="{% url "saved-ingredient" %}">Ingredient's library </a>
+
+      {% if request.user.pk == user.pk %}
+        	<a href="{% url "saved-recipes" %}">Saved recipes</a>
+          <a href="{% url "saved-ingredient" %}">Ingredient's library </a>
+      {% endif %}
 
       <div class="profile-info">
         <h2>Profile info:</h2>
@@ -36,7 +39,9 @@
         <p>Birthdate: {{ user.profile.birth_date|date:"d.m.Y"|default:"No Birthdate" }}</p>
         <p>Cooking level: {{ user.profile.cooking_level|default:"No Cooking level" }}</p>
 
-        <a href="{% url "edit-profile" user.profile.pk %}">Change profile info</a>
+        {% if request.user.pk == user.pk or request.user.is_superuser %}
+        	<a href="{% url "edit-profile" user.profile.pk %}">Change profile info</a>
+        {% endif %}
       </div>
     </section>
   </main>
