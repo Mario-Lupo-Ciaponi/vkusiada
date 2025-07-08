@@ -1,7 +1,7 @@
 .form-container {
-  max-width: 500px; /* narrower width */
+  max-width: 500px;
   margin: 60px auto;
-  padding: 30px 40px; /* balanced padding */
+  padding: 30px 40px;
   background-color: rgb(251, 241, 223);
   border-radius: 20px;
   box-shadow: 0 12px 30px rgba(0, 0, 0, 0.1);
@@ -9,61 +9,77 @@
   box-sizing: border-box;
 }
 
-.form-container h1,
-.form-container h2 {
+.edit-title {
   text-align: center;
   color: #e8263f;
   margin-bottom: 30px;
+  font-size: 1.8rem;
+  font-weight: bold;
 }
 
-.form-container form {
+.form-field {
   display: flex;
   flex-direction: column;
-  gap: 18px;
+  margin-bottom: 20px;
 }
 
-.form-container label {
+.form-field label {
   font-weight: 600;
   color: #e8263f;
   margin-bottom: 6px;
   user-select: none;
-  display: block;
 }
 
-.form-container input[type="text"],
-.form-container input[type="url"],
-.form-container input[type="password"],
-.form-container textarea,
-.form-container select.custom-select {
-  padding: 10px 14px; /* slightly smaller padding */
+.form-field input,
+.form-field textarea,
+.form-field select {
+  padding: 10px 14px;
   border: 2px solid #e8263f;
   border-radius: 10px;
   font-size: 1rem;
   background-color: #fff;
   outline: none;
   width: 100%;
-  transition: border-color 0.3s ease;
   font-family: inherit;
-  resize: vertical;
+  transition: border-color 0.3s ease, background-color 0.3s ease;
   box-sizing: border-box;
+  resize: vertical;
 }
 
-.form-container input::placeholder,
-.form-container textarea::placeholder {
+.form-field input::placeholder,
+.form-field textarea::placeholder {
   color: #aaa;
   font-style: italic;
 }
 
-.form-container input:focus,
-.form-container textarea:focus,
-.form-container select.custom-select:focus {
+.form-field input:focus,
+.form-field textarea:focus,
+.form-field select:focus {
   border-color: #c01e34;
 }
 
-.form-container textarea {
-  min-height: 100px; /* a bit shorter */
+/* Error styling */
+input:invalid,
+textarea:invalid,
+select:invalid,
+input.error,
+textarea.error,
+select.error {
+  border-color: #c01e34;
+  background-color: #fff2f2;
 }
 
+.errorlist {
+  color: #c01e34;
+  font-size: 0.9rem;
+  font-weight: 500;
+  margin-top: 4px;
+  margin-bottom: 10px;
+  list-style-type: none;
+  padding-left: 0;
+}
+
+/* Submit button */
 .form-container button[type="submit"] {
   align-self: flex-end;
   padding: 12px 28px;
@@ -82,62 +98,4 @@
 
 .form-container button[type="submit"]:hover {
   background-color: #c01e34;
-}
-
-.errorlist {
-  color: #c01e34;
-  font-weight: 700;
-  margin-top: -15px;
-  margin-bottom: 10px;
-  list-style-type: none;
-  padding-left: 0;
-}
-
-input.error,
-textarea.error,
-select.error {
-  border-color: #c01e34;
-}
-
-/* hide deletion checkboxes */
-input[type="checkbox"][name$="-DELETE"] {
-  display: none;
-}
-
-/* button group styles for multiple buttons */
-.button-group {
-  display: flex;
-  gap: 10px;
-  margin-bottom: 20px;
-}
-
-.button-group button {
-  padding: 6px 14px;
-  font-size: 14px;
-  border-radius: 4px;
-  font-weight: 500;
-  cursor: pointer;
-  border: none;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  transition: background-color 0.2s ease;
-}
-
-/* Add Ingredient button */
-#add-ingredient {
-  background-color: #28a745;
-  color: white;
-}
-
-#add-ingredient:hover {
-  background-color: #218838;
-}
-
-/* Mark Deletions button */
-#mark-deletions {
-  background-color: #dc3545;
-  color: white;
-}
-
-#mark-deletions:hover {
-  background-color: #c82333;
 }

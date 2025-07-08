@@ -23,6 +23,16 @@
       <p>Date joined: {{ user.date_joined }}</p>
       <p>Email: {{ user.email }}</p>
       <p>Last login: {{ user.last_login }}</p>
+      <p>Bio: {{ user.profile.bio|default:"No Bio" }}</p>
+      <p>Location: {{ user.profile.location|default:"No Location" }}</p>
+      <p>Birthdate: {{ user.profile.birth_date|date:"d.m.Y"|default:"No Birthdate" }}</p>
+      <p>Cooking level: {{ user.profile.cooking_level|default:"No Cooking level" }}</p>
+
+      {% if request.user.pk == user.pk or request.user.is_superuser %}
+        <div class="change-profile-wrapper">
+          <a href="{% url "edit-profile" user.profile.pk %}" class="change-profile-info">Change profile info</a>
+        </div>
+      {% endif %}
 
       <a href="#">Recipes created</a>
 
@@ -30,19 +40,6 @@
         	<a href="{% url "saved-recipes" %}">Saved recipes</a>
           <a href="{% url "saved-ingredient" %}">Ingredient's library </a>
       {% endif %}
-
-      <div class="profile-info">
-        <h2>Profile info:</h2>
-
-        <p>Bio: {{ user.profile.bio|default:"No Bio" }}</p>
-        <p>Location: {{ user.profile.location|default:"No Location" }}</p>
-        <p>Birthdate: {{ user.profile.birth_date|date:"d.m.Y"|default:"No Birthdate" }}</p>
-        <p>Cooking level: {{ user.profile.cooking_level|default:"No Cooking level" }}</p>
-
-        {% if request.user.pk == user.pk or request.user.is_superuser %}
-        	<a href="{% url "edit-profile" user.profile.pk %}">Change profile info</a>
-        {% endif %}
-      </div>
     </section>
   </main>
 {% endblock %}

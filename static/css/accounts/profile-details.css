@@ -11,23 +11,25 @@ main {
 
 header {
   text-align: center;
-  margin-bottom: 30px;
+  margin-bottom: 40px;
 }
 
 .username {
-  font-size: 2.2rem;
-  font-weight: bold;
+  font-size: 2.5rem;
+  font-weight: 700;
   color: #e8263f;
-  margin-bottom: 10px;
+  margin-bottom: 12px;
 }
 
 .admin-p {
   display: inline-block;
   background-color: #e8263f;
   color: white;
-  padding: 5px 12px;
+  padding: 6px 14px;
   font-size: 0.9rem;
-  border-radius: 20px;
+  font-weight: bold;
+  border-radius: 25px;
+  margin-top: 8px;
 }
 
 section {
@@ -35,66 +37,51 @@ section {
 }
 
 section p {
-  margin: 10px 0;
-  font-size: 1rem;
+  margin: 12px 0;
+  font-size: 1.05rem;
   color: #444;
+  line-height: 1.6;
 }
 
 section a {
   display: inline-block;
-  margin: 12px 10px;
-  padding: 10px 18px;
-  border-radius: 25px;
+  margin: 12px 8px;
+  padding: 12px 22px;
+  border-radius: 30px;
   background-color: #e8263f;
   color: white;
   text-decoration: none;
   font-weight: bold;
-  transition: background-color 0.3s ease;
+  font-size: 0.95rem;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08);
+  transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
 section a:hover {
   background-color: #c01e34;
+  transform: translateY(-2px);
 }
 
-.profile-info {
-  margin-top: 40px;
-  padding: 25px 30px;
-  background-color: #fff5e6;
-  border-radius: 20px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
-  text-align: left;
-  max-width: 500px;
-  margin-left: auto;
-  margin-right: auto;
-  font-size: 1rem;
-  color: #5c4033;
+
+.change-profile-wrapper {
+  margin: 30px 0 20px;
+  text-align: center;
 }
 
-.profile-info h2 {
-  margin-bottom: 20px;
-  font-size: 1.6rem;
-  color: #c01e34;
-  border-bottom: 2px solid #e3b77a;
-  padding-bottom: 8px;
-}
-
-.profile-info p {
-  margin: 10px 0;
-  line-height: 1.5;
-}
-
-.profile-info a {
+.change-profile-info {
   display: inline-block;
-  margin-top: 20px;
-  padding: 10px 18px;
-  background-color: #c01e34;
+  background-color: #333;
   color: white;
-  border-radius: 25px;
+  padding: 12px 25px;
+  border-radius: 30px;
   text-decoration: none;
   font-weight: bold;
-  transition: background-color 0.3s ease;
+  font-size: 1rem;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
 }
 
-.profile-info a:hover {
-  background-color: #a84300;
+.change-profile-info:hover {
+  background-color: #555;
+  transform: translateY(-2px);
 }

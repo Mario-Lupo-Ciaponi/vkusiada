@@ -1,4 +1,5 @@
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.contrib.auth.views import LoginView
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render, redirect
 from django.core.mail import send_mail
@@ -9,7 +10,8 @@ from django.contrib.auth import get_user_model, login
 from .forms import RegistrationForm, ContactForm, ProfileEditForm
 from .models import Profile
 
-User = get_user_model()
+
+UserModel = get_user_model()
 
 
 class RegisterUserView(CreateView):
@@ -17,6 +19,7 @@ class RegisterUserView(CreateView):
     template_name = "registration/register-form.html"
     success_url = reverse_lazy("login")
 
+    # Note: There is a signal that creates a profile.
 
 
 class ContactView(FormView):
@@ -39,7 +42,7 @@ class ContactView(FormView):
 
 
 class AccountDetails(DetailView):
-    model = User
+    model = UserModel
     context_object_name = "user"
     template_name = "accounts/account-details.html"
 
