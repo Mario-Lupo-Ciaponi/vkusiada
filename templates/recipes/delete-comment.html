@@ -3,23 +3,22 @@
 {% load static %}
 
 {% block styles %}
-  <link rel="stylesheet" href="{% static "css/recipes/edit-comment.css" %}">
+  <link rel="stylesheet" href="{% static "css/recipes/delete-comment.css" %}">
 {% endblock %}
 
 {% block title %}
-	Edit Comment
+	Delete Comment
 {% endblock %}
 
 {% block content %}
 	<main>
     <header>
-      <h1>Edit Your Comment</h1>
+      <h1>Delete the Comment</h1>
     </header>
 
     <form method="post">
       {% csrf_token %}
-      {{ form }}
-      <button>Edit</button>
+      <button>Delete</button>
     </form>
   </main>
 {% endblock %}

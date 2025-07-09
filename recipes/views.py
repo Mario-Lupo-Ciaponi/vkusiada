@@ -14,7 +14,7 @@ from django.contrib import messages
 from ingredients.models import UserIngredient
 from .models import Recipe, Comment, UserRecipe
 from .forms import AddCommentForm, CreateRecipeForm, EditRecipeForm, RecipeIngredientFormSet, EditCommentForm
-from .mixins import SlugUrlKwargMixin, FormValidMixin, RecipeListViewMixin, TestFuncMixin
+from .mixins import SlugUrlKwargMixin, FormValidMixin, RecipeListViewMixin, TestFuncMixin, TestFuncCommentMixin
 
 from common.forms import  SearchForm
 
@@ -194,7 +194,7 @@ class CreateRecipeView(LoginRequiredMixin, FormValidMixin, CreateView):
         return super().form_valid(form)
 
 
-class EditRecipeView(FormValidMixin, TestFuncMixin, UserPassesTestMixin, UpdateView):
+class EditRecipeView(LoginRequiredMixin, FormValidMixin, TestFuncMixin, UserPassesTestMixin, UpdateView):
     model = Recipe
     form_class = EditRecipeForm
     template_name = "recipes/edit-recipe.html"
@@ -227,16 +227,29 @@ class EditRecipeView(FormValidMixin, TestFuncMixin, UserPassesTestMixin, UpdateV
         return data
 
 
-class DeleteRecipeView(SlugUrlKwargMixin, TestFuncMixin, UserPassesTestMixin, DeleteView):
+class DeleteRecipeView(LoginRequiredMixin, SlugUrlKwargMixin, TestFuncMixin, UserPassesTestMixin, DeleteView):
     model = Recipe
     template_name = "recipes/delete-recipe.html"
     success_url = reverse_lazy("index")
 
 
-class EditCommentView(UpdateView):
+class EditCommentView(LoginRequiredMixin, TestFuncCommentMixin, UserPassesTestMixin, UpdateView):
     model = Comment
     template_name = "recipes/edit-comment.html"
     form_class = EditCommentForm
+
+    def get_success_url(self):
+        return reverse(
+            "recipe_details",
+            kwargs={
+                "recipe_slug": self.object.recipe.slug,
+            }
+        )
+
+
+class DeleteCommentView(LoginRequiredMixin, TestFuncCommentMixin, UserPassesTestMixin, DeleteView):
+    model = Comment
+    template_name = "recipes/delete-recipe.html"
 
     def get_success_url(self):
         return reverse(

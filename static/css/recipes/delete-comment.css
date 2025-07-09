@@ -1,0 +1,38 @@
+main {
+  max-width: 500px;
+  margin: 80px auto;
+  padding: 40px;
+  background-color: #fff0f0;
+  border: 2px solid #f5c2c7;
+  border-radius: 16px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+  font-family: "Segoe UI", sans-serif;
+  color: #661b1b;
+  text-align: center;
+}
+
+main header h1 {
+  font-size: 1.8rem;
+  margin-bottom: 30px;
+  color: #c82333;
+}
+
+main form {
+  margin-top: 20px;
+}
+
+main button {
+  padding: 12px 28px;
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+main button:hover {
+  background-color: #c82333;
+}

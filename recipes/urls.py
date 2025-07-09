@@ -14,6 +14,7 @@ urlpatterns = [
     ])),
     path("category/<str:category>/", views.FilteredCategoryView.as_view(), name="category_recipes"),
     path("comment/<int:pk>/", include([
-        path("edit/", views.EditCommentView.as_view(), name="edit-comment")
+        path("edit/", views.EditCommentView.as_view(), name="edit-comment"),
+        path("delete/", views.DeleteCommentView.as_view(), name="delete-comment"),
     ])),
 ]

@@ -36,3 +36,10 @@ class TestFuncMixin:
                 self.request.user.pk == obj.author.pk or
                 self.request.user.is_superuser or
                 self.request.user.groups.filter(name="Recipe Editor").exists())
+
+
+class TestFuncCommentMixin:
+    def test_func(self):
+        return (
+                self.request.user.pk == self.get_object().author.pk or
+                self.request.user.is_superuser)

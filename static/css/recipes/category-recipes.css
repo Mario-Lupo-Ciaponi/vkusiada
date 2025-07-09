@@ -2,6 +2,7 @@
 @import "../common/search-bar.css";
 @import "../common/pagination.css";
 
+/* Header styling, like the other headers */
 .category-header {
   text-align: center;
   font-family: "Bitter", serif;
