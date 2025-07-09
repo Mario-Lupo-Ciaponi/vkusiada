@@ -93,3 +93,37 @@
   font-size: 1.2rem;
   margin-right: 5px;
 }
+
+.edit-recipe-btn,
+.delete-recipe-btn {
+  display: inline-block;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: bold;
+  text-decoration: none;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  margin-right: 12px;
+  margin-top: 20px;
+}
+
+.edit-recipe-btn {
+  background-color: #007bff;
+  color: white;
+}
+
+.edit-recipe-btn:hover {
+  background-color: #c01e34;
+  transform: translateY(-2px);
+}
+
+.delete-recipe-btn {
+  background-color: #dc3545;
+  color: white;
+}
+
+.delete-recipe-btn:hover {
+  background-color: #bd2130;
+  transform: translateY(-2px);
+}
+
