@@ -4,7 +4,7 @@ from django.forms.models import inlineformset_factory
 from .models import Recipe, Comment, RecipeIngredient
 
 
-class CommentForm(forms.ModelForm):
+class BaseCommentForm(forms.ModelForm):
     class Meta:
         model = Comment
         fields = ["content",]
@@ -13,10 +13,24 @@ class CommentForm(forms.ModelForm):
             "content": "",
         }
 
+
+class AddCommentForm(BaseCommentForm):
+    class Meta(BaseCommentForm.Meta):
         widgets = {
             "content": forms.widgets.TextInput(
                 attrs={
-                    "placeholder": "Add a comment..."
+                    "placeholder": "Add a comment...",
+                }
+            )
+        }
+
+
+class EditCommentForm(BaseCommentForm):
+    class Meta(BaseCommentForm.Meta):
+        widgets = {
+            "content": forms.widgets.TextInput(
+                attrs={
+                    "placeholder": "Edit the comment",
                 }
             )
         }

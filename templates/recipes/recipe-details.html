@@ -50,8 +50,8 @@
       <p class="recipe-author">Recipe created by {{ recipe.author.username }}</p>
 
       {% if request.user == recipe.author or request.user.is_staff or request.user|has_group:"Recipe Editor" %}
-        <a href="{% url "edit-recipe" recipe.slug %}">Edit</a>
-        <a href="{% url "delete-recipe" recipe.slug %}">Delete</a>
+        <a class="edit-recipe-btn" href="{% url "edit-recipe" recipe.slug %}">Edit</a>
+        <a class="delete-recipe-btn" href="{% url "delete-recipe" recipe.slug %}">Delete</a>
       {% endif %}
     </div>
 

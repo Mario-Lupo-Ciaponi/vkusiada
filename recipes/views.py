@@ -12,8 +12,8 @@ from django.views.generic.edit import FormMixin
 from django.contrib import messages
 
 from ingredients.models import UserIngredient
-from .models import Recipe, UserRecipe
-from .forms import CommentForm, CreateRecipeForm, EditRecipeForm, RecipeIngredientFormSet
+from .models import Recipe, Comment, UserRecipe
+from .forms import AddCommentForm, CreateRecipeForm, EditRecipeForm, RecipeIngredientFormSet, EditCommentForm
 from .mixins import SlugUrlKwargMixin, FormValidMixin, RecipeListViewMixin, TestFuncMixin
 
 from common.forms import  SearchForm
@@ -22,7 +22,7 @@ from common.forms import  SearchForm
 class RecipeDetailView(SlugUrlKwargMixin, DetailView, FormMixin):
     model = Recipe
     template_name = "recipes/recipe-details.html"
-    form_class = CommentForm
+    form_class = AddCommentForm
 
     def get_context_data(self, **kwargs):
         kwargs.update({
@@ -231,6 +231,20 @@ class DeleteRecipeView(SlugUrlKwargMixin, TestFuncMixin, UserPassesTestMixin, De
     model = Recipe
     template_name = "recipes/delete-recipe.html"
     success_url = reverse_lazy("index")
+
+
+class EditCommentView(UpdateView):
+    model = Comment
+    template_name = "recipes/edit-comment.html"
+    form_class = EditCommentForm
+
+    def get_success_url(self):
+        return reverse(
+            "recipe_details",
+            kwargs={
+                "recipe_slug": self.object.recipe.slug,
+            }
+        )
 
 
 @login_required

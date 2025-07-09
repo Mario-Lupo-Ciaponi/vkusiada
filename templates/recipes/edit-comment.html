@@ -1,0 +1,25 @@
+{% extends "common/base.html" %}
+
+{% load static %}
+
+{% block styles %}
+
+{% endblock %}
+
+{% block title %}
+	Edit Comment
+{% endblock %}
+
+{% block content %}
+	<header>
+    Edit comment
+  </header>
+
+  <form method="post">
+    {% csrf_token %}
+
+    {{ form }}
+
+    <button>Edit</button>
+  </form>
+{% endblock %}

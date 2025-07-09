@@ -13,4 +13,7 @@ urlpatterns = [
         path("save/", views.save_recipe, name="save-recipe"),
     ])),
     path("category/<str:category>/", views.FilteredCategoryView.as_view(), name="category_recipes"),
+    path("comment/<int:pk>/", include([
+        path("edit/", views.EditCommentView.as_view(), name="edit-comment")
+    ])),
 ]

@@ -19,6 +19,13 @@
           </div>
 
           <p class="comment-content">{{ comment.content }}</p>
+
+          {% if request.user.pk == comment.user.pk or request.user.is_superuser %}
+          	<div class="comment-options">
+              <a class="edit-btn" href="{% url "edit-comment" comment.pk %}">Edit</a>
+              <a class="delete-btn" href="#">Delete</a>
+            </div>
+          {% endif %}
         </div>
       </article>
     {% empty %}
