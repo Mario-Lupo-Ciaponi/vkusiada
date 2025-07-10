@@ -19,6 +19,9 @@ from .mixins import SlugUrlKwargMixin, FormValidMixin, RecipeListViewMixin, Test
 from common.forms import  SearchForm
 
 
+UserModel = get_user_model()
+
+
 class RecipeDetailView(SlugUrlKwargMixin, DetailView, FormMixin):
     model = Recipe
     template_name = "recipes/recipe-details.html"
@@ -158,6 +161,36 @@ class SearchRecipeView(ListView):
     def get_queryset(self):
         search_value = self.request.GET.get("query")
         recipes = Recipe.objects.order_by("name")
+
+        if search_value:
+            recipes = recipes.filter(name__icontains=search_value)
+
+        return recipes
+
+
+class RecipesCreatedByUserView(ListView):
+    model = Recipe
+    template_name = "recipes/recipes-created.html"
+    paginate_by = 5
+    query_param = "query"
+    form_class = SearchForm
+    context_object_name = "recipes"
+
+    def get_context_data(
+            self, *, object_list=None, **kwargs
+    ):
+        kwargs.update({
+            "search_form": self.form_class(),
+            "query": self.request.GET.get(self.query_param, ""),
+            "author": get_object_or_404(UserModel, pk=self.kwargs.get("user_pk")),
+        })
+        return super().get_context_data(object_list=object_list, **kwargs)
+
+    def get_queryset(self):
+        user_pk = self.kwargs.get("user_pk")
+
+        search_value = self.request.GET.get("query")
+        recipes = Recipe.objects.filter(author__pk=user_pk).order_by("name")
 
         if search_value:
             recipes = recipes.filter(name__icontains=search_value)

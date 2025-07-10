@@ -47,7 +47,9 @@
       <h3>📖 Instructions:</h3>
       <p class="instructions">{{ recipe.instructions }}</p>
 
-      <p class="recipe-author">Recipe created by {{ recipe.author.username }}</p>
+      <p class="recipe-author">
+        Recipe created by <a href="{% url "account-details" recipe.author.pk %}">{{ recipe.author.username }}</a>
+      </p>
 
       {% if request.user == recipe.author or request.user.is_staff or request.user|has_group:"Recipe Editor" %}
         <a class="edit-recipe-btn" href="{% url "edit-recipe" recipe.slug %}">Edit</a>

@@ -17,4 +17,5 @@ urlpatterns = [
         path("edit/", views.EditCommentView.as_view(), name="edit-comment"),
         path("delete/", views.DeleteCommentView.as_view(), name="delete-comment"),
     ])),
+    path("user-<int:user_pk>/", views.RecipesCreatedByUserView.as_view(), name="recipes-created"),
 ]

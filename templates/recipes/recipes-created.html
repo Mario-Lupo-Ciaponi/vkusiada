@@ -7,25 +7,23 @@
 {% endblock %}
 
 {% block title %}
-	Suggested recipes
+  {{ author.username }} recipes
 {% endblock %}
 
 {% block content %}
-  {% if recipes %}
+  <main>
+    <header>
+      <h1>Recipes created by {{ author.username }}</h1>
+    </header>
+
     {% include "common/search-bar.html" %}
 
     {% include "common/messages.html" %}
-
-  	<h1>Suggested recipes for {{ request.user.username }}</h1>
 
     {% for recipe in recipes %}
       {% include "recipes/recipe-card.html" with recipe=recipe %}
     {% endfor %}
 
     {% include "common/paginator.html" %}
-  {% else %}
-    <h1>No recipe suggestions...</h1>
-
-    <p>Try to add some <a href="{% url "add-ingredient" %}">ingredients</a> then you will see all teh delicious recipes</p>
-  {% endif %}
+  </main>
 {% endblock %}

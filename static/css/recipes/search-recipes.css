@@ -2,6 +2,10 @@
 @import "../common/pagination.css";
 @import "./recipe-cards.css";
 
+/*
+  It will be used by multiple templates, because they all have the same structure and style.
+*/
+
 h1 {
   text-align: center;
   font-family: "Bitter", serif;
@@ -10,3 +14,25 @@ h1 {
   font-size: 3em;
   color: #e8263f;
 }
+
+p {
+  text-align: center;
+  font-family: "Segoe UI", sans-serif;
+  font-size: 1.1rem;
+  color: #555;
+  margin-top: 20px;
+  line-height: 1.6;
+}
+
+p a {
+  color: #e8263f;
+  font-weight: bold;
+  text-decoration: none;
+  transition: color 0.3s ease, text-decoration 0.3s ease;
+}
+
+p a:hover {
+  color: #c01e34;
+  text-decoration: underline;
+}
+

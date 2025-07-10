@@ -1,4 +1,5 @@
 @import "comment-section.css";
+@import url('https://fonts.googleapis.com/css2?family=Libertinus+Mono&display=swap');
 
 .recipe-details-card {
   max-width: 900px;
@@ -125,5 +126,22 @@
 .delete-recipe-btn:hover {
   background-color: #bd2130;
   transform: translateY(-2px);
+}
+
+.recipe-author {
+  margin-top: 30px;
+}
+
+.recipe-author a {
+  color: black;
+  text-decoration: none;
+  font-family: "Libertinus Mono", monospace;
+  font-weight: 400;
+  font-style: normal;
+  transition: color 0.8s;
+}
+
+.recipe-author a:hover{
+  color: #bd2130;
 }
 

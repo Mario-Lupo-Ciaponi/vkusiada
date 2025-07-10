@@ -34,7 +34,7 @@
         </div>
       {% endif %}
 
-      <a href="#">Recipes created</a>
+      <a href="{% url "recipes-created" user.pk %}">Recipes created</a>
 
       {% if request.user.pk == user.pk %}
         	<a href="{% url "saved-recipes" %}">Saved recipes</a>

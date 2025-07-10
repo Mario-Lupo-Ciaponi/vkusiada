@@ -10,7 +10,9 @@
 
     {% for comment in recipe.comments.all %}
       <article id="{{ comment.pk }}">
-        <img src="{% static "images/icon/user-icon.png" %}" alt="user-icon">
+        <a href="{% url "account-details" comment.author.pk %}">
+          <img src="{% static "images/icon/user-icon.png" %}" alt="user-icon">
+        </a>
 
         <div class="content-text">
           <div class="content-header">
