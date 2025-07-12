@@ -50,34 +50,6 @@ class RecipeDetailView(SlugUrlKwargMixin, DetailView, FormMixin):
             return self.form_valid(form)
 
 
-class SuggestedRecipesView(LoginRequiredMixin, RecipeListViewMixin, ListView):
-    model = Recipe
-    template_name = "recipes/suggested-recipes.html"
-
-    def get_context_data(
-            self, *, object_list=None, **kwargs
-    ):
-        kwargs.update({
-            "search_form": self.form_class(),
-            "query": self.request.GET.get(self.query_param, "")
-        })
-
-        return super().get_context_data(object_list=object_list, **kwargs)
-
-    def get_queryset(self):
-        user = self.request.user
-
-        user_ingredient_ids = (UserIngredient.objects
-                               .filter(user=user)
-                               .values_list("ingredient__id", flat=True))
-
-        recipe = (Recipe.objects
-                  .filter(recipeingredient__ingredient__in=user_ingredient_ids)
-                  .distinct())
-
-        return recipe
-
-
 class FilteredCategoryView(RecipeListViewMixin, ListView):
     model = Recipe
     template_name = "recipes/category-recipes.html"

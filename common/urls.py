@@ -3,6 +3,6 @@ from common import views
 
 
 urlpatterns = [
-    path("", views.index_view, name="index"),
+    path("", views.IndexView.as_view(), name="index"),
     path("about-us/", views.about_us_view, name="about-us")
 ]

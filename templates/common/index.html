@@ -4,6 +4,7 @@
 
 {% block styles %}
   <link rel="stylesheet" href="{% static 'css/common/index.css' %}">
+  <link rel="stylesheet" href="{% static "css/recipes/search-recipes.css" %}">
 {% endblock %}
 
 {% block title %}
@@ -21,9 +22,9 @@
         <img src="{% static 'images/icon/salad-icon.svg' %}" alt="salad icon">
         <span>Salads</span>
       </a>
-      <a href="{% url "category_recipes" category="Soup" %}" class="category-box">
+      <a href="{% url "category_recipes" category="Soups" %}" class="category-box">
         <img src="{% static 'images/icon/soup-icon.png' %}" alt="soup icon">
-        <span>Soup</span>
+        <span>Soups</span>
       </a>
       <a href="{% url "category_recipes" category="Entrees" %}" class="category-box">
         <img src="{% static 'images/icon/cloche-icon.png' %}" alt="cloche icon">
@@ -38,5 +39,34 @@
         <span>Vegan</span>
       </a>
     </article>
+
+
+    <section>
+      {% if request.user.is_authenticated %}
+        {% if recipes %}
+          {% include "common/search-bar.html" %}
+
+          {% include "common/messages.html" %}
+
+          <h1>Suggested recipes for you</h1>
+
+          {% for recipe in recipes %}
+            {% include "recipes/recipe-card.html" with recipe=recipe %}
+          {% endfor %}
+
+          {% include "common/paginator.html" %}
+        {% else %}
+          <h1>No recipe suggestions...</h1>
+
+          <p>
+            Try to add some <a href="{% url "add-ingredient" %}">ingredients</a> then you will see all teh delicious recipes
+          </p>
+        {% endif %}
+      {% else %}
+        <h1>
+          Hey! If you want suggestions based on your ingredients, you need to <a href="{% url "login" %}">Login</a>!
+        </h1>
+      {% endif %}
+    </section>
   </main>
 {% endblock %}
