@@ -50,9 +50,11 @@
 
           <h1>Suggested recipes for you</h1>
 
-          {% for recipe in recipes %}
-            {% include "recipes/recipe-card.html" with recipe=recipe %}
-          {% endfor %}
+          <div class="recipe-grid">
+            {% for recipe in recipes %}
+              {% include "recipes/recipe-card.html" with recipe=recipe %}
+            {% endfor %}
+          </div>
 
           {% include "common/paginator.html" %}
         {% else %}
@@ -63,7 +65,7 @@
           </p>
         {% endif %}
       {% else %}
-        <h1>
+        <h1 class="not-authenticated-h1">
           Hey! If you want suggestions based on your ingredients, you need to <a href="{% url "login" %}">Login</a>!
         </h1>
       {% endif %}

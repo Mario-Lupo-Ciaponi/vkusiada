@@ -6,8 +6,7 @@ from django.views.generic import TemplateView, ListView
 
 from ingredients.models import UserIngredient
 from recipes.mixins import RecipeListViewMixin
-from recipes.models import Recipe
-
+from recipes.models import Recipe, UserRecipe
 
 UserModel = get_user_model()
 
@@ -27,6 +26,7 @@ class IndexView(RecipeListViewMixin, ListView):
 
     def get_queryset(self):
         user = self.request.user
+        search_query = self.request.GET.get("query")
 
         if not user.is_authenticated:
             return UserModel.objects.none()
@@ -35,11 +35,19 @@ class IndexView(RecipeListViewMixin, ListView):
                                .filter(user=user)
                                .values_list("ingredient__id", flat=True))
 
-        recipe = (Recipe.objects
+        recipes = (Recipe.objects
                   .filter(recipeingredient__ingredient__in=user_ingredient_ids)
                   .distinct())
 
-        return recipe
+        user_recipes = UserRecipe.objects.filter(user=user)
+        recipes_names = [r.recipe.name for r in user_recipes]
+
+        recipes = recipes.exclude(name__in=recipes_names)
+
+        if search_query:
+            recipes = recipes.filter(name__icontains=search_query)
+
+        return recipes
 
 def index_view(request: HttpRequest) -> HttpResponse:
     return render(request, "common/index.html", context={"current_page": "index"})

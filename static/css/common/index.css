@@ -39,3 +39,35 @@
 .category-box span {
   text-align: center;
 }
+
+.not-authenticated-h1 {
+  text-align: center;
+  font-family: "Bitter", serif;
+  font-size: 2em;
+  color: #e8263f;
+  margin: 40px 0;
+  line-height: 1.5;
+}
+
+.not-authenticated-h1 a {
+  color: #e8263f;
+  font-weight: bold;
+  text-decoration: none;
+  transition: color 0.3s ease, text-decoration 0.3s ease;
+}
+
+.not-authenticated-h1 a:hover {
+  color: #c01e34;
+  text-decoration: underline;
+}
+
+.recipe-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+  padding: 2rem;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+

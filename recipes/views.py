@@ -131,11 +131,19 @@ class SearchRecipeView(ListView):
         return super().get_context_data(object_list=object_list, **kwargs)
 
     def get_queryset(self):
+        user = self.request.user
+
         search_value = self.request.GET.get("query")
         recipes = Recipe.objects.order_by("name")
 
         if search_value:
             recipes = recipes.filter(name__icontains=search_value)
+
+        if user.is_authenticated:
+            user_recipes = UserRecipe.objects.filter(user=user)
+            recipes_names = [r.recipe.name for r in user_recipes]
+
+            recipes = recipes.exclude(name__in=recipes_names)
 
         return recipes
 
