@@ -24,7 +24,7 @@ class FormValidMixin:
 class RecipeListViewMixin:
     context_object_name = "recipes"
     query_param = "query"
-    paginate_by = 5
+    paginate_by = 9
     form_class = SearchForm
 
 

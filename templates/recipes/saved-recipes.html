@@ -17,9 +17,7 @@
     {% include "common/messages.html" %}
 
     {% if recipes %}
-      {% for user_recipe in recipes %}
-    	  {% include "recipes/recipe-card-alternative.html" %}
-      {% endfor %}
+      {% include "recipes/recipe-grid.html" %}
 
       {% include "common/paginator.html" %}
     {% else %}

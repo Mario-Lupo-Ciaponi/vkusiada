@@ -113,13 +113,9 @@ class SavedRecipesView(LoginRequiredMixin, ListView):
         return users_recipes
 
 
-class SearchRecipeView(ListView):
+class SearchRecipeView(RecipeListViewMixin, ListView):
     model = Recipe
-    paginate_by = 5
     template_name = "recipes/search-recipe.html"
-    query_param = "query"
-    form_class = SearchForm
-    context_object_name = "recipes"
 
     def get_context_data(
         self, *, object_list=None, **kwargs

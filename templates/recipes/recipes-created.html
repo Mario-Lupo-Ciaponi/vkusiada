@@ -20,9 +20,7 @@
 
     {% include "common/messages.html" %}
 
-    {% for recipe in recipes %}
-      {% include "recipes/recipe-card.html" with recipe=recipe %}
-    {% endfor %}
+    {% include "recipes/recipe-grid.html" %}
 
     {% include "common/paginator.html" %}
   </main>

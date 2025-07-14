@@ -1,0 +1,5 @@
+<div class="recipe-grid">
+  {% for recipe in recipes %}
+    {% include "recipes/recipe-card.html" with recipe=recipe %}
+  {% endfor %}
+</div>
