@@ -103,17 +103,21 @@ by leveraging user input, ingredient tracking, and a vibrant recipe-sharing comm
 
 ## Project Structure
 
+```
 vkusiada/
 │
-├── templates/           # Django HTML templates (accounts, recipes, common, etc.)
+├── accounts/            # User authentication and profile management
+├── common/              # Shared utilities and components
+├── ingredients/         # App for managing ingredients
+├── recipes/             # Core app for recipe management
 ├── static/              # CSS files, images, and static assets
-├── caller.py            # Backend logic/sample data for recipes
-├── manage.py            # Django management script
-├── requirements.txt     # Python dependencies
-├── README.md            # This file
+├── templates/           # Django HTML templates (accounts, recipes, common, etc.)
+├── vkusiada/            # Main Django project settings and configuration
 ├── LICENSE              # MIT License
-└── ...                  # Other Django project files
-
+├── manage.py            # Django management script
+├── README.md            # This file
+└── requirements.txt     # Python dependencies
+```
 ---
 
 ## Contributing
