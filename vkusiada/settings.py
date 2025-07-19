@@ -37,6 +37,7 @@ PROJECT_APPS = [
     'recipes',
     'ingredients',
     'accounts',
+    'vkusiada_api',
 ]
 
 INSTALLED_APPS = [
@@ -47,7 +48,22 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django_countries',
+    'rest_framework',
+    'drf_spectacular',
 ] + PROJECT_APPS
+
+REST_FRAMEWORK = {
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+    'DEFAULT_RENDERER_CLASSES': (
+        'rest_framework.renderers.JSONRenderer',
+    )
+}
+
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'Vkusiada API',
+    'DESCRIPTION': 'The official Vkusiada API',
+    'VERSION': '1.0.0',
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

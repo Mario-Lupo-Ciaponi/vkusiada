@@ -8,18 +8,17 @@ by leveraging user input, ingredient tracking, and a vibrant recipe-sharing comm
 
 ## Table of Contents
 
-- Features
-- Demo
-- Screenshots
-- Getting Started
-  - Prerequisites
-  - Installation
-  - Running Locally
-- Usage
-- Project Structure
-- Contributing
-- License
-- Contact
+- [Features](https://github.com/Mario-Lupo-Ciaponi/Vkusiada?tab=readme-ov-file#features)
+- [Demo](https://github.com/Mario-Lupo-Ciaponi/Vkusiada?tab=readme-ov-file#demo-and-screenshots)
+- [Screenshots](https://github.com/Mario-Lupo-Ciaponi/Vkusiada?tab=readme-ov-file#demo-and-screenshots)
+- [Getting Started](https://github.com/Mario-Lupo-Ciaponi/Vkusiada?tab=readme-ov-file#getting-started)
+  - [Prerequisites](https://github.com/Mario-Lupo-Ciaponi/Vkusiada?tab=readme-ov-file#prerequisites)
+  - [Installation](https://github.com/Mario-Lupo-Ciaponi/Vkusiada?tab=readme-ov-file#installation)
+- [Usage](https://github.com/Mario-Lupo-Ciaponi/Vkusiada?tab=readme-ov-file#usage)
+- [Project Structure](https://github.com/Mario-Lupo-Ciaponi/Vkusiada?tab=readme-ov-file#project-structure)
+- [Contributing](https://github.com/Mario-Lupo-Ciaponi/Vkusiada?tab=readme-ov-file#contributing)
+- [License](https://github.com/Mario-Lupo-Ciaponi/Vkusiada?tab=readme-ov-file#license)
+- [Contact](https://github.com/Mario-Lupo-Ciaponi/Vkusiada?tab=readme-ov-file#contact)
 
 ---
 
