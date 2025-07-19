@@ -14,10 +14,11 @@ class RecipeAdmin(admin.ModelAdmin):
 
 @admin.register(RecipeIngredient)
 class RecipeIngredientAdmin(admin.ModelAdmin):
-    ...
+    search_fields = ["recipe__name", "ingredient__name",]
+    ordering = ["recipe__name", "ingredient__name",]
 
 
 @admin.register(Comment)
 class CommentAdmin(admin.ModelAdmin):
-    ...
+    list_display = ["recipe", "author", "added_on"]
 

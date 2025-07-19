@@ -19,7 +19,8 @@ class IndexView(RecipeListViewMixin, ListView):
     ):
         kwargs.update({
             "search_form": self.form_class(),
-            "query": self.request.GET.get(self.query_param, "")
+            "query": self.request.GET.get(self.query_param, ""),
+            "current_page": "index",
         })
 
         return super().get_context_data(object_list=object_list, **kwargs)
