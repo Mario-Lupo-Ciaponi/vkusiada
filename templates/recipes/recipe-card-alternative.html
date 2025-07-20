@@ -1,14 +1,14 @@
 <article class="recipe-card-alt">
-  <a href="{% url "recipe_details" user_recipe.recipe.slug %}">
+  <a href="{% url "recipe_details" recipe.slug %}">
     <div class="recipe-thumb">
-      <img src="{{ user_recipe.recipe.image_url }}" alt="{{ user_recipe.recipe.name }}">
+      <img src="{{ recipe.image_url }}" alt="{{ recipe.name }}">
     </div>
     <div class="recipe-body">
-      <h2 class="recipe-name">{{ user_recipe.recipe.name }}</h2>
-      <p class="recipe-meta"><strong>Cuisine</strong>: {{ user_recipe.recipe.cuisine }}</p>
-      <p class="recipe-meta"><strong>Category</strong>: {{ user_recipe.recipe.category }}</p>
+      <h2 class="recipe-name">{{ recipe.name }}</h2>
+      <p class="recipe-meta"><strong>Cuisine</strong>: {{ recipe.cuisine }}</p>
+      <p class="recipe-meta"><strong>Category</strong>: {{ recipe.category }}</p>
     </div>
   </a>
 
-  <a class="remove-recipe-btn" href="{% url "remove-saved-recipe" user_recipe.recipe.slug %}">Remove</a>
+  <a class="remove-recipe-btn" href="{% url "remove-saved-recipe" recipe.slug %}">Remove</a>
 </article>

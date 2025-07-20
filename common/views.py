@@ -37,7 +37,7 @@ class IndexView(RecipeListViewMixin, ListView):
                                .values_list("ingredient__id", flat=True))
 
         recipes = (Recipe.objects
-                  .filter(recipeingredient__ingredient__in=user_ingredient_ids)
+                  .filter(recipe_ingredients__ingredient__in=user_ingredient_ids)
                   .distinct())
 
         user_recipes = UserRecipe.objects.filter(user=user)

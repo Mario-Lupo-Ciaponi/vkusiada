@@ -1,5 +1,5 @@
 <article class="recipe-card">
-  <a href="{% url "recipe_details" recipe_slug=recipe.slug %}">
+  <a href="{% url "recipe_details" recipe.slug %}">
     <img src="{{ recipe.image_url }}" alt="{{ recipe.name }}" class="recipe-img">
     <div class="recipe-info">
       <h2 class="recipe-name">{{ recipe.name }}</h2>
