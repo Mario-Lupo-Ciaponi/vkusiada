@@ -1,7 +1,7 @@
 from django.contrib.auth import get_user_model
 from django.db import models
 
-from .choices import CategoryChoices
+from common.choices import CategoryChoices
 
 from ingredients.models import Ingredient
 from accounts.models import VkusiadaUser

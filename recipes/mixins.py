@@ -1,3 +1,4 @@
+from django.http import HttpResponse
 from django.shortcuts import redirect
 
 from common.forms import SearchForm
@@ -8,7 +9,7 @@ class SlugUrlKwargMixin:
 
 
 class FormValidMixin:
-    def form_valid(self, form):
+    def form_valid(self, form) -> HttpResponse:
         context = self.get_context_data()
         formset = context["formset"]
 
@@ -21,15 +22,8 @@ class FormValidMixin:
         return self.render_to_response(self.get_context_data(form=form))
 
 
-class RecipeListViewMixin:
-    context_object_name = "recipes"
-    query_param = "query"
-    paginate_by = 9
-    form_class = SearchForm
-
-
 class TestFuncMixin:
-    def test_func(self):
+    def test_func(self) -> bool:
         obj = self.get_object()
 
         return (
@@ -39,7 +33,7 @@ class TestFuncMixin:
 
 
 class TestFuncCommentMixin:
-    def test_func(self):
+    def test_func(self) -> bool:
         return (
                 self.request.user.pk == self.get_object().author.pk or
                 self.request.user.is_superuser)

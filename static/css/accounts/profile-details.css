@@ -62,26 +62,29 @@ section a:hover {
   transform: translateY(-2px);
 }
 
-
-.change-profile-wrapper {
-  margin: 30px 0 20px;
-  text-align: center;
+.username-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 12px;
 }
 
-.change-profile-info {
-  display: inline-block;
-  background-color: #333;
-  color: white;
-  padding: 12px 25px;
-  border-radius: 30px;
-  text-decoration: none;
-  font-weight: bold;
-  font-size: 1rem;
-  transition: background-color 0.3s ease, transform 0.2s ease;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+.username {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #e8263f;
+  margin: 0;
 }
 
-.change-profile-info:hover {
-  background-color: #555;
-  transform: translateY(-2px);
+.edit-icon {
+  width: 26px;
+  height: 26px;
+  cursor: pointer;
+  transition: transform 0.2s ease, filter 0.2s ease;
+}
+
+.edit-icon:hover {
+  transform: scale(1.2);
+  filter: brightness(1.2);
 }

@@ -1,36 +1,39 @@
+from typing import Dict, Any, Union
+
 from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db.models import QuerySet
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render
 from django.views.generic import TemplateView, ListView
 
+from recipes.views import FilteredCategoryView
+from .mixins import RecipeListViewMixin, CategoryFilteringMixin
 from ingredients.models import UserIngredient
-from recipes.mixins import RecipeListViewMixin
 from recipes.models import Recipe, UserRecipe
+
 
 UserModel = get_user_model()
 
-class IndexView(RecipeListViewMixin, ListView):
+
+class IndexView(CategoryFilteringMixin, RecipeListViewMixin, ListView):
     model = Recipe
     template_name = "common/index.html"
 
-    def get_context_data(
-            self, *, object_list=None, **kwargs
-    ):
+    def get_context_data(self, *, object_list=None, **kwargs) -> Dict[str, Any]:
         kwargs.update({
             "search_form": self.form_class(),
-            "query": self.request.GET.get(self.query_param, ""),
             "current_page": "index",
         })
 
         return super().get_context_data(object_list=object_list, **kwargs)
 
-    def get_queryset(self):
+    def get_queryset(self) -> QuerySet[Recipe, Recipe] | QuerySet[Recipe]:
         user = self.request.user
         search_query = self.request.GET.get("query")
 
         if not user.is_authenticated:
-            return UserModel.objects.none()
+            return Recipe.objects.none()
 
         user_ingredient_ids = (UserIngredient.objects
                                .filter(user=user)
@@ -49,9 +52,6 @@ class IndexView(RecipeListViewMixin, ListView):
             recipes = recipes.filter(name__icontains=search_query)
 
         return recipes
-
-def index_view(request: HttpRequest) -> HttpResponse:
-    return render(request, "common/index.html", context={"current_page": "index"})
 
 
 def about_us_view(request: HttpRequest) -> HttpResponse:

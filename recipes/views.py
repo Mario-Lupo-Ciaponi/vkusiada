@@ -1,9 +1,11 @@
+from typing import Dict, Any
+
 import django.db.utils
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from django.db.models import Q
-from django.http import HttpRequest, HttpResponse
+from django.db.models import Q, QuerySet
+from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
 from django.shortcuts import redirect, get_object_or_404
 from django.urls import reverse_lazy, reverse
 from django.utils.timezone import now
@@ -11,10 +13,11 @@ from django.views.generic import DetailView, ListView, CreateView, UpdateView, D
 from django.views.generic.edit import FormMixin
 from django.contrib import messages
 
-from ingredients.models import UserIngredient
+from recipes.models import UserRecipe
 from .models import Recipe, Comment, UserRecipe
 from .forms import AddCommentForm, CreateRecipeForm, EditRecipeForm, RecipeIngredientFormSet, EditCommentForm
-from .mixins import SlugUrlKwargMixin, FormValidMixin, RecipeListViewMixin, TestFuncMixin, TestFuncCommentMixin
+from .mixins import SlugUrlKwargMixin, FormValidMixin,  TestFuncMixin, TestFuncCommentMixin
+from common.mixins import CategoryFilteringMixin, RecipeListViewMixin
 
 from common.forms import  SearchForm
 
@@ -27,17 +30,17 @@ class RecipeDetailView(SlugUrlKwargMixin, DetailView, FormMixin):
     template_name = "recipes/recipe-details.html"
     form_class = AddCommentForm
 
-    def get_context_data(self, **kwargs):
+    def get_context_data(self, **kwargs) -> Dict[str, Any]:
         kwargs.update({
             "form": self.get_form_class()(),
         })
         
         return super().get_context_data(**kwargs)
 
-    def get_success_url(self):
+    def get_success_url(self) -> HttpResponseRedirect:
         return reverse_lazy("recipe_details", kwargs={"recipe_slug": self.kwargs.get(self.slug_url_kwarg)})
 
-    def post(self, request, *args, **kwargs):
+    def post(self, request, *args, **kwargs) -> HttpResponse | None:
         self.object = self.get_object()
         form = self.get_form_class()(request.POST)
 
@@ -54,18 +57,17 @@ class FilteredCategoryView(RecipeListViewMixin, ListView):
     model = Recipe
     template_name = "recipes/category-recipes.html"
 
-    def get_context_data(
-            self, *, object_list=None, **kwargs
-    ):
+    def get_context_data(self, *, object_list=None, **kwargs) -> Dict[str, Any]:
         kwargs.update({
             "category": self.kwargs.get("category"),
             "search_form": self.form_class(),
-            "query": self.request.GET.get(self.query_param, "")
+            "query": self.request.GET.get(self.query_param, ""),
+            "show_category_field": False,
         })
 
         return super().get_context_data(object_list=object_list, **kwargs)
 
-    def get_queryset(self):
+    def get_queryset(self) -> QuerySet[Recipe]:
         category = self.kwargs.get("category")
         search_value = self.request.GET.get("query")
 
@@ -82,7 +84,7 @@ class FilteredCategoryView(RecipeListViewMixin, ListView):
         return recipes
 
 
-class SavedRecipesView(LoginRequiredMixin, ListView):
+class SavedRecipesView(LoginRequiredMixin, CategoryFilteringMixin, ListView):
     model = UserRecipe
     template_name = "recipes/saved-recipes.html"
     paginate_by = 5
@@ -90,9 +92,7 @@ class SavedRecipesView(LoginRequiredMixin, ListView):
     form_class = SearchForm
     context_object_name = "recipes"
 
-    def get_context_data(
-        self, *, object_list=None, **kwargs
-    ):
+    def get_context_data(self, *, object_list=None, **kwargs) -> Dict[str, Any]:
         kwargs.update({
             "search_form": self.form_class(),
             "query": self.request.GET.get(self.query_param, "")
@@ -100,29 +100,32 @@ class SavedRecipesView(LoginRequiredMixin, ListView):
 
         return super().get_context_data(object_list=object_list, **kwargs)
 
-    def get_queryset(self):
+    def get_queryset(self) -> QuerySet[UserRecipe]:
         # Get the user once
         user = self.request.user
-        query = self.request.GET.get("query")
+
+        search_value = self.request.GET.get("query")
+        category_value = self.request.GET.get("category")
+
+        search_query = Q(recipe__name__icontains=search_value)
+        category_query = Q(recipe__category=category_value)
 
         users_recipes = UserRecipe.objects.filter(user=user).order_by("recipe__name")
 
-        if query:
-            users_recipes = users_recipes.filter(recipe__name__icontains=query)
+        if search_value or category_value:
+            users_recipes = users_recipes.filter(search_query, category_query)
 
         return users_recipes
 
 
-class SearchRecipeView(RecipeListViewMixin, ListView):
+class SearchRecipeView(CategoryFilteringMixin, RecipeListViewMixin, ListView):
     model = Recipe
     template_name = "recipes/search-recipe.html"
 
-    def get_context_data(
-        self, *, object_list=None, **kwargs
-    ):
+    def get_context_data(self, *, object_list=None, **kwargs) -> Dict[str, Any]:
         kwargs.update({
             "search_form": self.form_class(),
-            "query": self.request.GET.get(self.query_param, "")
+            "query": self.request.GET.get(self.query_param, ""),
         })
         return super().get_context_data(object_list=object_list, **kwargs)
 
@@ -130,10 +133,14 @@ class SearchRecipeView(RecipeListViewMixin, ListView):
         user = self.request.user
 
         search_value = self.request.GET.get("query")
+        category_value = self.request.GET.get("category")
         recipes = Recipe.objects.order_by("name")
 
-        if search_value:
-            recipes = recipes.filter(name__icontains=search_value)
+        search_query = Q(name__icontains=search_value)
+        category_query = Q(category=category_value)
+
+        if search_value or category_value:
+            recipes = recipes.filter(search_query, category_query)
 
         if user.is_authenticated:
             user_recipes = UserRecipe.objects.filter(user=user)
@@ -152,9 +159,7 @@ class RecipesCreatedByUserView(ListView):
     form_class = SearchForm
     context_object_name = "recipes"
 
-    def get_context_data(
-            self, *, object_list=None, **kwargs
-    ):
+    def get_context_data(self, *, object_list=None, **kwargs) -> Dict[str, Any]:
         kwargs.update({
             "search_form": self.form_class(),
             "query": self.request.GET.get(self.query_param, ""),
@@ -162,7 +167,7 @@ class RecipesCreatedByUserView(ListView):
         })
         return super().get_context_data(object_list=object_list, **kwargs)
 
-    def get_queryset(self):
+    def get_queryset(self) -> QuerySet[Recipe]:
         user_pk = self.kwargs.get("user_pk")
 
         search_value = self.request.GET.get("query")
@@ -179,7 +184,7 @@ class CreateRecipeView(LoginRequiredMixin, FormValidMixin, CreateView):
     form_class = CreateRecipeForm
     template_name = "recipes/create-recipe.html"
 
-    def get_success_url(self):
+    def get_success_url(self) -> str:
         return reverse(
             "recipe_details",
             kwargs={
@@ -187,7 +192,7 @@ class CreateRecipeView(LoginRequiredMixin, FormValidMixin, CreateView):
             }
         )
 
-    def get_context_data(self, **kwargs):
+    def get_context_data(self, **kwargs) -> Dict[str, Any]:
         data = super().get_context_data(**kwargs)
         prefix = 'recipeingredient_set'
 
@@ -198,7 +203,7 @@ class CreateRecipeView(LoginRequiredMixin, FormValidMixin, CreateView):
 
         return data
 
-    def form_valid(self, form):
+    def form_valid(self, form) -> HttpResponse:
         form.instance.author = self.request.user
         return super().form_valid(form)
 
@@ -209,7 +214,7 @@ class EditRecipeView(LoginRequiredMixin, FormValidMixin, TestFuncMixin, UserPass
     template_name = "recipes/edit-recipe.html"
     slug_url_kwarg = "recipe_slug"
 
-    def get_success_url(self):
+    def get_success_url(self) -> str:
         return reverse(
             "recipe_details",
             kwargs={
@@ -217,7 +222,7 @@ class EditRecipeView(LoginRequiredMixin, FormValidMixin, TestFuncMixin, UserPass
             }
         )
 
-    def get_context_data(self, **kwargs):
+    def get_context_data(self, **kwargs) -> Dict[str, Any]:
         data = super().get_context_data(**kwargs)
         prefix = 'recipeingredient_set'
 
@@ -247,7 +252,7 @@ class EditCommentView(LoginRequiredMixin, TestFuncCommentMixin, UserPassesTestMi
     template_name = "recipes/edit-comment.html"
     form_class = EditCommentForm
 
-    def get_success_url(self):
+    def get_success_url(self) -> str:
         return reverse(
             "recipe_details",
             kwargs={
@@ -260,7 +265,7 @@ class DeleteCommentView(LoginRequiredMixin, TestFuncCommentMixin, UserPassesTest
     model = Comment
     template_name = "recipes/delete-recipe.html"
 
-    def get_success_url(self):
+    def get_success_url(self) -> str:
         return reverse(
             "recipe_details",
             kwargs={

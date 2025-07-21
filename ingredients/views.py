@@ -1,3 +1,5 @@
+from typing import Dict, Any
+
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import QuerySet, Q
@@ -8,7 +10,7 @@ from django.views.generic import DetailView, ListView
 from django.contrib import messages
 
 from common.forms import SearchForm
-from recipes.models import UserRecipe
+from ingredients.models import Ingredient, UserIngredient
 from .models import Ingredient, UserIngredient
 
 
@@ -28,7 +30,7 @@ class AddIngredientView(ListView):
 
     def get_context_data(
         self, *, object_list=None, **kwargs
-    ):
+    ) -> Dict[str, Any]:
         kwargs.update({
             "search_form": self.form_class(),
             "query": self.request.GET.get(self.query_param, ""),
@@ -36,7 +38,7 @@ class AddIngredientView(ListView):
 
         return super().get_context_data(object_list=object_list, **kwargs)
 
-    def get_queryset(self) -> QuerySet:
+    def get_queryset(self) -> QuerySet[Ingredient, Ingredient] | QuerySet[Ingredient]:
         search_value = self.request.GET.get("query")
         user = self.request.user
 
@@ -65,9 +67,7 @@ class SavedIngredientsView(LoginRequiredMixin, ListView):
     form_class = SearchForm
     context_object_name = "ingredients"
 
-    def get_context_data(
-            self, *, object_list=None, **kwargs
-    ):
+    def get_context_data(self, *, object_list=None, **kwargs) -> Dict[str, Any]:
         kwargs.update({
             "search_form": self.form_class(),
             "query": self.request.GET.get(self.query_param, ""),
@@ -75,7 +75,7 @@ class SavedIngredientsView(LoginRequiredMixin, ListView):
 
         return super().get_context_data(object_list=object_list, **kwargs)
 
-    def get_queryset(self):
+    def get_queryset(self) -> list[UserIngredient]:
         search_value = self.request.GET.get("query")
         user = self.request.user
 

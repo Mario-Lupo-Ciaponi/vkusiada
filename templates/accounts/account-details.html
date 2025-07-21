@@ -13,7 +13,16 @@
 {% block content %}
   <main>
     <header>
-      <h1 class="username">{{ user.username }}</h1>
+      <div class="username-wrapper">
+        <h1 class="username">{{ user.username }}</h1>
+
+        {% if request.user.pk == user.pk or request.user.is_superuser %}
+          <a href="{% url "edit-profile" user.profile.pk %}">
+            <img class="edit-icon" src="{% static "images/icon/pencil-icon.svg" %}" alt="edit">
+          </a>
+        {% endif %}
+      </div>
+
       {% if user.is_staff %}
         <p class="admin-p">Admin</p>
       {% endif %}
@@ -27,12 +36,6 @@
       <p>Location: {{ user.profile.location|default:"No Location" }}</p>
       <p>Birthdate: {{ user.profile.birth_date|date:"d.m.Y"|default:"No Birthdate" }}</p>
       <p>Cooking level: {{ user.profile.cooking_level|default:"No Cooking level" }}</p>
-
-      {% if request.user.pk == user.pk or request.user.is_superuser %}
-        <div class="change-profile-wrapper">
-          <a href="{% url "edit-profile" user.profile.pk %}" class="change-profile-info">Change profile info</a>
-        </div>
-      {% endif %}
 
       <a href="{% url "recipes-created" user.pk %}">Recipes created</a>
 
