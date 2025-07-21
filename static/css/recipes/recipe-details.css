@@ -145,3 +145,30 @@
   color: #bd2130;
 }
 
+.like-recipe {
+  display: inline-block;
+  padding: 10px 25px;
+  border-radius: 30px;
+  background-color: #eee;
+  color: #333;
+  font-weight: bold;
+  text-decoration: none;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  margin-top: 20px;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08);
+}
+
+.like-recipe:hover {
+  background-color: #ddd;
+  transform: translateY(-1px);
+}
+
+.like-recipe.liked {
+  background-color: #e8263f;
+  color: white;
+}
+
+.like-recipe.liked:hover {
+  background-color: #c01e34;
+}
+

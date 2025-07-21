@@ -31,9 +31,11 @@
         </p>
       {% endif %}
 
-      <h3>Ingredients</h3>
+      <p class="total-likes">Total likes: {{ total_likes }}</p>
+
+      <h3>Ingredients:</h3>
       <ul class="ingredient-list">
-        {% for recipe_ingredient in recipe.recipeingredient_set.all %}
+        {% for recipe_ingredient in recipe.recipe_ingredients.all %}
           <li>
               {{ recipe_ingredient.measure }}
                 -
@@ -51,6 +53,16 @@
         Recipe created by <a href="{% url "account-details" recipe.author.pk %}">{{ recipe.author.username }}</a>
       </p>
 
+      <a class="like-recipe {% if has_user_liked %}liked{% endif %}"
+         href="{% url "like-recipe" recipe.slug request.user.pk %}">
+        {% if has_user_liked %}
+          liked
+        {% else %}
+          like
+        {% endif %}
+      </a>
+
+
       {% if request.user == recipe.author or request.user.is_staff or request.user|has_group:"Recipe Editor" %}
         <a class="edit-recipe-btn" href="{% url "edit-recipe" recipe.slug %}">Edit</a>
         <a class="delete-recipe-btn" href="{% url "delete-recipe" recipe.slug %}">Delete</a>
@@ -60,4 +72,5 @@
 
   </section>
   {% include "recipes/comment-section.html" %}
+
 {% endblock %}

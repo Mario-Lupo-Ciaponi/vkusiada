@@ -13,6 +13,7 @@ from django.views.generic import DetailView, ListView, CreateView, UpdateView, D
 from django.views.generic.edit import FormMixin
 from django.contrib import messages
 
+from common.models import Like
 from recipes.models import UserRecipe
 from .models import Recipe, Comment, UserRecipe
 from .forms import AddCommentForm, CreateRecipeForm, EditRecipeForm, RecipeIngredientFormSet, EditCommentForm
@@ -31,8 +32,20 @@ class RecipeDetailView(SlugUrlKwargMixin, DetailView, FormMixin):
     form_class = AddCommentForm
 
     def get_context_data(self, **kwargs) -> Dict[str, Any]:
+        user = self.request.user
+        has_user_liked = False
+
+        if user.is_authenticated:
+            like = Like.objects.filter(user=user, recipe=self.object)
+
+            if like:
+                has_user_liked = True
+
+
         kwargs.update({
             "form": self.get_form_class()(),
+            "total_likes": Like.objects.filter(recipe=self.object).count(),
+            "has_user_liked": has_user_liked,
         })
         
         return super().get_context_data(**kwargs)
@@ -302,3 +315,22 @@ def remove_saved_recipe(request: HttpRequest, recipe_slug: str) -> HttpResponse:
 
     return redirect(request.META.get("HTTP_REFERER", "/"))
 
+
+def like_recipe(request: HttpRequest, recipe_slug: str, user_pk) -> HttpResponse:
+    recipe = Recipe.objects.get(slug=recipe_slug)
+    user = UserModel.objects.get(pk=user_pk)
+
+    like = Like.objects.filter(
+        recipe=recipe,
+        user=user,
+    )
+
+    if like:
+        like.first().delete()
+    else:
+        Like.objects.create(
+            recipe=recipe,
+            user=user,
+        )
+
+    return redirect(request.META.get("HTTP_REFERER", "/"))
