@@ -11,6 +11,7 @@ urlpatterns = [
         path("remove-saved/", views.remove_saved_recipe, name="remove-saved-recipe"),
         path("save/", views.save_recipe, name="save-recipe"),
         path("like/<int:user_pk>/", views.like_recipe, name="like-recipe"),
+        path("share/", views.copy_recipe_link, name="copy-recipe"),
     ])),
     path("category/<str:category>/", views.FilteredCategoryView.as_view(), name="category_recipes"),
     path("comment/<int:pk>/", include([

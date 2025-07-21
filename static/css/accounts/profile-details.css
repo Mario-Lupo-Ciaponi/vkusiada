@@ -2,7 +2,7 @@ main {
   max-width: 700px;
   margin: 60px auto;
   padding: 40px;
-  background-color: #fff8f3;
+  background-color: rgb(251, 241, 223);
   border-radius: 25px;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
   font-family: "Segoe UI", sans-serif;

@@ -1,3 +1,4 @@
+from pyperclip import copy
 from typing import Dict, Any
 
 import django.db.utils
@@ -6,7 +7,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.db.models import Q, QuerySet
 from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
-from django.shortcuts import redirect, get_object_or_404
+from django.shortcuts import redirect, get_object_or_404, resolve_url
 from django.urls import reverse_lazy, reverse
 from django.utils.timezone import now
 from django.views.generic import DetailView, ListView, CreateView, UpdateView, DeleteView
@@ -14,7 +15,6 @@ from django.views.generic.edit import FormMixin
 from django.contrib import messages
 
 from common.models import Like
-from recipes.models import UserRecipe
 from .models import Recipe, Comment, UserRecipe
 from .forms import AddCommentForm, CreateRecipeForm, EditRecipeForm, RecipeIngredientFormSet, EditCommentForm
 from .mixins import SlugUrlKwargMixin, FormValidMixin,  TestFuncMixin, TestFuncCommentMixin
@@ -54,16 +54,19 @@ class RecipeDetailView(SlugUrlKwargMixin, DetailView, FormMixin):
         return reverse_lazy("recipe_details", kwargs={"recipe_slug": self.kwargs.get(self.slug_url_kwarg)})
 
     def post(self, request, *args, **kwargs) -> HttpResponse | None:
-        self.object = self.get_object()
-        form = self.get_form_class()(request.POST)
+        if request.user.is_authenticated:
+            self.object = self.get_object()
+            form = self.get_form_class()(request.POST)
 
-        if form.is_valid():
-            comment = form.save(commit=False)
-            comment.author = request.user
-            comment.recipe = self.object
-            comment.save()
+            if form.is_valid():
+                comment = form.save(commit=False)
+                comment.author = request.user
+                comment.recipe = self.object
+                comment.save()
 
-            return self.form_valid(form)
+                return self.form_valid(form)
+
+        return redirect("login")
 
 
 class FilteredCategoryView(RecipeListViewMixin, ListView):
@@ -72,10 +75,8 @@ class FilteredCategoryView(RecipeListViewMixin, ListView):
 
     def get_context_data(self, *, object_list=None, **kwargs) -> Dict[str, Any]:
         kwargs.update({
-            "category": self.kwargs.get("category"),
             "search_form": self.form_class(),
             "query": self.request.GET.get(self.query_param, ""),
-            "show_category_field": False,
         })
 
         return super().get_context_data(object_list=object_list, **kwargs)
@@ -334,3 +335,10 @@ def like_recipe(request: HttpRequest, recipe_slug: str, user_pk) -> HttpResponse
         )
 
     return redirect(request.META.get("HTTP_REFERER", "/"))
+
+
+def copy_recipe_link(request: HttpResponse, recipe_slug) -> HttpResponse:
+    copy(request.META.get("HTTP_REFERER", "/"))
+
+    return redirect(request.META.get("HTTP_REFERER", "/"))
+

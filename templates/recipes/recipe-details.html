@@ -1,4 +1,4 @@
-{% extends "common/base.html" %}
+.{% extends "common/base.html" %}
 
 {% load static %}
 {% load has_group %}
@@ -18,6 +18,17 @@
     <div class="recipe-detail-content">
       <header>
         <h1 class="recipe-title">{{ recipe.name }}</h1>
+
+        <div class="recipe-actions">
+          {% if request.user == recipe.author or request.user.is_staff or request.user|has_group:"Recipe Editor" %}
+            <a href="{% url "edit-recipe" recipe.slug %}">
+              <img src="{% static "images/icon/pencil-icon.svg" %}" alt="edit-button">
+            </a>
+            <a href="{% url "delete-recipe" recipe.slug %}">
+              <img src="{% static "images/icon/bin-icon.png" %}" alt="delete-button">
+            </a>
+          {% endif %}
+        </div>
       </header>
 
       <div class="recipe-tags">
@@ -30,8 +41,6 @@
           🎥 <a href="{{ recipe.youtube_link }}" target="_blank">Watch video</a>
         </p>
       {% endif %}
-
-      <p class="total-likes">Total likes: {{ total_likes }}</p>
 
       <h3>Ingredients:</h3>
       <ul class="ingredient-list">
@@ -53,20 +62,20 @@
         Recipe created by <a href="{% url "account-details" recipe.author.pk %}">{{ recipe.author.username }}</a>
       </p>
 
-      <a class="like-recipe {% if has_user_liked %}liked{% endif %}"
-         href="{% url "like-recipe" recipe.slug request.user.pk %}">
-        {% if has_user_liked %}
-          liked
-        {% else %}
-          like
-        {% endif %}
-      </a>
+      <p class="total-likes">Total likes: {{ total_likes }}</p>
 
-
-      {% if request.user == recipe.author or request.user.is_staff or request.user|has_group:"Recipe Editor" %}
-        <a class="edit-recipe-btn" href="{% url "edit-recipe" recipe.slug %}">Edit</a>
-        <a class="delete-recipe-btn" href="{% url "delete-recipe" recipe.slug %}">Delete</a>
+      {% if request.user.is_authenticated %}
+      	<a class="like-recipe {% if has_user_liked %}liked{% endif %}"
+           href="{% url "like-recipe" recipe.slug request.user.pk %}">
+          {% if has_user_liked %}
+            liked
+          {% else %}
+            like
+          {% endif %}
+        </a>
       {% endif %}
+
+      <a class="share-button" href="{% url "copy-recipe" recipe.slug %}">Share</a>
     </div>
 
 

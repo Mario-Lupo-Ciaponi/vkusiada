@@ -24,10 +24,34 @@
   padding: 30px;
 }
 
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+}
+
 .recipe-title {
   font-size: 2.5rem;
   color: #e8263f;
   margin-bottom: 10px;
+  flex-grow: 1;
+}
+
+.recipe-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.recipe-actions img {
+  width: 28px;
+  height: 28px;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.recipe-actions img:hover {
+  transform: scale(1.1);
 }
 
 .recipe-tags {
@@ -145,17 +169,20 @@
   color: #bd2130;
 }
 
-.like-recipe {
+.like-recipe, .share-button {
   display: inline-block;
   padding: 10px 25px;
   border-radius: 30px;
-  background-color: #eee;
-  color: #333;
   font-weight: bold;
   text-decoration: none;
   transition: background-color 0.3s ease, transform 0.2s ease;
   margin-top: 20px;
   box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08);
+}
+
+.like-recipe {
+  background-color: #eee;
+  color: #333;
 }
 
 .like-recipe:hover {
@@ -172,3 +199,14 @@
   background-color: #c01e34;
 }
 
+.share-button {
+  background-color: #7bdbe4;
+  color: #333;
+  transition: background-color 0.3s ease, transform 0.2s ease, color 0.3s;
+}
+
+.share-button:hover {
+  background-color: #1230b1;
+  color: white;
+  transform: translateY(-1px);
+}

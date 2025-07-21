@@ -31,7 +31,6 @@
     <section>
       <p>Date joined: {{ user.date_joined }}</p>
       <p>Email: {{ user.email }}</p>
-      <p>Last login: {{ user.last_login }}</p>
       <p>Bio: {{ user.profile.bio|default:"No Bio" }}</p>
       <p>Location: {{ user.profile.location|default:"No Location" }}</p>
       <p>Birthdate: {{ user.profile.birth_date|date:"d.m.Y"|default:"No Birthdate" }}</p>
