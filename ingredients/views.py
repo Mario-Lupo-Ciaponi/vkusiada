@@ -28,13 +28,13 @@ class AddIngredientView(ListView):
     paginate_by = 7
     form_class = SearchForm
 
-    def get_context_data(
-        self, *, object_list=None, **kwargs
-    ) -> Dict[str, Any]:
-        kwargs.update({
-            "search_form": self.form_class(),
-            "query": self.request.GET.get(self.query_param, ""),
-        })
+    def get_context_data(self, *, object_list=None, **kwargs) -> Dict[str, Any]:
+        kwargs.update(
+            {
+                "search_form": self.form_class(),
+                "query": self.request.GET.get(self.query_param, ""),
+            }
+        )
 
         return super().get_context_data(object_list=object_list, **kwargs)
 
@@ -48,11 +48,14 @@ class AddIngredientView(ListView):
         ingredients_added = UserIngredient.objects.filter(user=user)
         ingredients_name = [i.ingredient.name for i in ingredients_added]
 
-        ingredients_query = ~Q(name__in=ingredients_name) # Filters ingredients where the name is NOT present in ingredients_name
-
+        ingredients_query = ~Q(
+            name__in=ingredients_name
+        )  # Filters ingredients where the name is NOT present in ingredients_name
 
         if search_value:
-            ingredients_query &= Q(name__icontains=search_value) # Search value is the value of the search form
+            ingredients_query &= Q(
+                name__icontains=search_value
+            )  # Search value is the value of the search form
 
         ingredients = Ingredient.objects.filter(ingredients_query)
 
@@ -68,10 +71,12 @@ class SavedIngredientsView(LoginRequiredMixin, ListView):
     context_object_name = "ingredients"
 
     def get_context_data(self, *, object_list=None, **kwargs) -> Dict[str, Any]:
-        kwargs.update({
-            "search_form": self.form_class(),
-            "query": self.request.GET.get(self.query_param, ""),
-        })
+        kwargs.update(
+            {
+                "search_form": self.form_class(),
+                "query": self.request.GET.get(self.query_param, ""),
+            }
+        )
 
         return super().get_context_data(object_list=object_list, **kwargs)
 
@@ -82,7 +87,9 @@ class SavedIngredientsView(LoginRequiredMixin, ListView):
         saved_ingredients = UserIngredient.objects.filter(user=user)
 
         if search_value:
-            saved_ingredients = saved_ingredients.filter(ingredient__name__icontains=search_value)
+            saved_ingredients = saved_ingredients.filter(
+                ingredient__name__icontains=search_value
+            )
 
         return [i for i in saved_ingredients]
 
@@ -92,21 +99,22 @@ def save_ingredient(request: HttpRequest, ingredient_pk: int) -> HttpResponse:
     ingredient = Ingredient.objects.get(pk=ingredient_pk)
     user = request.user
 
-    UserIngredient.objects.create(
-        ingredient=ingredient,
-        user=user,
-        added_on=now()
-    )
+    UserIngredient.objects.create(ingredient=ingredient, user=user, added_on=now())
 
     return redirect("add-ingredient")
 
 
 @login_required
 def remove_ingredient(request: HttpRequest, ingredient_pk: int) -> HttpResponse:
-    user_ingredient = get_object_or_404(UserIngredient, pk=ingredient_pk, user=request.user)
+    user_ingredient = get_object_or_404(
+        UserIngredient, pk=ingredient_pk, user=request.user
+    )
 
     user_ingredient.delete()
 
-    messages.success(request, f"Ingredient {user_ingredient.ingredient.name} was removed successfully")
+    messages.success(
+        request,
+        f"Ingredient {user_ingredient.ingredient.name} was removed successfully",
+    )
 
     return redirect(request.META.get("HTTP_REFERER", "/"))

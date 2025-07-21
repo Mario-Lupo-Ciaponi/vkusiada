@@ -13,13 +13,18 @@ UserModel = get_user_model()
 class RegistrationForm(UserCreationForm):
     class Meta(UserCreationForm.Meta):
         model = UserModel
-        fields = ("username", "email",)
+        fields = (
+            "username",
+            "email",
+        )
 
 
 class ProfileEditForm(forms.ModelForm):
     class Meta:
         model = Profile
-        exclude = ["user",]
+        exclude = [
+            "user",
+        ]
 
         widgets = {
             "bio": forms.widgets.Textarea(
@@ -40,7 +45,9 @@ class ProfileEditForm(forms.ModelForm):
         }
 
 
-class ContactForm(MakeAllFieldsRequiredMixin, MakeAllFieldNotHavingLabelsMixin, forms.Form):
+class ContactForm(
+    MakeAllFieldsRequiredMixin, MakeAllFieldNotHavingLabelsMixin, forms.Form
+):
     email = forms.CharField(
         widget=forms.EmailInput(
             attrs={
@@ -55,7 +62,7 @@ class ContactForm(MakeAllFieldsRequiredMixin, MakeAllFieldNotHavingLabelsMixin, 
             attrs={
                 "placeholder": "Subject",
             }
-        )
+        ),
     )
 
     content = forms.CharField(
@@ -63,10 +70,5 @@ class ContactForm(MakeAllFieldsRequiredMixin, MakeAllFieldNotHavingLabelsMixin, 
         validators=[
             MinLengthValidator(10),
         ],
-        widget=forms.Textarea(
-            attrs={
-                "cols": 50,
-                "placeholder": "Content"
-            }
-        ),
+        widget=forms.Textarea(attrs={"cols": 50, "placeholder": "Content"}),
     )

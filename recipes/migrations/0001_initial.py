@@ -10,69 +10,177 @@ class Migration(migrations.Migration):
     initial = True
 
     dependencies = [
-        ('ingredients', '0001_initial'),
+        ("ingredients", "0001_initial"),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='Recipe',
+            name="Recipe",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('slug', models.SlugField(blank=True, max_length=150, unique=True)),
-                ('name', models.CharField(max_length=100, unique=True)),
-                ('category', models.CharField(choices=[('Starters', 'Starters'), ('Entrees', 'Entrees'), ('Salads', 'Salads'), ('Soups', 'Soups'), ('Miscellaneous', 'Miscellaneous'), ('Beef', 'Beef'), ('Breakfast', 'Breakfast'), ('Dessert', 'Dessert'), ('Seafood', 'Seafood'), ('Side', 'Side'), ('Chicken', 'Chicken'), ('Pork', 'Pork'), ('Past', 'Past'), ('Vegetarian', 'Vegetarian'), ('Vegan', 'Vegan'), ('Lamb', 'Lamb'), ('Goat', 'Goat')], max_length=100)),
-                ('cuisine', models.CharField(max_length=100)),
-                ('youtube_link', models.URLField(blank=True, null=True)),
-                ('image_url', models.URLField()),
-                ('instructions', models.TextField()),
-                ('author', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='recipes', to=settings.AUTH_USER_MODEL)),
-                ('users', models.ManyToManyField(blank=True, related_name='saved_recipes', to=settings.AUTH_USER_MODEL)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("slug", models.SlugField(blank=True, max_length=150, unique=True)),
+                ("name", models.CharField(max_length=100, unique=True)),
+                (
+                    "category",
+                    models.CharField(
+                        choices=[
+                            ("Starters", "Starters"),
+                            ("Entrees", "Entrees"),
+                            ("Salads", "Salads"),
+                            ("Soups", "Soups"),
+                            ("Miscellaneous", "Miscellaneous"),
+                            ("Beef", "Beef"),
+                            ("Breakfast", "Breakfast"),
+                            ("Dessert", "Dessert"),
+                            ("Seafood", "Seafood"),
+                            ("Side", "Side"),
+                            ("Chicken", "Chicken"),
+                            ("Pork", "Pork"),
+                            ("Past", "Past"),
+                            ("Vegetarian", "Vegetarian"),
+                            ("Vegan", "Vegan"),
+                            ("Lamb", "Lamb"),
+                            ("Goat", "Goat"),
+                        ],
+                        max_length=100,
+                    ),
+                ),
+                ("cuisine", models.CharField(max_length=100)),
+                ("youtube_link", models.URLField(blank=True, null=True)),
+                ("image_url", models.URLField()),
+                ("instructions", models.TextField()),
+                (
+                    "author",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="recipes",
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
+                (
+                    "users",
+                    models.ManyToManyField(
+                        blank=True,
+                        related_name="saved_recipes",
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
             ],
             options={
-                'abstract': False,
+                "abstract": False,
             },
         ),
         migrations.CreateModel(
-            name='Comment',
+            name="Comment",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('added_on', models.DateTimeField(auto_now_add=True)),
-                ('content', models.TextField()),
-                ('author', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='comments', to=settings.AUTH_USER_MODEL)),
-                ('recipe', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='comments', to='recipes.recipe')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("added_on", models.DateTimeField(auto_now_add=True)),
+                ("content", models.TextField()),
+                (
+                    "author",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="comments",
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
+                (
+                    "recipe",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="comments",
+                        to="recipes.recipe",
+                    ),
+                ),
             ],
             options={
-                'abstract': False,
+                "abstract": False,
             },
         ),
         migrations.CreateModel(
-            name='RecipeIngredient',
+            name="RecipeIngredient",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('measure', models.CharField(blank=True, max_length=100, null=True)),
-                ('ingredient', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='ingredients.ingredient')),
-                ('recipe', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='recipes.recipe')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("measure", models.CharField(blank=True, max_length=100, null=True)),
+                (
+                    "ingredient",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="ingredients.ingredient",
+                    ),
+                ),
+                (
+                    "recipe",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE, to="recipes.recipe"
+                    ),
+                ),
             ],
             options={
-                'unique_together': {('recipe', 'ingredient')},
+                "unique_together": {("recipe", "ingredient")},
             },
         ),
         migrations.AddField(
-            model_name='recipe',
-            name='ingredients',
-            field=models.ManyToManyField(through='recipes.RecipeIngredient', to='ingredients.ingredient'),
+            model_name="recipe",
+            name="ingredients",
+            field=models.ManyToManyField(
+                through="recipes.RecipeIngredient", to="ingredients.ingredient"
+            ),
         ),
         migrations.CreateModel(
-            name='UserRecipe',
+            name="UserRecipe",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('added_on', models.DateTimeField(auto_now_add=True)),
-                ('recipe', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='recipes.recipe')),
-                ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("added_on", models.DateTimeField(auto_now_add=True)),
+                (
+                    "recipe",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE, to="recipes.recipe"
+                    ),
+                ),
+                (
+                    "user",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
             ],
             options={
-                'unique_together': {('user', 'recipe')},
+                "unique_together": {("user", "recipe")},
             },
         ),
     ]

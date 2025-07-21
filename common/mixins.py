@@ -37,10 +37,12 @@ class CategoryFilteringMixin:
     category_param = "category"
 
     def get_context_data(self, *, object_list=None, **kwargs) -> Dict[str, Any]:
-        kwargs.update({
-            "category": self.request.GET.get(self.category_param, ""),
-            "show_category_field": True,
-        })
+        kwargs.update(
+            {
+                "category": self.request.GET.get(self.category_param, ""),
+                "show_category_field": True,
+            }
+        )
         return super().get_context_data(object_list=object_list, **kwargs)
 
 
@@ -50,4 +52,3 @@ class RecipeListViewMixin:
     category_param = "category"
     paginate_by = 9
     form_class = SearchForm
-

@@ -7,7 +7,9 @@ from .models import Recipe, Comment, RecipeIngredient
 class BaseCommentForm(forms.ModelForm):
     class Meta:
         model = Comment
-        fields = ["content",]
+        fields = [
+            "content",
+        ]
 
         labels = {
             "content": "",
@@ -43,18 +45,18 @@ class BaseRecipeForm(forms.ModelForm):
         widgets = {
             "name": forms.TextInput(attrs={"placeholder": "Enter recipe name"}),
             "cuisine": forms.TextInput(attrs={"placeholder": "Cuisine"}),
-            "youtube_link": forms.URLInput(attrs={"placeholder": "YouTube link (optional)"}),
+            "youtube_link": forms.URLInput(
+                attrs={"placeholder": "YouTube link (optional)"}
+            ),
             "image_url": forms.URLInput(attrs={"placeholder": "Image URL"}),
             "instructions": forms.Textarea(attrs={"placeholder": "Instructions"}),
         }
 
 
-class CreateRecipeForm(BaseRecipeForm):
-    ...
+class CreateRecipeForm(BaseRecipeForm): ...
 
 
-class EditRecipeForm(BaseRecipeForm):
-    ...
+class EditRecipeForm(BaseRecipeForm): ...
 
 
 RecipeIngredientFormSet = inlineformset_factory(
@@ -64,4 +66,3 @@ RecipeIngredientFormSet = inlineformset_factory(
     extra=1,
     can_delete=True,  # Needed for deletions
 )
-

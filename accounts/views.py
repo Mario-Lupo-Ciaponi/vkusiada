@@ -24,16 +24,18 @@ class RegisterUserView(CreateView):
 
 class ContactView(FormView):
     form_class = ContactForm
-    
+
     success_url = reverse_lazy("index")
     template_name = "accounts/contact.html"
-    
+
     def get_context_data(self, **kwargs):
-        kwargs.update({
-            "contact_form": self.get_form_class(),
-            "current_page": "contact",
-        })
-        
+        kwargs.update(
+            {
+                "contact_form": self.get_form_class(),
+                "current_page": "contact",
+            }
+        )
+
         return super().get_context_data(**kwargs)
 
     def form_valid(self, form):
@@ -57,8 +59,10 @@ class EditProfileView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
             "account-details",
             kwargs={
                 "pk": self.object.user.pk,
-            }
+            },
         )
 
     def test_func(self):
-        return self.request.user.is_superuser or self.request.user.pk == self.kwargs["pk"]
+        return (
+            self.request.user.is_superuser or self.request.user.pk == self.kwargs["pk"]
+        )

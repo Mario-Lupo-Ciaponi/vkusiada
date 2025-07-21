@@ -8,8 +8,17 @@ urlpatterns = [
     path("login/", LoginView.as_view(), name="login"),
     path("logout/", LogoutView.as_view(), name="logout"),
     path("contact/", views.ContactView.as_view(), name="contact"),
-    path("<int:pk>/", include([
-        path("", views.AccountDetails.as_view(), name="account-details"),
-        path("edit-profile/", views.EditProfileView.as_view(), name="edit-profile"),
-    ])),
+    path(
+        "<int:pk>/",
+        include(
+            [
+                path("", views.AccountDetails.as_view(), name="account-details"),
+                path(
+                    "edit-profile/",
+                    views.EditProfileView.as_view(),
+                    name="edit-profile",
+                ),
+            ]
+        ),
+    ),
 ]

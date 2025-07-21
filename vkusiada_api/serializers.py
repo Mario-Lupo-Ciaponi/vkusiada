@@ -8,7 +8,10 @@ class RecipeIngredientSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = RecipeIngredient
-        exclude = ["id", "recipe",]
+        exclude = [
+            "id",
+            "recipe",
+        ]
 
 
 class RecipeSerializer(serializers.ModelSerializer):
@@ -17,10 +20,18 @@ class RecipeSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Recipe
-        exclude = ["id", "slug", "users", "ingredients",]
+        exclude = [
+            "id",
+            "slug",
+            "users",
+            "ingredients",
+        ]
 
 
 class IngredientSerializer(serializers.ModelSerializer):
     class Meta:
         model = Ingredient
-        exclude = ["id", "slug",]
+        exclude = [
+            "id",
+            "slug",
+        ]

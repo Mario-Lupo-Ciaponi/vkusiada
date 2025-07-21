@@ -8,11 +8,7 @@ UserModel = get_user_model()
 
 
 class Like(models.Model):
-    recipe = models.ForeignKey(
-        Recipe,
-        on_delete=models.CASCADE,
-        related_name="likes"
-    )
+    recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE, related_name="likes")
     user = models.ForeignKey(
         UserModel,
         on_delete=models.CASCADE,

@@ -16,10 +16,7 @@ class Recipe(SlugMixIn):
         max_length=100,
         unique=True,
     )
-    category = models.CharField(
-        max_length=100,
-        choices=CategoryChoices
-    )
+    category = models.CharField(max_length=100, choices=CategoryChoices)
     cuisine = models.CharField(
         max_length=100,
     )
@@ -36,12 +33,12 @@ class Recipe(SlugMixIn):
     )
     users = models.ManyToManyField(
         User,
-        related_name='saved_recipes',
+        related_name="saved_recipes",
         blank=True,
     )
     ingredients = models.ManyToManyField(
         Ingredient,
-        through='RecipeIngredient',
+        through="RecipeIngredient",
     )
 
     def __str__(self):
@@ -68,7 +65,7 @@ class RecipeIngredient(models.Model):
         return f"{self.recipe.name} - {self.ingredient.name}"
 
     class Meta:
-        unique_together = ('recipe', 'ingredient')
+        unique_together = ("recipe", "ingredient")
 
 
 class UserRecipe(AddedOnMixIn):
@@ -85,7 +82,7 @@ class UserRecipe(AddedOnMixIn):
         return f"{self.user.username} - {self.recipe.name}"
 
     class Meta:
-        unique_together = ('user', 'recipe')
+        unique_together = ("user", "recipe")
 
 
 class Comment(AddedOnMixIn):
@@ -94,9 +91,5 @@ class Comment(AddedOnMixIn):
         on_delete=models.CASCADE,
         related_name="comments",
     )
-    author = models.ForeignKey(
-        User,
-        on_delete=models.CASCADE,
-        related_name="comments"
-    )
+    author = models.ForeignKey(User, on_delete=models.CASCADE, related_name="comments")
     content = models.TextField()

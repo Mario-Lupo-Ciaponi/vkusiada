@@ -35,4 +35,4 @@ class UserIngredient(AddedOnMixIn):
         return f"{self.user.username} - {self.ingredient.name}"
 
     class Meta:
-        unique_together = ('user', 'ingredient')
+        unique_together = ("user", "ingredient")

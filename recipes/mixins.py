@@ -27,13 +27,15 @@ class TestFuncMixin:
         obj = self.get_object()
 
         return (
-                self.request.user.pk == obj.author.pk or
-                self.request.user.is_superuser or
-                self.request.user.groups.filter(name="Recipe Editor").exists())
+            self.request.user.pk == obj.author.pk
+            or self.request.user.is_superuser
+            or self.request.user.groups.filter(name="Recipe Editor").exists()
+        )
 
 
 class TestFuncCommentMixin:
     def test_func(self) -> bool:
         return (
-                self.request.user.pk == self.get_object().author.pk or
-                self.request.user.is_superuser)
+            self.request.user.pk == self.get_object().author.pk
+            or self.request.user.is_superuser
+        )

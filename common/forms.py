@@ -7,9 +7,7 @@ class SearchForm(forms.Form):
         label="",
         required=False,
         max_length=100,
-        widget=forms.TextInput(
-            attrs={"placeholder": "Search..."}
-        )
+        widget=forms.TextInput(attrs={"placeholder": "Search..."}),
     )
     category = forms.ChoiceField(
         label="",
@@ -19,5 +17,5 @@ class SearchForm(forms.Form):
             attrs={
                 "class": "search-select",
             }
-        )
+        ),
     )

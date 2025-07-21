@@ -10,17 +10,34 @@ from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
 from django.shortcuts import redirect, get_object_or_404, resolve_url
 from django.urls import reverse_lazy, reverse
 from django.utils.timezone import now
-from django.views.generic import DetailView, ListView, CreateView, UpdateView, DeleteView
+from django.views.generic import (
+    DetailView,
+    ListView,
+    CreateView,
+    UpdateView,
+    DeleteView,
+)
 from django.views.generic.edit import FormMixin
 from django.contrib import messages
 
 from common.models import Like
 from .models import Recipe, Comment, UserRecipe
-from .forms import AddCommentForm, CreateRecipeForm, EditRecipeForm, RecipeIngredientFormSet, EditCommentForm
-from .mixins import SlugUrlKwargMixin, FormValidMixin,  TestFuncMixin, TestFuncCommentMixin
+from .forms import (
+    AddCommentForm,
+    CreateRecipeForm,
+    EditRecipeForm,
+    RecipeIngredientFormSet,
+    EditCommentForm,
+)
+from .mixins import (
+    SlugUrlKwargMixin,
+    FormValidMixin,
+    TestFuncMixin,
+    TestFuncCommentMixin,
+)
 from common.mixins import CategoryFilteringMixin, RecipeListViewMixin
 
-from common.forms import  SearchForm
+from common.forms import SearchForm
 
 
 UserModel = get_user_model()
@@ -32,28 +49,42 @@ class RecipeDetailView(SlugUrlKwargMixin, DetailView, FormMixin):
     form_class = AddCommentForm
 
     def get_context_data(self, **kwargs) -> Dict[str, Any]:
+        """
+        It adds into the context form(search form), total_likes and has_user_liked.
+        It filters like to see if the user has liked the recipe, then checks whether
+        the user is authenticated, because a anonymous user cannot like recipes, he/she
+        must login first.
+        """
         user = self.request.user
         has_user_liked = False
 
-        if user.is_authenticated:
+        if self.request.user.is_authenticated:
             like = Like.objects.filter(user=user, recipe=self.object)
 
             if like:
                 has_user_liked = True
 
+        kwargs.update(
+            {
+                "form": self.get_form_class()(),
+                "total_likes": Like.objects.filter(recipe=self.object).count(),
+                "has_user_liked": has_user_liked,
+            }
+        )
 
-        kwargs.update({
-            "form": self.get_form_class()(),
-            "total_likes": Like.objects.filter(recipe=self.object).count(),
-            "has_user_liked": has_user_liked,
-        })
-        
         return super().get_context_data(**kwargs)
 
     def get_success_url(self) -> HttpResponseRedirect:
-        return reverse_lazy("recipe_details", kwargs={"recipe_slug": self.kwargs.get(self.slug_url_kwarg)})
+        """
+        It gets dynamically the url, because based on the query params the recipe name can vary.
+        """
+        return reverse_lazy(
+            "recipe_details",
+            kwargs={"recipe_slug": self.kwargs.get(self.slug_url_kwarg)},
+        )
 
     def post(self, request, *args, **kwargs) -> HttpResponse | None:
+        self.get_success_url()
         if request.user.is_authenticated:
             self.object = self.get_object()
             form = self.get_form_class()(request.POST)
@@ -74,10 +105,12 @@ class FilteredCategoryView(RecipeListViewMixin, ListView):
     template_name = "recipes/category-recipes.html"
 
     def get_context_data(self, *, object_list=None, **kwargs) -> Dict[str, Any]:
-        kwargs.update({
-            "search_form": self.form_class(),
-            "query": self.request.GET.get(self.query_param, ""),
-        })
+        kwargs.update(
+            {
+                "search_form": self.form_class(),
+                "query": self.request.GET.get(self.query_param, ""),
+            }
+        )
 
         return super().get_context_data(object_list=object_list, **kwargs)
 
@@ -91,9 +124,7 @@ class FilteredCategoryView(RecipeListViewMixin, ListView):
         if search_value:
             name_query = Q(name__icontains=search_value)
 
-        recipes = (Recipe.objects
-                   .filter(category_query, name_query)
-                   .order_by("name"))
+        recipes = Recipe.objects.filter(category_query, name_query).order_by("name")
 
         return recipes
 
@@ -107,10 +138,12 @@ class SavedRecipesView(LoginRequiredMixin, CategoryFilteringMixin, ListView):
     context_object_name = "recipes"
 
     def get_context_data(self, *, object_list=None, **kwargs) -> Dict[str, Any]:
-        kwargs.update({
-            "search_form": self.form_class(),
-            "query": self.request.GET.get(self.query_param, "")
-        })
+        kwargs.update(
+            {
+                "search_form": self.form_class(),
+                "query": self.request.GET.get(self.query_param, ""),
+            }
+        )
 
         return super().get_context_data(object_list=object_list, **kwargs)
 
@@ -137,10 +170,12 @@ class SearchRecipeView(CategoryFilteringMixin, RecipeListViewMixin, ListView):
     template_name = "recipes/search-recipe.html"
 
     def get_context_data(self, *, object_list=None, **kwargs) -> Dict[str, Any]:
-        kwargs.update({
-            "search_form": self.form_class(),
-            "query": self.request.GET.get(self.query_param, ""),
-        })
+        kwargs.update(
+            {
+                "search_form": self.form_class(),
+                "query": self.request.GET.get(self.query_param, ""),
+            }
+        )
         return super().get_context_data(object_list=object_list, **kwargs)
 
     def get_queryset(self):
@@ -174,11 +209,13 @@ class RecipesCreatedByUserView(ListView):
     context_object_name = "recipes"
 
     def get_context_data(self, *, object_list=None, **kwargs) -> Dict[str, Any]:
-        kwargs.update({
-            "search_form": self.form_class(),
-            "query": self.request.GET.get(self.query_param, ""),
-            "author": get_object_or_404(UserModel, pk=self.kwargs.get("user_pk")),
-        })
+        kwargs.update(
+            {
+                "search_form": self.form_class(),
+                "query": self.request.GET.get(self.query_param, ""),
+                "author": get_object_or_404(UserModel, pk=self.kwargs.get("user_pk")),
+            }
+        )
         return super().get_context_data(object_list=object_list, **kwargs)
 
     def get_queryset(self) -> QuerySet[Recipe]:
@@ -199,16 +236,11 @@ class CreateRecipeView(LoginRequiredMixin, FormValidMixin, CreateView):
     template_name = "recipes/create-recipe.html"
 
     def get_success_url(self) -> str:
-        return reverse(
-            "recipe_details",
-            kwargs={
-                "recipe_slug": self.object.slug
-            }
-        )
+        return reverse("recipe_details", kwargs={"recipe_slug": self.object.slug})
 
     def get_context_data(self, **kwargs) -> Dict[str, Any]:
         data = super().get_context_data(**kwargs)
-        prefix = 'recipeingredient_set'
+        prefix = "recipeingredient_set"
 
         if self.request.POST:
             data["formset"] = RecipeIngredientFormSet(self.request.POST, prefix=prefix)
@@ -222,46 +254,48 @@ class CreateRecipeView(LoginRequiredMixin, FormValidMixin, CreateView):
         return super().form_valid(form)
 
 
-class EditRecipeView(LoginRequiredMixin, FormValidMixin, TestFuncMixin, UserPassesTestMixin, UpdateView):
+class EditRecipeView(
+    LoginRequiredMixin, FormValidMixin, TestFuncMixin, UserPassesTestMixin, UpdateView
+):
     model = Recipe
     form_class = EditRecipeForm
     template_name = "recipes/edit-recipe.html"
     slug_url_kwarg = "recipe_slug"
 
     def get_success_url(self) -> str:
-        return reverse(
-            "recipe_details",
-            kwargs={
-                "recipe_slug": self.object.slug
-            }
-        )
+        return reverse("recipe_details", kwargs={"recipe_slug": self.object.slug})
 
     def get_context_data(self, **kwargs) -> Dict[str, Any]:
         data = super().get_context_data(**kwargs)
-        prefix = 'recipeingredient_set'
+        prefix = "recipeingredient_set"
 
         if self.request.POST:
             data["formset"] = RecipeIngredientFormSet(
-                self.request.POST,
-                instance=self.object,
-                prefix=prefix
+                self.request.POST, instance=self.object, prefix=prefix
             )
         else:
             data["formset"] = RecipeIngredientFormSet(
-                instance=self.object,
-                prefix=prefix
+                instance=self.object, prefix=prefix
             )
 
         return data
 
 
-class DeleteRecipeView(LoginRequiredMixin, SlugUrlKwargMixin, TestFuncMixin, UserPassesTestMixin, DeleteView):
+class DeleteRecipeView(
+    LoginRequiredMixin,
+    SlugUrlKwargMixin,
+    TestFuncMixin,
+    UserPassesTestMixin,
+    DeleteView,
+):
     model = Recipe
     template_name = "recipes/delete-recipe.html"
     success_url = reverse_lazy("index")
 
 
-class EditCommentView(LoginRequiredMixin, TestFuncCommentMixin, UserPassesTestMixin, UpdateView):
+class EditCommentView(
+    LoginRequiredMixin, TestFuncCommentMixin, UserPassesTestMixin, UpdateView
+):
     model = Comment
     template_name = "recipes/edit-comment.html"
     form_class = EditCommentForm
@@ -271,11 +305,13 @@ class EditCommentView(LoginRequiredMixin, TestFuncCommentMixin, UserPassesTestMi
             "recipe_details",
             kwargs={
                 "recipe_slug": self.object.recipe.slug,
-            }
+            },
         )
 
 
-class DeleteCommentView(LoginRequiredMixin, TestFuncCommentMixin, UserPassesTestMixin, DeleteView):
+class DeleteCommentView(
+    LoginRequiredMixin, TestFuncCommentMixin, UserPassesTestMixin, DeleteView
+):
     model = Comment
     template_name = "recipes/delete-recipe.html"
 
@@ -284,7 +320,7 @@ class DeleteCommentView(LoginRequiredMixin, TestFuncCommentMixin, UserPassesTest
             "recipe_details",
             kwargs={
                 "recipe_slug": self.object.recipe.slug,
-            }
+            },
         )
 
 
@@ -312,7 +348,9 @@ def remove_saved_recipe(request: HttpRequest, recipe_slug: str) -> HttpResponse:
 
     user_recipe.delete()
 
-    messages.success(request, f"Recipe {user_recipe.recipe.name} was removed successfully")
+    messages.success(
+        request, f"Recipe {user_recipe.recipe.name} was removed successfully"
+    )
 
     return redirect(request.META.get("HTTP_REFERER", "/"))
 
@@ -341,4 +379,3 @@ def copy_recipe_link(request: HttpResponse, recipe_slug) -> HttpResponse:
     copy(request.META.get("HTTP_REFERER", "/"))
 
     return redirect(request.META.get("HTTP_REFERER", "/"))
-

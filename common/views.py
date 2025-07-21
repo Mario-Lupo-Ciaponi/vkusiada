@@ -21,10 +21,12 @@ class IndexView(CategoryFilteringMixin, RecipeListViewMixin, ListView):
     template_name = "common/index.html"
 
     def get_context_data(self, *, object_list=None, **kwargs) -> Dict[str, Any]:
-        kwargs.update({
-            "search_form": self.form_class(),
-            "current_page": "index",
-        })
+        kwargs.update(
+            {
+                "search_form": self.form_class(),
+                "current_page": "index",
+            }
+        )
 
         return super().get_context_data(object_list=object_list, **kwargs)
 
@@ -35,13 +37,13 @@ class IndexView(CategoryFilteringMixin, RecipeListViewMixin, ListView):
         if not user.is_authenticated:
             return Recipe.objects.none()
 
-        user_ingredient_ids = (UserIngredient.objects
-                               .filter(user=user)
-                               .values_list("ingredient__id", flat=True))
+        user_ingredient_ids = UserIngredient.objects.filter(user=user).values_list(
+            "ingredient__id", flat=True
+        )
 
-        recipes = (Recipe.objects
-                  .filter(recipe_ingredients__ingredient__in=user_ingredient_ids)
-                  .distinct())
+        recipes = Recipe.objects.filter(
+            recipe_ingredients__ingredient__in=user_ingredient_ids
+        ).distinct()
 
         user_recipes = UserRecipe.objects.filter(user=user)
         recipes_names = [r.recipe.name for r in user_recipes]
