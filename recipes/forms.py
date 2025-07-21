@@ -53,10 +53,12 @@ class BaseRecipeForm(forms.ModelForm):
         }
 
 
-class CreateRecipeForm(BaseRecipeForm): ...
+class CreateRecipeForm(BaseRecipeForm):
+    ...
 
 
-class EditRecipeForm(BaseRecipeForm): ...
+class EditRecipeForm(BaseRecipeForm):
+    ...
 
 
 RecipeIngredientFormSet = inlineformset_factory(
