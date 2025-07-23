@@ -12,16 +12,13 @@ urlpatterns = [
         "<int:pk>/",
         include(
             [
-                path(
-                    "",
-                    views.AccountDetails.as_view(),
-                    name="account-details"
-                ),
+                path("", views.AccountDetails.as_view(), name="account-details"),
                 path(
                     "edit-profile/",
                     views.EditProfileView.as_view(),
                     name="edit-profile",
                 ),
+                path("follow/", views.follow_or_unfollow_user, name="follow-user")
             ]
         ),
     ),

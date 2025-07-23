@@ -85,7 +85,7 @@ class RecipeDetailView(SlugUrlKwargMixin, DetailView, FormMixin):
 
     def post(self, request, *args, **kwargs) -> HttpResponse | None:
         """
-            It handles the post request for adding a comment to the recipe.
+        It handles the post request for adding a comment to the recipe.
         """
         self.get_success_url()
         if request.user.is_authenticated:
@@ -109,7 +109,7 @@ class FilteredCategoryView(RecipeListViewMixin, ListView):
 
     def get_context_data(self, *, object_list=None, **kwargs) -> Dict[str, Any]:
         """
-            It updates the context with the search form and the query parameter.
+        It updates the context with the search form and the query parameter.
         """
         kwargs.update(
             {
@@ -122,8 +122,8 @@ class FilteredCategoryView(RecipeListViewMixin, ListView):
 
     def get_queryset(self) -> QuerySet[Recipe]:
         """
-            It filters the recipes based on the category and the search value.
-            If the search value is provided, it filters the recipes by name.
+        It filters the recipes based on the category and the search value.
+        If the search value is provided, it filters the recipes by name.
         """
         category = self.kwargs.get("category")
         search_value = self.request.GET.get("query")
@@ -149,8 +149,8 @@ class SavedRecipesView(LoginRequiredMixin, CategoryFilteringMixin, ListView):
 
     def get_context_data(self, *, object_list=None, **kwargs) -> Dict[str, Any]:
         """
-            It updates the context with the search form and the query parameter.
-            This method is called when rendering the template.
+        It updates the context with the search form and the query parameter.
+        This method is called when rendering the template.
         """
         kwargs.update(
             {
@@ -189,8 +189,8 @@ class SearchRecipeView(CategoryFilteringMixin, RecipeListViewMixin, ListView):
 
     def get_context_data(self, *, object_list=None, **kwargs) -> Dict[str, Any]:
         """
-            It updates the context with the search form and the query parameter.
-            This method is called when rendering the template.
+        It updates the context with the search form and the query parameter.
+        This method is called when rendering the template.
         """
         kwargs.update(
             {
@@ -238,7 +238,7 @@ class RecipesCreatedByUserView(ListView):
 
     def get_context_data(self, *, object_list=None, **kwargs) -> Dict[str, Any]:
         """
-            It updates the context with the search form, query parameter, and author.
+        It updates the context with the search form, query parameter, and author.
         """
         kwargs.update(
             {
@@ -251,8 +251,8 @@ class RecipesCreatedByUserView(ListView):
 
     def get_queryset(self) -> QuerySet[Recipe]:
         """
-            It retrieves the recipes created by a specific user.
-            It filters the recipes based on the search value.
+        It retrieves the recipes created by a specific user.
+        It filters the recipes based on the search value.
         """
         user_pk = self.kwargs.get("user_pk")
 
@@ -272,16 +272,16 @@ class CreateRecipeView(LoginRequiredMixin, FormValidMixin, CreateView):
 
     def get_success_url(self) -> str:
         """
-            It gets the success URL after creating a recipe.
+        It gets the success URL after creating a recipe.
         """
         return reverse("recipe_details", kwargs={"recipe_slug": self.object.slug})
 
     def get_context_data(self, **kwargs) -> Dict[str, Any]:
         """
-            It prepares the context data for the recipe creation view.
-            It initializes a formset for recipe ingredients and adds it to the context.
-            If the request is a POST request, it populates the formset with the submitted data.
-            If it's a GET request, it initializes an empty formset.
+        It prepares the context data for the recipe creation view.
+        It initializes a formset for recipe ingredients and adds it to the context.
+        If the request is a POST request, it populates the formset with the submitted data.
+        If it's a GET request, it initializes an empty formset.
         """
 
         data = super().get_context_data(**kwargs)
@@ -296,8 +296,8 @@ class CreateRecipeView(LoginRequiredMixin, FormValidMixin, CreateView):
 
     def form_valid(self, form) -> HttpResponse:
         """
-            It handles the form validation for creating a recipe.
-            It sets the author of the recipe to the current user before saving.
+        It handles the form validation for creating a recipe.
+        It sets the author of the recipe to the current user before saving.
         """
 
         form.instance.author = self.request.user
@@ -314,17 +314,17 @@ class EditRecipeView(
 
     def get_success_url(self) -> str:
         """
-            It gets the success URL after editing a recipe.
+        It gets the success URL after editing a recipe.
         """
 
         return reverse("recipe_details", kwargs={"recipe_slug": self.object.slug})
 
     def get_context_data(self, **kwargs) -> Dict[str, Any]:
         """
-            It prepares the context data for the recipe editing view.
-            It initializes a formset for recipe ingredients and adds it to the context.
-            If the request is a POST request, it populates the formset with the submitted data.
-            If it's a GET request, it initializes an empty formset.
+        It prepares the context data for the recipe editing view.
+        It initializes a formset for recipe ingredients and adds it to the context.
+        If the request is a POST request, it populates the formset with the submitted data.
+        If it's a GET request, it initializes an empty formset.
         """
 
         data = super().get_context_data(**kwargs)
@@ -363,7 +363,7 @@ class EditCommentView(
 
     def get_success_url(self) -> str:
         """
-            It gets the success URL after editing a comment.
+        It gets the success URL after editing a comment.
         """
 
         return reverse(
@@ -382,7 +382,7 @@ class DeleteCommentView(
 
     def get_success_url(self) -> str:
         """
-            It gets the success URL after deleting a comment.
+        It gets the success URL after deleting a comment.
         """
         return reverse(
             "recipe_details",
@@ -395,8 +395,8 @@ class DeleteCommentView(
 @login_required
 def save_recipe(request: HttpRequest, recipe_slug) -> HttpResponse:
     """
-        It saves a recipe for the logged-in user.
-        If the recipe is already saved, it shows a warning message.
+    It saves a recipe for the logged-in user.
+    If the recipe is already saved, it shows a warning message.
     """
 
     recipe = Recipe.objects.get(slug=recipe_slug)
@@ -417,7 +417,7 @@ def save_recipe(request: HttpRequest, recipe_slug) -> HttpResponse:
 @login_required
 def remove_saved_recipe(request: HttpRequest, recipe_slug: str) -> HttpResponse:
     """
-        It removes a saved recipe for the logged-in user.
+    It removes a saved recipe for the logged-in user.
     """
 
     recipe = Recipe.objects.get(slug=recipe_slug)
@@ -434,9 +434,9 @@ def remove_saved_recipe(request: HttpRequest, recipe_slug: str) -> HttpResponse:
 
 def like_recipe(request: HttpRequest, recipe_slug: str, user_pk) -> HttpResponse:
     """
-        It toggles the like status of a recipe for a specific user.
-        If the user has already liked the recipe, it removes the like.
-        If the user has not liked the recipe, it creates a new like.
+    It toggles the like status of a recipe for a specific user.
+    If the user has already liked the recipe, it removes the like.
+    If the user has not liked the recipe, it creates a new like.
     """
     recipe = Recipe.objects.get(slug=recipe_slug)
     user = UserModel.objects.get(pk=user_pk)
@@ -459,7 +459,7 @@ def like_recipe(request: HttpRequest, recipe_slug: str, user_pk) -> HttpResponse
 
 def copy_recipe_link(request: HttpResponse, recipe_slug) -> HttpResponse:
     """
-        It copies the recipe link to the clipboard.
+    It copies the recipe link to the clipboard.
     """
 
     copy(request.META.get("HTTP_REFERER", "/"))

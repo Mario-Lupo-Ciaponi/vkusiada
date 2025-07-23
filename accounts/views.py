@@ -1,12 +1,12 @@
 from django.conf import settings
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from django.contrib.auth.views import LoginView
 from django.http import HttpRequest, HttpResponse
-from django.shortcuts import render, redirect
-from django.core.mail import send_mail
+from django.shortcuts import redirect, get_object_or_404
 from django.urls import reverse_lazy, reverse
 from django.views.generic import FormView, CreateView, DetailView, UpdateView
-from django.contrib.auth import get_user_model, login
+from django.contrib.auth import get_user_model
+from django.contrib import messages
 
 from vkusiada.tasks import _send_mail
 from .forms import RegistrationForm, ContactForm, ProfileEditForm
@@ -52,7 +52,10 @@ class ContactView(FormView):
             recipient_list=[settings.DEFAULT_EMAIL],
         )
 
+        messages.success(self.request, message="Email sent successfully!")
+
         return super().form_valid(form)
+
 
 class AccountDetails(DetailView):
     model = UserModel
@@ -77,3 +80,23 @@ class EditProfileView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
         return (
             self.request.user.is_superuser or self.request.user.pk == self.kwargs["pk"]
         )
+
+
+@login_required
+def follow_or_unfollow_user(request: HttpRequest, pk: int) -> HttpResponse:
+    target_user = get_object_or_404(UserModel, pk=pk)
+
+    if request.user == target_user:
+        messages.error(request, "Cannot follow yourself!")
+        return redirect("account-details",  target_user.pk)
+
+    target_profile = Profile.objects.get(user=target_user)
+
+    if target_profile.followers.filter(pk=request.user.pk).exists():
+        target_profile.followers.remove(request.user)
+        messages.success(request, f"{target_user.username} unfollowed successfully!")
+    else:
+        target_profile.followers.add(request.user)
+        messages.success(request, f"{target_user.username} followed successfully!")
+
+    return redirect("account-details", target_user.pk)

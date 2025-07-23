@@ -38,6 +38,12 @@ class Profile(models.Model):
         null=True,
         blank=True,
     )
+    followers = models.ManyToManyField(
+        VkusiadaUser,
+        symmetrical=False,
+        related_name="following_profiles",
+        blank=True,
+    )
 
     def __str__(self):
         return self.user.username
