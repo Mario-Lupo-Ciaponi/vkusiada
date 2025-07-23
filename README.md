@@ -105,17 +105,20 @@ by leveraging user input, ingredient tracking, and a vibrant recipe-sharing comm
 ```
 vkusiada/
 │
-├── accounts/            # User authentication and profile management
-├── common/              # Shared utilities and components
-├── ingredients/         # App for managing ingredients
-├── recipes/             # Core app for recipe management
-├── static/              # CSS files, images, and static assets
-├── templates/           # Django HTML templates (accounts, recipes, common, etc.)
-├── vkusiada/            # Main Django project settings and configuration
-├── LICENSE              # MIT License
-├── manage.py            # Django management script
-├── README.md            # This file
-└── requirements.txt     # Python dependencies
+├── accounts/                 # User authentication and profile management
+├── common/                   # Shared utilities and components
+├── ingredients/              # App for managing ingredients
+├── recipes/                  # Core app for recipe management
+├── static/                   # CSS files, images, and static assets
+├── templates/                # Django HTML templates (accounts, recipes, common, etc.)
+├── vkusiada/                 # Main Django project settings and configuration
+├── .flake8                   # Setting for flake8 linter
+├── .pre-commit-config.yaml   # Flake8 and Black pre-commit configuration
+├── LICENSE                   # MIT License
+├── manage.py                 # Django management script
+├── pyproject.toml            # Settings of black formatter
+├── README.md                 # This file
+└── requirements.txt          # Python dependencies
 ```
 ---
 
