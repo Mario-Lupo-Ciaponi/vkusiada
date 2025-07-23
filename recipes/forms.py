@@ -16,9 +16,6 @@ class BaseCommentForm(forms.ModelForm):
         }
 
 
-123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890
-
-
 class AddCommentForm(BaseCommentForm):
     class Meta(BaseCommentForm.Meta):
         widgets = {
@@ -56,12 +53,10 @@ class BaseRecipeForm(forms.ModelForm):
         }
 
 
-class CreateRecipeForm(BaseRecipeForm):
-    ...
+class CreateRecipeForm(BaseRecipeForm): ...
 
 
-class EditRecipeForm(BaseRecipeForm):
-    ...
+class EditRecipeForm(BaseRecipeForm): ...
 
 
 RecipeIngredientFormSet = inlineformset_factory(

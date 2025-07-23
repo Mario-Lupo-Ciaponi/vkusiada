@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.views import LoginView
 from django.http import HttpRequest, HttpResponse
@@ -7,6 +8,7 @@ from django.urls import reverse_lazy, reverse
 from django.views.generic import FormView, CreateView, DetailView, UpdateView
 from django.contrib.auth import get_user_model, login
 
+from vkusiada.tasks import _send_mail
 from .forms import RegistrationForm, ContactForm, ProfileEditForm
 from .models import Profile
 
@@ -39,9 +41,18 @@ class ContactView(FormView):
         return super().get_context_data(**kwargs)
 
     def form_valid(self, form):
-        print("Email sent!")
-        super().form_valid(form)
+        email = form.cleaned_data["email"]
+        subject = form.cleaned_data["subject"]
+        content = form.cleaned_data["content"]
 
+        _send_mail.delay(
+            subject=subject,
+            message=content,
+            from_email=email,
+            recipient_list=[settings.DEFAULT_EMAIL],
+        )
+
+        return super().form_valid(form)
 
 class AccountDetails(DetailView):
     model = UserModel
