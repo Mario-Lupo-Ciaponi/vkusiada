@@ -50,10 +50,10 @@ class RecipeDetailView(SlugUrlKwargMixin, DetailView, FormMixin):
 
     def get_context_data(self, **kwargs) -> Dict[str, Any]:
         """
-        It adds into the context form(search form), total_likes and has_user_liked.
-        It filters like to see if the user has liked the recipe, then checks whether
-        the user is authenticated, because a anonymous user cannot like recipes, he/she
-        must login first.
+            It adds into the context form(search form), total_likes and has_user_liked.
+            It filters like to see if the user has liked the recipe, then checks whether
+            the user is authenticated, because a anonymous user cannot like recipes, he/she
+            must login first.
         """
         user = self.request.user
         has_user_liked = False
@@ -103,6 +103,62 @@ class RecipeDetailView(SlugUrlKwargMixin, DetailView, FormMixin):
         return redirect("login")
 
 
+class SearchRecipeView(CategoryFilteringMixin, RecipeListViewMixin, ListView):
+    model = Recipe
+    template_name = "recipes/search-recipe.html"
+
+    def get_context_data(self, *, object_list=None, **kwargs) -> Dict[str, Any]:
+        """
+        It updates the context with the search form and the query parameter.
+        This method is called when rendering the template.
+        """
+        kwargs.update(
+            {
+                "search_form": self.form_class(),
+                "query": self.request.GET.get(self.query_param, ""),
+            }
+        )
+        return super().get_context_data(object_list=object_list, **kwargs)
+
+    def get_queryset(self):
+        """
+        It retrieves the recipes based on the search value and category value.
+        If the user is authenticated, it excludes the recipes that the user has already saved.
+        It filters the recipes based on the search value and category value.
+        If the search value or category value is provided, it filters the recipes by name and category.
+        """
+        user = self.request.user
+
+        search_value = self.request.GET.get("query")
+        category_value = self.request.GET.get("category")
+        date_added = self.request.GET.get("date_added")
+
+        added_on_option = "-" if date_added == "on" else ""
+
+        recipes = Recipe.objects.order_by(
+            f"{added_on_option}added_on",
+            "name",
+        )
+
+        search_query = Q(name__icontains=search_value)
+
+        if category_value == "All":
+            category_query = Q()
+        else:
+            category_query = Q(category=category_value)
+
+        if search_value or category_value:
+            recipes = recipes.filter(search_query, category_query)
+
+        if user.is_authenticated:
+            user_recipes = UserRecipe.objects.filter(user=user)
+            recipes_names = [r.recipe.name for r in user_recipes]
+
+            recipes = recipes.exclude(name__in=recipes_names)
+
+        return recipes
+
+
 class FilteredCategoryView(RecipeListViewMixin, ListView):
     model = Recipe
     template_name = "recipes/category-recipes.html"
@@ -128,6 +184,9 @@ class FilteredCategoryView(RecipeListViewMixin, ListView):
         """
         category = self.kwargs.get("category")
         search_value = self.request.GET.get("query")
+        date_added = self.request.GET.get("date_added")
+
+        added_on_option = "-" if date_added == "on" else ""
 
         category_query = Q(category=category)
         name_query = Q(name__icontains="")
@@ -135,7 +194,8 @@ class FilteredCategoryView(RecipeListViewMixin, ListView):
         if search_value:
             name_query = Q(name__icontains=search_value)
 
-        recipes = Recipe.objects.filter(category_query, name_query).order_by("name")
+        recipes = (Recipe.objects.filter(category_query, name_query)
+                   .order_by(f"{added_on_option}added_on", "name"))
 
         return recipes
 
@@ -172,61 +232,26 @@ class SavedRecipesView(LoginRequiredMixin, CategoryFilteringMixin, ListView):
 
         search_value = self.request.GET.get("query")
         category_value = self.request.GET.get("category")
+        date_added = self.request.GET.get("date_added")
 
         search_query = Q(recipe__name__icontains=search_value)
-        category_query = Q(recipe__category=category_value)
+        added_on_option = "-" if date_added == "on" else ""
 
-        users_recipes = UserRecipe.objects.filter(user=user).order_by("recipe__name")
+        if category_value == "All":
+            category_query = Q()
+        else:
+            category_query = Q(category=category_value)
+
+        users_recipes = UserRecipe.objects.filter(user=user).order_by(
+            f"{added_on_option}recipe__added_on",
+            "recipe__name",
+        )
+
 
         if search_value or category_value:
             users_recipes = users_recipes.filter(search_query, category_query)
 
         return users_recipes
-
-
-class SearchRecipeView(CategoryFilteringMixin, RecipeListViewMixin, ListView):
-    model = Recipe
-    template_name = "recipes/search-recipe.html"
-
-    def get_context_data(self, *, object_list=None, **kwargs) -> Dict[str, Any]:
-        """
-        It updates the context with the search form and the query parameter.
-        This method is called when rendering the template.
-        """
-        kwargs.update(
-            {
-                "search_form": self.form_class(),
-                "query": self.request.GET.get(self.query_param, ""),
-            }
-        )
-        return super().get_context_data(object_list=object_list, **kwargs)
-
-    def get_queryset(self):
-        """
-        It retrieves the recipes based on the search value and category value.
-        If the user is authenticated, it excludes the recipes that the user has already saved.
-        It filters the recipes based on the search value and category value.
-        If the search value or category value is provided, it filters the recipes by name and category.
-        """
-        user = self.request.user
-
-        search_value = self.request.GET.get("query")
-        category_value = self.request.GET.get("category")
-        recipes = Recipe.objects.order_by("name")
-
-        search_query = Q(name__icontains=search_value)
-        category_query = Q(category=category_value)
-
-        if search_value or category_value:
-            recipes = recipes.filter(search_query, category_query)
-
-        if user.is_authenticated:
-            user_recipes = UserRecipe.objects.filter(user=user)
-            recipes_names = [r.recipe.name for r in user_recipes]
-
-            recipes = recipes.exclude(name__in=recipes_names)
-
-        return recipes
 
 
 class RecipesCreatedByUserView(ListView):
@@ -246,6 +271,7 @@ class RecipesCreatedByUserView(ListView):
                 "search_form": self.form_class(),
                 "query": self.request.GET.get(self.query_param, ""),
                 "author": get_object_or_404(UserModel, pk=self.kwargs.get("user_pk")),
+                "show_category_field": True,
             }
         )
         return super().get_context_data(object_list=object_list, **kwargs)
@@ -255,13 +281,29 @@ class RecipesCreatedByUserView(ListView):
         It retrieves the recipes created by a specific user.
         It filters the recipes based on the search value.
         """
+
         user_pk = self.kwargs.get("user_pk")
 
         search_value = self.request.GET.get("query")
-        recipes = Recipe.objects.filter(author__pk=user_pk).order_by("name")
+        category_value = self.request.GET.get("category")
+        date_added = self.request.GET.get("date_added")
 
-        if search_value:
-            recipes = recipes.filter(name__icontains=search_value)
+        added_on_option = "-" if date_added == "on" else ""
+
+        search_query = Q(name__icontains=search_value)
+
+        if category_value == "All":
+            category_query = Q()
+        else:
+            category_query = Q(category=category_value)
+
+        recipes = Recipe.objects.filter(author__pk=user_pk).order_by(
+            f"{added_on_option}added_on",
+            "name",
+        )
+
+        if search_value or category_value:
+            recipes = recipes.filter(search_query, category_query)
 
         return recipes
 
@@ -275,6 +317,7 @@ class CreateRecipeView(LoginRequiredMixin, FormValidMixin, CreateView):
         """
         It gets the success URL after creating a recipe.
         """
+
         return reverse("recipe_details", kwargs={"recipe_slug": self.object.slug})
 
     def get_context_data(self, **kwargs) -> Dict[str, Any]:
@@ -383,7 +426,7 @@ class DeleteCommentView(
 
     def get_success_url(self) -> str:
         """
-        It gets the success URL after deleting a comment.
+            It gets the success URL after deleting a comment.
         """
         return reverse(
             "recipe_details",
@@ -396,8 +439,8 @@ class DeleteCommentView(
 @login_required
 def save_recipe(request: HttpRequest, recipe_slug) -> HttpResponse:
     """
-    It saves a recipe for the logged-in user.
-    If the recipe is already saved, it shows a warning message.
+        It saves a recipe for the logged-in user.
+        If the recipe is already saved, it shows a warning message.
     """
 
     recipe = Recipe.objects.get(slug=recipe_slug)
@@ -418,7 +461,7 @@ def save_recipe(request: HttpRequest, recipe_slug) -> HttpResponse:
 @login_required
 def remove_saved_recipe(request: HttpRequest, recipe_slug: str) -> HttpResponse:
     """
-    It removes a saved recipe for the logged-in user.
+        It removes a saved recipe for the logged-in user.
     """
 
     recipe = Recipe.objects.get(slug=recipe_slug)
@@ -435,9 +478,9 @@ def remove_saved_recipe(request: HttpRequest, recipe_slug: str) -> HttpResponse:
 
 def like_recipe(request: HttpRequest, recipe_slug: str, user_pk) -> HttpResponse:
     """
-    It toggles the like status of a recipe for a specific user.
-    If the user has already liked the recipe, it removes the like.
-    If the user has not liked the recipe, it creates a new like.
+        It toggles the like status of a recipe for a specific user.
+        If the user has already liked the recipe, it removes the like.
+        If the user has not liked the recipe, it creates a new like.
     """
     recipe = Recipe.objects.get(slug=recipe_slug)
     user = UserModel.objects.get(pk=user_pk)
@@ -460,7 +503,7 @@ def like_recipe(request: HttpRequest, recipe_slug: str, user_pk) -> HttpResponse
 
 def copy_recipe_link(request: HttpResponse, recipe_slug) -> HttpResponse:
     """
-    It copies the recipe link to the clipboard.
+        It copies the recipe link to the clipboard.
     """
 
     copy(request.META.get("HTTP_REFERER", "/"))

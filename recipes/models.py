@@ -11,7 +11,7 @@ from common.mixins import SlugMixIn, AddedOnMixIn
 User = get_user_model()
 
 
-class Recipe(SlugMixIn):
+class Recipe(SlugMixIn, AddedOnMixIn):
     name = models.CharField(
         max_length=100,
         unique=True,

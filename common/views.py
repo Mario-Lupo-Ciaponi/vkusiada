@@ -2,7 +2,7 @@ from typing import Dict, Any, Union
 
 from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.db.models import QuerySet
+from django.db.models import QuerySet, Q
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render
 from django.views.generic import TemplateView, ListView
@@ -32,7 +32,13 @@ class IndexView(CategoryFilteringMixin, RecipeListViewMixin, ListView):
 
     def get_queryset(self) -> QuerySet[Recipe, Recipe] | QuerySet[Recipe]:
         user = self.request.user
-        search_query = self.request.GET.get("query")
+
+        search_value = self.request.GET.get("query")
+        category_value = self.request.GET.get("category")
+        category_value = self.request.GET.get("category")
+        date_added = self.request.GET.get("date_added")
+
+        added_on_option = "-" if date_added == "on" else ""
 
         if not user.is_authenticated:
             return Recipe.objects.none()
@@ -50,10 +56,20 @@ class IndexView(CategoryFilteringMixin, RecipeListViewMixin, ListView):
 
         recipes = recipes.exclude(name__in=recipes_names)
 
-        if search_query:
-            recipes = recipes.filter(name__icontains=search_query)
+        search_query = Q(name__icontains=search_value)
 
-        return recipes
+        if category_value == "All":
+            category_query = Q()
+        else:
+            category_query = Q(category=category_value)
+
+        if search_value or category_value:
+            recipes = recipes.filter(search_query, category_query)
+
+        return recipes.order_by(
+            f"{added_on_option}added_on",
+            "name",
+        )
 
 
 def about_us_view(request: HttpRequest) -> HttpResponse:

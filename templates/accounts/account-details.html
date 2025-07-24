@@ -25,20 +25,22 @@
 
       {% include "common/messages.html" %}
 
+      {% if user.is_staff %}
+        <p class="admin-p">Admin</p>
+      {% endif %}
+    </header>
+
+    <div class="follow-container">
       {% if not request.user == user %}
-      	<a class="follow-profile" href="{% url "follow-user" user.pk %}">
+        <a class="follow-profile" href="{% url "follow-user" user.pk %}">
           {% if request.user in user.profile.followers.all %}
             Unfollow
           {% else %}
             Follow
           {% endif %}
         </a>
-      {% endif %} 
-
-      {% if user.is_staff %}
-        <p class="admin-p">Admin</p>
       {% endif %}
-    </header>
+    </div>
 
     <section>
       <p>Date joined: {{ user.date_joined }}</p>

@@ -3,6 +3,8 @@ from common.choices import CategoryChoices
 
 
 class SearchForm(forms.Form):
+    CATEGORY_CHOICES = [("All", "All")] + list(CategoryChoices.choices)
+
     query = forms.CharField(
         label="",
         required=False,
@@ -12,10 +14,15 @@ class SearchForm(forms.Form):
     category = forms.ChoiceField(
         label="",
         required=False,
-        choices=CategoryChoices.choices,
+        choices=CATEGORY_CHOICES,
         widget=forms.Select(
             attrs={
                 "class": "search-select",
             }
         ),
+    )
+    date_added = forms.BooleanField(
+        required=False,
+        label="Latest",
+        initial=True,
     )

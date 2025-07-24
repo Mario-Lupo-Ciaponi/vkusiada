@@ -1,7 +1,18 @@
 <form class="search-bar" method="get">
-  {% if show_category_field %}
-  	{{ search_form.category }}
-  {% endif %}
+  <div class="search-bar-top">
+    {% if show_category_field %}
+      <div class="category-wrapper">
+        {{ search_form.category }}
+      </div>
+    {% endif %}
+
+    <div class="checkbox-wrapper">
+      <label class="checkbox-label">
+        {{ search_form.date_added }}
+        {{ search_form.date_added.label }}
+      </label>
+    </div>
+  </div>
 
   <div class="input-container">
     {{ search_form.query }}
@@ -10,3 +21,4 @@
     </button>
   </div>
 </form>
+

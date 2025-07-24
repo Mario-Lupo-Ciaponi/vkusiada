@@ -11,7 +11,7 @@ main {
 
 header {
   text-align: center;
-  margin-bottom: 40px;
+  margin-bottom: 5px;
 }
 
 .username {
@@ -31,6 +31,31 @@ header {
   border-radius: 25px;
   margin-top: 8px;
 }
+
+.follow-container {
+  text-align: center;
+  margin-bottom: 25px;
+}
+
+.follow-profile {
+  display: inline-block;
+  margin-top: 12px;
+  padding: 10px 22px;
+  border-radius: 30px;
+  background-color: #e8263f;
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 0.95rem;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08);
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.follow-profile:hover {
+  background-color: #c01e34;
+  transform: translateY(-2px);
+}
+
 
 section {
   text-align: center;
