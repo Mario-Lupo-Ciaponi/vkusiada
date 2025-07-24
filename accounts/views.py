@@ -88,7 +88,7 @@ def follow_or_unfollow_user(request: HttpRequest, pk: int) -> HttpResponse:
 
     if request.user == target_user:
         messages.error(request, "Cannot follow yourself!")
-        return redirect("account-details",  target_user.pk)
+        return redirect("account-details", target_user.pk)
 
     target_profile = Profile.objects.get(user=target_user)
 

@@ -115,6 +115,7 @@ class FilteredCategoryView(RecipeListViewMixin, ListView):
             {
                 "search_form": self.form_class(),
                 "query": self.request.GET.get(self.query_param, ""),
+                "category": self.kwargs.get("category"),
             }
         )
 

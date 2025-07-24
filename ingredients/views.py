@@ -10,7 +10,6 @@ from django.views.generic import DetailView, ListView
 from django.contrib import messages
 
 from common.forms import SearchForm
-from ingredients.models import Ingredient, UserIngredient
 from .models import Ingredient, UserIngredient
 
 

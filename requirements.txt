@@ -17,7 +17,6 @@ django-countries==7.6.1
 djangorestframework==3.16.0
 drf-spectacular==0.28.0
 filelock==3.18.0
-flake8==7.3.0
 identify==2.6.12
 idna==3.10
 inflection==0.5.1

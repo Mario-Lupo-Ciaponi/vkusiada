@@ -22,7 +22,7 @@ def send_liked_recipe_email(sender, instance: Like, created, **kwargs):
 @receiver(post_save, sender=Recipe)
 def send_followers_notification(sender, instance: Recipe, created, **kwargs):
     if created:
-        author  = instance.author
+        author = instance.author
         author_profile = author.profile
         author_followers = author_profile.followers.all()
 
@@ -33,4 +33,3 @@ def send_followers_notification(sender, instance: Recipe, created, **kwargs):
                 from_email=settings.DEFAULT_EMAIL,
                 recipient_list=[follower.email],
             )
-
