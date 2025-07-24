@@ -46,7 +46,8 @@ class BaseRecipeForm(forms.ModelForm):
             "name": forms.TextInput(attrs={"placeholder": "Enter recipe name"}),
             "cuisine": forms.TextInput(attrs={"placeholder": "Cuisine"}),
             "youtube_link": forms.URLInput(
-                attrs={"placeholder": "YouTube link (optional)"}
+                attrs={"placeholder": "YouTube link (optional)"},
+
             ),
             "image_url": forms.URLInput(attrs={"placeholder": "Image URL"}),
             "instructions": forms.Textarea(attrs={"placeholder": "Instructions"}),

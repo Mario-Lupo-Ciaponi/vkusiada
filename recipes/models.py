@@ -6,7 +6,7 @@ from common.choices import CategoryChoices
 from ingredients.models import Ingredient
 from accounts.models import VkusiadaUser
 from common.mixins import SlugMixIn, AddedOnMixIn
-
+from recipes.validations import IsYoutubeLinkValidValidator
 
 User = get_user_model()
 
@@ -23,6 +23,9 @@ class Recipe(SlugMixIn, AddedOnMixIn):
     youtube_link = models.URLField(
         null=True,
         blank=True,
+        validators=[
+            IsYoutubeLinkValidValidator(),
+        ]
     )
     image_url = models.URLField()
     instructions = models.TextField()

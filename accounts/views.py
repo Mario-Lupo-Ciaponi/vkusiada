@@ -31,6 +31,10 @@ class ContactView(FormView):
     template_name = "accounts/contact.html"
 
     def get_context_data(self, **kwargs):
+        """
+        Get the context data for the contact page.
+        This method adds the contact form and the current page identifier to the context.
+        """
         kwargs.update(
             {
                 "contact_form": self.get_form_class(),
@@ -41,6 +45,10 @@ class ContactView(FormView):
         return super().get_context_data(**kwargs)
 
     def form_valid(self, form):
+        """
+        Handle the form submission for the contact page.
+        This method sends an email using the provided form data and displays a success message.
+        """
         email = form.cleaned_data["email"]
         subject = form.cleaned_data["subject"]
         content = form.cleaned_data["content"]
@@ -69,6 +77,9 @@ class EditProfileView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     template_name = "accounts/profile-edit.html"
 
     def get_success_url(self):
+        """
+        Get the URL to redirect to after a successful profile edit.
+        """
         return reverse(
             "account-details",
             kwargs={
@@ -77,6 +88,10 @@ class EditProfileView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
         )
 
     def test_func(self):
+        """
+        Check if the user is allowed to edit the profile.
+        Only superusers or the user themselves can edit their profile.
+        """
         return (
             self.request.user.is_superuser or self.request.user.pk == self.kwargs["pk"]
         )
@@ -84,6 +99,11 @@ class EditProfileView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
 
 @login_required
 def follow_or_unfollow_user(request: HttpRequest, pk: int) -> HttpResponse:
+    """
+    Follow or unfollow a user.
+    If the user is already following the target user, they will be unfollowed.
+    If the user is not following the target user, they will be followed.
+    """
     target_user = get_object_or_404(UserModel, pk=pk)
 
     if request.user == target_user:
@@ -98,5 +118,6 @@ def follow_or_unfollow_user(request: HttpRequest, pk: int) -> HttpResponse:
     else:
         target_profile.followers.add(request.user)
         messages.success(request, f"{target_user.username} followed successfully!")
+        # Note: There is a signal that sends a notification email when a user is followed.
 
     return redirect("account-details", target_user.pk)

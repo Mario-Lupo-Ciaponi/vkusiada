@@ -50,10 +50,10 @@ class RecipeDetailView(SlugUrlKwargMixin, DetailView, FormMixin):
 
     def get_context_data(self, **kwargs) -> Dict[str, Any]:
         """
-            It adds into the context form(search form), total_likes and has_user_liked.
-            It filters like to see if the user has liked the recipe, then checks whether
-            the user is authenticated, because a anonymous user cannot like recipes, he/she
-            must login first.
+        It adds into the context form(search form), total_likes and has_user_liked.
+        It filters like to see if the user has liked the recipe, then checks whether
+        the user is authenticated, because a anonymous user cannot like recipes, he/she
+        must login first.
         """
         user = self.request.user
         has_user_liked = False
@@ -194,8 +194,9 @@ class FilteredCategoryView(RecipeListViewMixin, ListView):
         if search_value:
             name_query = Q(name__icontains=search_value)
 
-        recipes = (Recipe.objects.filter(category_query, name_query)
-                   .order_by(f"{added_on_option}added_on", "name"))
+        recipes = Recipe.objects.filter(category_query, name_query).order_by(
+            f"{added_on_option}added_on", "name"
+        )
 
         return recipes
 
@@ -242,11 +243,14 @@ class SavedRecipesView(LoginRequiredMixin, CategoryFilteringMixin, ListView):
         else:
             category_query = Q(category=category_value)
 
-        users_recipes = UserRecipe.objects.filter(user=user).order_by(
-            f"{added_on_option}recipe__added_on",
-            "recipe__name",
+        users_recipes = (
+            UserRecipe.objects.filter(user=user)
+            .select_related("recipe")
+            .order_by(
+                f"{added_on_option}recipe__added_on",
+                "recipe__name",
+            )
         )
-
 
         if search_value or category_value:
             users_recipes = users_recipes.filter(search_query, category_query)
@@ -344,6 +348,8 @@ class CreateRecipeView(LoginRequiredMixin, FormValidMixin, CreateView):
         It sets the author of the recipe to the current user before saving.
         """
 
+        # Note: There is a signal that sends a notification email when a recipe is created to the user's followers.
+
         form.instance.author = self.request.user
         return super().form_valid(form)
 
@@ -426,7 +432,7 @@ class DeleteCommentView(
 
     def get_success_url(self) -> str:
         """
-            It gets the success URL after deleting a comment.
+        It gets the success URL after deleting a comment.
         """
         return reverse(
             "recipe_details",
@@ -439,8 +445,8 @@ class DeleteCommentView(
 @login_required
 def save_recipe(request: HttpRequest, recipe_slug) -> HttpResponse:
     """
-        It saves a recipe for the logged-in user.
-        If the recipe is already saved, it shows a warning message.
+    It saves a recipe for the logged-in user.
+    If the recipe is already saved, it shows a warning message.
     """
 
     recipe = Recipe.objects.get(slug=recipe_slug)
@@ -461,7 +467,7 @@ def save_recipe(request: HttpRequest, recipe_slug) -> HttpResponse:
 @login_required
 def remove_saved_recipe(request: HttpRequest, recipe_slug: str) -> HttpResponse:
     """
-        It removes a saved recipe for the logged-in user.
+    It removes a saved recipe for the logged-in user.
     """
 
     recipe = Recipe.objects.get(slug=recipe_slug)
@@ -478,9 +484,9 @@ def remove_saved_recipe(request: HttpRequest, recipe_slug: str) -> HttpResponse:
 
 def like_recipe(request: HttpRequest, recipe_slug: str, user_pk) -> HttpResponse:
     """
-        It toggles the like status of a recipe for a specific user.
-        If the user has already liked the recipe, it removes the like.
-        If the user has not liked the recipe, it creates a new like.
+    It toggles the like status of a recipe for a specific user.
+    If the user has already liked the recipe, it removes the like.
+    If the user has not liked the recipe, it creates a new like.
     """
     recipe = Recipe.objects.get(slug=recipe_slug)
     user = UserModel.objects.get(pk=user_pk)
@@ -503,7 +509,7 @@ def like_recipe(request: HttpRequest, recipe_slug: str, user_pk) -> HttpResponse
 
 def copy_recipe_link(request: HttpResponse, recipe_slug) -> HttpResponse:
     """
-        It copies the recipe link to the clipboard.
+    It copies the recipe link to the clipboard.
     """
 
     copy(request.META.get("HTTP_REFERER", "/"))
