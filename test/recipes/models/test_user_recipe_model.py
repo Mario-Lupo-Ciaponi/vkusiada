@@ -33,18 +33,22 @@ class TestUserRecipeModel(TestCase):
         )
 
     def test__m2m_trough_relation__returns_true(self):
-        exists = UserRecipe.objects.filter(user=self.test_author, recipe=self.test_recipe).exists()
+        exists = UserRecipe.objects.filter(
+            user=self.test_author, recipe=self.test_recipe
+        ).exists()
 
         self.assertTrue(exists)
 
     def test__model_str_method__returns_name(self):
-        self.assertEqual(f"{self.test_author.username} - {self.test_recipe.name}", str(self.test_user_recipe))
+        self.assertEqual(
+            f"{self.test_author.username} - {self.test_recipe.name}",
+            str(self.test_user_recipe),
+        )
 
-    def test__unique_constraint_of_recipe_and_ingredient_field__raises_integrity_error(self):
+    def test__unique_constraint_of_recipe_and_ingredient_field__raises_integrity_error(
+        self,
+    ):
         with self.assertRaises(IntegrityError) as ie:
-            UserRecipe.objects.create(
-                recipe=self.test_recipe,
-                user=self.test_author
-            )
+            UserRecipe.objects.create(recipe=self.test_recipe, user=self.test_author)
 
         self.assertIn("UNIQUE", str(ie.exception).upper())

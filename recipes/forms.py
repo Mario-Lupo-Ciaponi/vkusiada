@@ -47,7 +47,6 @@ class BaseRecipeForm(forms.ModelForm):
             "cuisine": forms.TextInput(attrs={"placeholder": "Cuisine"}),
             "youtube_link": forms.URLInput(
                 attrs={"placeholder": "YouTube link (optional)"},
-
             ),
             "image_url": forms.URLInput(attrs={"placeholder": "Image URL"}),
             "instructions": forms.Textarea(attrs={"placeholder": "Instructions"}),
@@ -67,3 +66,5 @@ RecipeIngredientFormSet = inlineformset_factory(
     extra=1,
     can_delete=True,  # Needed for deletions
 )
+
+# TODO: Do tests for RecipeIngredientFormSet

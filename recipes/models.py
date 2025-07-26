@@ -25,7 +25,7 @@ class Recipe(SlugMixIn, AddedOnMixIn):
         blank=True,
         validators=[
             IsYoutubeLinkValidValidator(),
-        ]
+        ],
     )
     image_url = models.URLField()
     instructions = models.TextField()

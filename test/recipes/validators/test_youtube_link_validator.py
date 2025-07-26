@@ -13,7 +13,9 @@ class TestIsYoutubeLinkValidValidator(TestCase):
 
     def test__validator_with_invalid_data__raises_validation_error(self):
         with self.assertRaises(ValidationError) as ve:
-            self.validator("https://github.com/DiyanKalaydzhiev23/Django-Advanced/blob/"
-                           "master/Testing/forumApp/test/posts/validators/test_bad_language_validator.py")
+            self.validator(
+                "https://github.com/DiyanKalaydzhiev23/Django-Advanced/blob/"
+                "master/Testing/forumApp/test/posts/validators/test_bad_language_validator.py"
+            )
 
         self.assertTrue(str(ve))

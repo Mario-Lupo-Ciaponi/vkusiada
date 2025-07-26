@@ -7,7 +7,7 @@ from django.utils.deconstruct import deconstructible
 
 @deconstructible
 class IsYoutubeLinkValidValidator:
-    def __init__(self, message: Optional[str]=None) -> None:
+    def __init__(self, message: Optional[str] = None) -> None:
         self.message = message or "The YouTube URL is not Valid!"
 
     def __call__(self, value: str) -> None:

@@ -34,22 +34,24 @@ class TestRecipeModel(TestCase):
         )
 
         self.test_recipe_ingredient = RecipeIngredient.objects.create(
-            recipe=self.test_recipe,
-            ingredient=self.test_ingredient,
-            measure="2g"
+            recipe=self.test_recipe, ingredient=self.test_ingredient, measure="2g"
         )
 
     def test__m2m_trough_relation__returns_true(self):
         self.assertIn(self.test_ingredient, self.test_recipe.ingredients.all())
-        
-    def test__model_str_method__returns_name(self):
-        self.assertEqual(f"{self.test_recipe.name} - {self.test_ingredient.name}", str(self.test_recipe_ingredient))
 
-    def test__unique_constraint_of_recipe_and_ingredient_field__raises_integrity_error(self):
+    def test__model_str_method__returns_name(self):
+        self.assertEqual(
+            f"{self.test_recipe.name} - {self.test_ingredient.name}",
+            str(self.test_recipe_ingredient),
+        )
+
+    def test__unique_constraint_of_recipe_and_ingredient_field__raises_integrity_error(
+        self,
+    ):
         with self.assertRaises(IntegrityError) as ie:
             RecipeIngredient.objects.create(
-                recipe=self.test_recipe,
-                ingredient=self.test_ingredient
+                recipe=self.test_recipe, ingredient=self.test_ingredient
             )
 
         self.assertIn("UNIQUE", str(ie.exception).upper())
