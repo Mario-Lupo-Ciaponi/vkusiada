@@ -8,6 +8,7 @@ from accounts.models import VkusiadaUser
 from common.mixins import SlugMixIn, AddedOnMixIn
 from recipes.validations import IsYoutubeLinkValidValidator
 
+
 User = get_user_model()
 
 
@@ -46,6 +47,9 @@ class Recipe(SlugMixIn, AddedOnMixIn):
 
     def __str__(self):
         return self.name
+
+    class Meta:
+        ordering = ["name"]
 
 
 class RecipeIngredient(models.Model):

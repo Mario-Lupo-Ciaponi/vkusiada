@@ -56,9 +56,9 @@ class IndexView(CategoryFilteringMixin, RecipeListViewMixin, ListView):
 
         recipes = recipes.exclude(name__in=recipes_names)
 
-        search_query = Q(name__icontains=search_value)
+        search_query = Q(name__icontains=search_value) if search_value else Q()
 
-        if category_value == "All":
+        if category_value == "All" or category_value is None:
             category_query = Q()
         else:
             category_query = Q(category=category_value)
