@@ -71,4 +71,3 @@ class TestBaseForm(TestCase):
             "instructions",
             self.form.fields,
         )
-

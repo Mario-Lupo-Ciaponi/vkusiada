@@ -9,10 +9,9 @@ from ingredients.models import Ingredient, UserIngredient
 UserModel = get_user_model()
 
 
-
 class TestIndexView(TestCase):
     def setUp(self):
-        self.user_credentials= {
+        self.user_credentials = {
             "username": "TestUser",
             "email": "test@test.com",
             "password": "123test1235",
@@ -30,9 +29,7 @@ class TestIndexView(TestCase):
             author=self.user,
         )
 
-        self.test_ingredient = Ingredient.objects.create(
-            name="Test Ingredient"
-        )
+        self.test_ingredient = Ingredient.objects.create(name="Test Ingredient")
 
         self.test_recipe_ingredient = RecipeIngredient.objects.create(
             recipe=self.test_recipe,
@@ -47,28 +44,39 @@ class TestIndexView(TestCase):
 
         self.client.login(
             username=self.user_credentials["username"],
-            password=self.user_credentials["password"]
+            password=self.user_credentials["password"],
         )
 
-    def test__rendered_template_if_user_not_authenticated__should_display_appropriate_message(self):
+    def test__rendered_template_if_user_not_authenticated__should_display_appropriate_message(
+        self,
+    ):
         self.client.logout()
         response = self.client.get(reverse("index"))
 
-        self.assertContains(response, "Hey! If you want suggestions based on your ingredients, you need to")
+        self.assertContains(
+            response,
+            "Hey! If you want suggestions based on your ingredients, you need to",
+        )
 
-    def test__rendered_template_if_user_is_authenticated_but_does_not_have_ingredients__should_display_appropriate_message(self):
+    def test__rendered_template_if_user_is_authenticated_but_does_not_have_ingredients__should_display_appropriate_message(
+        self,
+    ):
         UserIngredient.objects.all().delete()
 
         response = self.client.get(reverse("index"))
 
         self.assertContains(response, "No recipe suggestions...")
 
-    def test__rendered_template_if_user_is_authenticated_and_has_ingredients__should_display_appropriate_message(self):
+    def test__rendered_template_if_user_is_authenticated_and_has_ingredients__should_display_appropriate_message(
+        self,
+    ):
         response = self.client.get(reverse("index"))
 
         self.assertContains(response, "Test Recipe")
 
-    def test__rendered_template_if_user_is_authenticated_and_has_a_recipe_saved__should_display_only_one_recipe(self):
+    def test__rendered_template_if_user_is_authenticated_and_has_a_recipe_saved__should_display_only_one_recipe(
+        self,
+    ):
         recipe_test_2 = Recipe.objects.create(
             name="Test Recipe 2",
             category="Dessert",
@@ -80,14 +88,10 @@ class TestIndexView(TestCase):
         )
 
         RecipeIngredient.objects.create(
-            recipe=recipe_test_2,
-            ingredient=self.test_ingredient
+            recipe=recipe_test_2, ingredient=self.test_ingredient
         )
 
-        UserRecipe.objects.create(
-            recipe=self.test_recipe,
-            user=self.user
-        )
+        UserRecipe.objects.create(recipe=self.test_recipe, user=self.user)
 
         response = self.client.get(reverse("index"))
 
@@ -105,8 +109,7 @@ class TestIndexView(TestCase):
         )
 
         RecipeIngredient.objects.create(
-            recipe=recipe_test_2,
-            ingredient=self.test_ingredient
+            recipe=recipe_test_2, ingredient=self.test_ingredient
         )
 
         response = self.client.get(reverse("index"), {"query": "chiCken"})
@@ -126,8 +129,7 @@ class TestIndexView(TestCase):
         )
 
         RecipeIngredient.objects.create(
-            recipe=recipe_test_2,
-            ingredient=self.test_ingredient
+            recipe=recipe_test_2, ingredient=self.test_ingredient
         )
 
         response = self.client.get(reverse("index"), {"category": "Entrees"})
@@ -147,8 +149,7 @@ class TestIndexView(TestCase):
         )
 
         RecipeIngredient.objects.create(
-            recipe=recipe_test_2,
-            ingredient=self.test_ingredient
+            recipe=recipe_test_2, ingredient=self.test_ingredient
         )
 
         response = self.client.get(reverse("index"), {"category": "All"})
@@ -168,8 +169,7 @@ class TestIndexView(TestCase):
         )
 
         RecipeIngredient.objects.create(
-            recipe=recipe_test_2,
-            ingredient=self.test_ingredient
+            recipe=recipe_test_2, ingredient=self.test_ingredient
         )
 
         recipe_test_3 = Recipe.objects.create(
@@ -183,27 +183,25 @@ class TestIndexView(TestCase):
         )
 
         RecipeIngredient.objects.create(
-            recipe=recipe_test_3,
-            ingredient=self.test_ingredient
+            recipe=recipe_test_3, ingredient=self.test_ingredient
         )
 
-        response = self.client.get(reverse("index"), {"category": "Entrees", "query": "paSTa"})
+        response = self.client.get(
+            reverse("index"), {"category": "Entrees", "query": "paSTa"}
+        )
 
         self.assertContains(response, "Pasta")
         self.assertNotContains(response, "Pizza")
         self.assertNotContains(response, "Test Recipe")
 
-    def test__user_has_ingredients_but_no_recipes_use_them__should_display_appropriate_message(self):
+    def test__user_has_ingredients_but_no_recipes_use_them__should_display_appropriate_message(
+        self,
+    ):
         UserIngredient.objects.all().delete()
 
-        test_ingredient_2 = Ingredient.objects.create(
-            name="Second test ingredient"
-        )
+        test_ingredient_2 = Ingredient.objects.create(name="Second test ingredient")
 
-        UserIngredient.objects.create(
-            user=self.user,
-            ingredient=test_ingredient_2
-        )
+        UserIngredient.objects.create(user=self.user, ingredient=test_ingredient_2)
 
         response = self.client.get(reverse("index"))
 
@@ -233,4 +231,3 @@ class TestIndexView(TestCase):
         response = self.client.get(reverse("index"))
 
         self.assertEqual("index", response.context["current_page"])
-
