@@ -1,3 +1,5 @@
+from django.core.exceptions import PermissionDenied
+from django.views.decorators.http import require_POST
 from pyperclip import copy
 from typing import Dict, Any
 
@@ -19,6 +21,7 @@ from django.views.generic import (
 )
 from django.views.generic.edit import FormMixin
 from django.contrib import messages
+from rest_framework.status import HTTP_403_FORBIDDEN
 
 from common.models import Like
 from .models import Recipe, Comment, UserRecipe
@@ -442,6 +445,7 @@ class DeleteCommentView(
         )
 
 
+@require_POST
 @login_required
 def save_recipe(request: HttpRequest, recipe_slug) -> HttpResponse:
     """
@@ -464,6 +468,7 @@ def save_recipe(request: HttpRequest, recipe_slug) -> HttpResponse:
     return redirect(request.META.get("HTTP_REFERER", "/"))
 
 
+@require_POST
 @login_required
 def remove_saved_recipe(request: HttpRequest, recipe_slug: str) -> HttpResponse:
     """
@@ -482,7 +487,8 @@ def remove_saved_recipe(request: HttpRequest, recipe_slug: str) -> HttpResponse:
     return redirect(request.META.get("HTTP_REFERER", "/"))
 
 
-def like_recipe(request: HttpRequest, recipe_slug: str, user_pk) -> HttpResponse:
+@login_required
+def like_recipe(request: HttpRequest, recipe_slug: str, user_pk: int) -> HttpResponse:
     """
     It toggles the like status of a recipe for a specific user.
     If the user has already liked the recipe, it removes the like.
@@ -490,6 +496,9 @@ def like_recipe(request: HttpRequest, recipe_slug: str, user_pk) -> HttpResponse
     """
     recipe = Recipe.objects.get(slug=recipe_slug)
     user = UserModel.objects.get(pk=user_pk)
+
+    if user != request.user:
+        raise PermissionDenied
 
     like = Like.objects.filter(
         recipe=recipe,

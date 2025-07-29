@@ -47,6 +47,7 @@
   font-weight: bold;
   font-size: 0.95rem;
   transition: background-color 0.2s ease;
+  border: none;
 }
 
 .save-link:hover {

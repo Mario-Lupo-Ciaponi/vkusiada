@@ -1,7 +1,10 @@
 from typing import Dict, Any
 
+import psycopg2.errors
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.exceptions import ValidationError
+from django.db import IntegrityError, transaction
 from django.db.models import QuerySet, Q
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
@@ -90,6 +93,8 @@ class SavedIngredientsView(LoginRequiredMixin, ListView):
                 ingredient__name__icontains=search_value
             )
 
+        saved_ingredients = saved_ingredients.order_by("ingredient__name")
+
         return [i for i in saved_ingredients]
 
 
@@ -98,7 +103,14 @@ def save_ingredient(request: HttpRequest, ingredient_pk: int) -> HttpResponse:
     ingredient = Ingredient.objects.get(pk=ingredient_pk)
     user = request.user
 
-    UserIngredient.objects.create(ingredient=ingredient, user=user, added_on=now())
+    try:
+        with transaction.atomic():
+            UserIngredient.objects.create(
+                ingredient=ingredient, user=user, added_on=now()
+            )
+            messages.success(request, f"{ingredient} added successfully!")
+    except IntegrityError:
+        messages.error(request, f"{ingredient} already added!")
 
     return redirect("add-ingredient")
 

@@ -7,7 +7,7 @@ urlpatterns = [
     path(
         "saved-ingredients/",
         views.SavedIngredientsView.as_view(),
-        name="saved-ingredient",
+        name="saved-ingredients",
     ),
     path(
         "<int:ingredient_pk>/",

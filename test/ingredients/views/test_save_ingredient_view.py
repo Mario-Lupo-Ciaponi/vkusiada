@@ -31,7 +31,7 @@ class TestSaveIngredient(TestCase):
 
     def test__adds_to_user_ingredients_if_user_has_not_already_saved_it(self):
         response = self.client.get(
-            reverse("save-ingredient", kwargs={"ingredient_pk": 1})
+            reverse("save-ingredient", kwargs={"ingredient_pk": self.ingredient_1.pk})
         )
 
         user_ingredient = UserIngredient.objects.filter(
@@ -41,8 +41,8 @@ class TestSaveIngredient(TestCase):
         self.assertTrue(user_ingredient)
 
     def test__if_redirects_to_add_ingredient_on_success(self):
-        response = self.client.get(
-            reverse("save-ingredient", kwargs={"ingredient_pk": 1})
+        response = self.client.post(
+            reverse("save-ingredient", kwargs={"ingredient_pk": self.ingredient_1.pk})
         )
 
         self.assertRedirects(response, reverse("add-ingredient"))
@@ -50,22 +50,22 @@ class TestSaveIngredient(TestCase):
     def test__view_redirects_to_login_if_user_is_not_login(self):
         self.client.logout()
         response = self.client.get(
-            reverse("save-ingredient", kwargs={"ingredient_pk": 1})
+            reverse("save-ingredient", kwargs={"ingredient_pk": self.ingredient_1.pk})
         )
 
-        expected_login_url = f"{reverse("login")}?next={reverse("save-ingredient", kwargs={"ingredient_pk": 1})}"
+        expected_login_url = f"{reverse("login")}?next={reverse("save-ingredient", kwargs={"ingredient_pk": self.ingredient_1.pk})}"
 
         self.assertRedirects(response, expected_login_url)
 
     def test_does_not_add_duplicate_if_already_saved(self):
         response = self.client.get(
-            reverse("save-ingredient", kwargs={"ingredient_pk": 1})
+            reverse("save-ingredient", kwargs={"ingredient_pk": self.ingredient_1.pk})
         )
         response = self.client.get(
-            reverse("save-ingredient", kwargs={"ingredient_pk": 1}), follow=True
+            reverse("save-ingredient", kwargs={"ingredient_pk": self.ingredient_1.pk}), follow=True
         )
 
-        ingredient = Ingredient.objects.get(pk=1)
+        ingredient = self.ingredient_1
 
         message_expected = f"{ingredient.name} already added!"
 

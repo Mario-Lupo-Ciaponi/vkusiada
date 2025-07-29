@@ -49,7 +49,7 @@ class Recipe(SlugMixIn, AddedOnMixIn):
         return self.name
 
     class Meta:
-        ordering = ["name"]
+        ordering = ["-added_on", "name"]
 
 
 class RecipeIngredient(models.Model):

@@ -22,7 +22,7 @@
         <ul class="dropdown-menu">
           <li><a href="{% url "add-ingredient" %}">Browse</a></li>
           {% if request.user.is_authenticated %}
-          	<li><a href="{% url "saved-ingredient" %}">Saved ingredients</a></li>
+          	<li><a href="{% url "saved-ingredients" %}">Saved ingredients</a></li>
           {% endif %}
         </ul>
       </li>

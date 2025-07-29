@@ -68,6 +68,7 @@
   text-decoration: none;
   transition: background-color 0.2s ease;
   z-index: 10;
+  border: none;
 }
 
 .remove-recipe-btn:hover {

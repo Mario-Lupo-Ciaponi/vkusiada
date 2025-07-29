@@ -6,7 +6,6 @@ from django.urls import reverse
 from ingredients.models import Ingredient, UserIngredient
 
 
-
 UserModel = get_user_model()
 
 
@@ -25,17 +24,11 @@ class TestAddIngredientView(TestCase):
             password=self.user_credentials["password"],
         )
 
-        self.ingredient_1 = Ingredient.objects.create(
-            name="Tomato"
-        )
+        self.ingredient_1 = Ingredient.objects.create(name="Tomato")
 
-        self.ingredient_2 = Ingredient.objects.create(
-            name="Cheese"
-        )
+        self.ingredient_2 = Ingredient.objects.create(name="Cheese")
 
-        self.ingredient_3 = Ingredient.objects.create(
-            name="Cucumber"
-        )
+        self.ingredient_3 = Ingredient.objects.create(name="Cucumber")
 
     def test__unauthenticated_user_sees_all_ingredients(self):
         self.client.logout()
@@ -53,14 +46,13 @@ class TestAddIngredientView(TestCase):
         self.assertContains(response, "Cheese")
 
     def test__authenticated_user_sees_only_ingredients_they_have_not_added(self):
-        UserIngredient.objects.create(
-            user=self.user,
-            ingredient=self.ingredient_2
-        )
+        UserIngredient.objects.create(user=self.user, ingredient=self.ingredient_2)
 
         response = self.client.get(reverse("add-ingredient"))
 
-        ingredients_expected = list(Ingredient.objects.exclude(name=self.ingredient_2.name).order_by("name"))
+        ingredients_expected = list(
+            Ingredient.objects.exclude(name=self.ingredient_2.name).order_by("name")
+        )
         context_ingredients = list(response.context["ingredient_list"])
 
         self.assertEqual(ingredients_expected, context_ingredients)
@@ -73,7 +65,11 @@ class TestAddIngredientView(TestCase):
 
         response = self.client.get(reverse("add-ingredient"), {"query": "c"})
 
-        ingredients_expected = list(Ingredient.objects.exclude(Q(name=self.ingredient_1.name) | Q(name=self.ingredient_3.name)))
+        ingredients_expected = list(
+            Ingredient.objects.exclude(
+                Q(name=self.ingredient_1.name) | Q(name=self.ingredient_3.name)
+            )
+        )
         context_ingredients = list(response.context["ingredient_list"])
 
         self.assertEqual(ingredients_expected, context_ingredients)

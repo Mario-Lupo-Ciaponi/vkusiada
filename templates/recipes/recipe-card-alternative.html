@@ -9,6 +9,8 @@
       <p class="recipe-meta"><strong>Category</strong>: {{ recipe.category }}</p>
     </div>
   </a>
-
-  <a class="remove-recipe-btn" href="{% url "remove-saved-recipe" recipe.slug %}">Remove</a>
+  <form method="post" action="{% url "remove-saved-recipe" recipe.slug %}">
+    {% csrf_token %}
+    <button class="remove-recipe-btn">Remove</button>
+  </form>
 </article>
