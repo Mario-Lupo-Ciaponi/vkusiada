@@ -29,20 +29,18 @@ class TestRemoveIngredientView(TestCase):
 
         self.ingredient_3 = Ingredient.objects.create(name="Cucumber")
 
-        UserIngredient.objects.create(
-            ingredient=self.ingredient_1,
-            user=self.user
-        )
-        UserIngredient.objects.create(
-            ingredient=self.ingredient_2,
-            user=self.user
-        )
+        UserIngredient.objects.create(ingredient=self.ingredient_1, user=self.user)
+        UserIngredient.objects.create(ingredient=self.ingredient_2, user=self.user)
 
     def test__removes_correct_ingredient_for_the_logged_in_user(self):
-        response = self.client.get(reverse("remove-ingredient", kwargs={"ingredient_pk": self.ingredient_1.pk}))
+        response = self.client.get(
+            reverse("remove-ingredient", kwargs={"ingredient_pk": self.ingredient_1.pk})
+        )
 
         ingredient = Ingredient.objects.get(pk=self.ingredient_1.pk)
-        is_ingredient_present = UserIngredient.objects.filter(ingredient=self.ingredient_1, user=self.user).exists()
+        is_ingredient_present = UserIngredient.objects.filter(
+            ingredient=self.ingredient_1, user=self.user
+        ).exists()
 
         message_expected = f"Ingredient {ingredient.name} was removed successfully"
 
@@ -53,17 +51,19 @@ class TestRemoveIngredientView(TestCase):
 
     def test__if_redirects_to_saved_ingredients_page(self):
         response = self.client.get(
-            reverse("remove-ingredient",
-                    kwargs={"ingredient_pk": self.ingredient_1.pk}),
-            HTTP_REFERER=reverse("saved-ingredients")
+            reverse(
+                "remove-ingredient", kwargs={"ingredient_pk": self.ingredient_1.pk}
+            ),
+            HTTP_REFERER=reverse("saved-ingredients"),
         )
 
         self.assertRedirects(response, reverse("saved-ingredients"))
 
-    def test__when_trying_to_remove_a_ingredient_that_does_not_exist__returns_status_code_404(self):
+    def test__when_trying_to_remove_a_ingredient_that_does_not_exist__returns_status_code_404(
+        self,
+    ):
         response = self.client.get(
-            reverse("remove-ingredient",
-                    kwargs={"ingredient_pk": 999}),
+            reverse("remove-ingredient", kwargs={"ingredient_pk": 999}),
         )
 
         self.assertEqual(response.status_code, 404)

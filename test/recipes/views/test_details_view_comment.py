@@ -37,13 +37,13 @@ class TestDetailsViewComment(TestCase):
         comment_content = "This is just a test comment."
 
         response = self.client.post(
-            reverse("recipe_details",
-                    kwargs={"recipe_slug": self.test_recipe.slug}
-                    ),
-                    data={"content": comment_content}
+            reverse("recipe_details", kwargs={"recipe_slug": self.test_recipe.slug}),
+            data={"content": comment_content},
         )
 
-        was_comment_posted = Comment.objects.filter(recipe=self.test_recipe, author=self.user).exists()
+        was_comment_posted = Comment.objects.filter(
+            recipe=self.test_recipe, author=self.user
+        ).exists()
 
         self.assertTrue(was_comment_posted)
 
@@ -52,10 +52,8 @@ class TestDetailsViewComment(TestCase):
         self.client.logout()
 
         response = self.client.post(
-            reverse("recipe_details",
-                    kwargs={"recipe_slug": self.test_recipe.slug}
-                    ),
-                    data={"content": comment_content}
+            reverse("recipe_details", kwargs={"recipe_slug": self.test_recipe.slug}),
+            data={"content": comment_content},
         )
 
         self.assertRedirects(response, reverse("login"))

@@ -36,23 +36,26 @@ class TestRemoveSavedRecipe(TestCase):
             author=self.user,
         )
 
-        UserRecipe.objects.create(
-            recipe=self.test_recipe,
-            user=self.user
-        )
+        UserRecipe.objects.create(recipe=self.test_recipe, user=self.user)
 
     def test__authenticated_users_can_remove_saved_recipes(self):
         self.client.post(
-            reverse("remove-saved-recipe", kwargs={"recipe_slug": self.test_recipe.slug})
+            reverse(
+                "remove-saved-recipe", kwargs={"recipe_slug": self.test_recipe.slug}
+            )
         )
 
-        is_recipe_present = UserRecipe.objects.filter(recipe=self.test_recipe, user=self.user).exists()
+        is_recipe_present = UserRecipe.objects.filter(
+            recipe=self.test_recipe, user=self.user
+        ).exists()
 
         self.assertFalse(is_recipe_present)
-    
+
     def test__when_recipe_is_removed__it_displays_appropriate_message(self):
         response = self.client.post(
-            reverse("remove-saved-recipe", kwargs={"recipe_slug": self.test_recipe.slug})
+            reverse(
+                "remove-saved-recipe", kwargs={"recipe_slug": self.test_recipe.slug}
+            )
         )
 
         message_expected = f"Recipe {self.test_recipe.name} was removed successfully"
@@ -62,8 +65,10 @@ class TestRemoveSavedRecipe(TestCase):
 
     def test__redirects_back_to_referer_page(self):
         response = self.client.post(
-            reverse("remove-saved-recipe", kwargs={"recipe_slug": self.test_recipe.slug}),
-            HTTP_REFERER=reverse("saved-recipes")
+            reverse(
+                "remove-saved-recipe", kwargs={"recipe_slug": self.test_recipe.slug}
+            ),
+            HTTP_REFERER=reverse("saved-recipes"),
         )
 
         self.assertRedirects(response, reverse("saved-recipes"))

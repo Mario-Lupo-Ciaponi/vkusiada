@@ -37,35 +37,33 @@ class TestSaveRecipeView(TestCase):
 
     def test__authenticated_user_can_save_recipe(self):
         response = self.client.post(
-            reverse("save-recipe",
-                    kwargs={"recipe_slug": self.test_recipe.slug}),
-            #HTTP_REFERER=reverse("saved-ingredients")
+            reverse("save-recipe", kwargs={"recipe_slug": self.test_recipe.slug}),
+            # HTTP_REFERER=reverse("saved-ingredients")
         )
 
-        is_recipe_saved = UserRecipe.objects.filter(recipe=self.test_recipe, user=self.user).exists()
+        is_recipe_saved = UserRecipe.objects.filter(
+            recipe=self.test_recipe, user=self.user
+        ).exists()
 
         self.assertTrue(is_recipe_saved)
 
     def test__user_is_redirected_back_to_the_referring_page(self):
         response = self.client.post(
-            reverse("save-recipe",
-                    kwargs={"recipe_slug": self.test_recipe.slug}),
-            HTTP_REFERER=reverse("search-recipe")
+            reverse("save-recipe", kwargs={"recipe_slug": self.test_recipe.slug}),
+            HTTP_REFERER=reverse("search-recipe"),
         )
 
         self.assertRedirects(response, reverse("search-recipe"))
 
     def test__saving_same_recipe__raises_integrity_error(self):
         response = self.client.post(
-            reverse("save-recipe",
-                    kwargs={"recipe_slug": self.test_recipe.slug}),
-            HTTP_REFERER=reverse("search-recipe")
+            reverse("save-recipe", kwargs={"recipe_slug": self.test_recipe.slug}),
+            HTTP_REFERER=reverse("search-recipe"),
         )
 
         response = self.client.post(
-            reverse("save-recipe",
-                    kwargs={"recipe_slug": self.test_recipe.slug}),
-            HTTP_REFERER=reverse("search-recipe")
+            reverse("save-recipe", kwargs={"recipe_slug": self.test_recipe.slug}),
+            HTTP_REFERER=reverse("search-recipe"),
         )
 
         message_expected = f"You already saved the recipe!"

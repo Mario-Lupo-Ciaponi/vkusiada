@@ -1,150 +1,138 @@
 # Vkusiada
 
-Vkusiada is an innovative, Django-based web platform designed to help users explore, share, 
-and discover recipes with ease. Its goal is to answer the age-old question: “_What should I eat?_” 
-by leveraging user input, ingredient tracking, and a vibrant recipe-sharing community.
-
----
+Vkusiada is a Django-based web platform for recipe sharing and discovery. It helps users find new recipes, manage ingredients, and connect with a community of food lovers.
 
 ## Table of Contents
 
-- [Features](https://github.com/Mario-Lupo-Ciaponi/Vkusiada?tab=readme-ov-file#features)
-- [Demo](https://github.com/Mario-Lupo-Ciaponi/Vkusiada?tab=readme-ov-file#demo-and-screenshots)
-- [Screenshots](https://github.com/Mario-Lupo-Ciaponi/Vkusiada?tab=readme-ov-file#demo-and-screenshots)
-- [Getting Started](https://github.com/Mario-Lupo-Ciaponi/Vkusiada?tab=readme-ov-file#getting-started)
-  - [Prerequisites](https://github.com/Mario-Lupo-Ciaponi/Vkusiada?tab=readme-ov-file#prerequisites)
-  - [Installation](https://github.com/Mario-Lupo-Ciaponi/Vkusiada?tab=readme-ov-file#installation)
-- [Usage](https://github.com/Mario-Lupo-Ciaponi/Vkusiada?tab=readme-ov-file#usage)
-- [Project Structure](https://github.com/Mario-Lupo-Ciaponi/Vkusiada?tab=readme-ov-file#project-structure)
-- [Contributing](https://github.com/Mario-Lupo-Ciaponi/Vkusiada?tab=readme-ov-file#contributing)
-- [License](https://github.com/Mario-Lupo-Ciaponi/Vkusiada?tab=readme-ov-file#license)
-- [Contact](https://github.com/Mario-Lupo-Ciaponi/Vkusiada?tab=readme-ov-file#contact)
-
----
+- [Features](#features)
+- [Technology Stack](#technology-stack)
+- [Getting Started](#getting-started)
+  - [Prerequisites](#prerequisites)
+  - [Installation](#installation)
+- [Usage](#usage)
+- [Project Structure](#project-structure)
+- [Contributing](#contributing)
+- [License](#license)
+- [Contact](#contact)
 
 ## Features
 
-- **Recipe Discovery**: Browse a curated library of recipes by category (Breakfast, Salads, Soups, etc.), cuisine, or ingredient.
-- **Personalized Suggestions**: Add ingredients you have at home and get recipe suggestions tailored to your pantry.
-- **Ingredient Library**: Build and manage your personal ingredient inventory.
-- **Recipe Management**: Create, edit, and delete your own recipes with images, videos, and detailed instructions.
-- **Favorites**: Save your favorite recipes for quick access.
-- **User Profiles**: Each user gets a customizable profile with bio, location, cooking level, and activity history.
-- **Community Features**:
-  - Comment on recipes and share feedback.
-  - Edit or delete your comments.
-- **Media Support**: Recipes can include images and YouTube links for enhanced instructions.
-- **Responsive Design**: Modern UI with category navigation, search, and mobile-friendly layouts.
-- **Security**: Authentication and user management built on Django’s robust framework.
+- **Recipe Discovery**: Browse recipes by category, cuisine, or ingredients.
+- **Personalized Suggestions**: Get recipe recommendations based on the ingredients you have.
+- **Ingredient Management**: Keep track of your pantry with a personal ingredient library.
+- **Recipe Creation**: Share your own recipes with photos, videos, and detailed instructions.
+- **User Profiles**: Customize your profile, track your activity, and connect with other users.
+- **Community Engagement**: Comment on recipes, share feedback, and participate in a vibrant food community.
+- **Responsive Design**: Enjoy a seamless experience across all devices.
 
---- 
+## Technology Stack
 
-## Demo and screenshots
-
-**Coming soon**
-
----
+- **Backend**: Django, Django REST Framework
+- **Database**: PostgreSQL
+- **Cache**: Redis
+- **Task Queue**: Celery
+- **Styling**: CSS
+- **Formatting**: Black
 
 ## Getting Started
 
-### Prerequisites:
+### Prerequisites
 
-- Python 3.8 or higher
-- Django 4.x
-- (Recommended) Virtualenv for isolated Python environments
+- Python 3.8+
+- PostgreSQL
+- Redis
 
-### Installation:
+### Installation
 
-1. Clone the repository:
+1. **Clone the repository**:
+   ```bash
+   git clone https://github.com/Mario-Lupo-Ciaponi/vkusiada.git
+   cd vkusiada
+   ```
 
-```shell
-  git clone https://github.com/Mario-Lupo-Ciaponi/vkusiada.git
-  cd vkusiada
-```
+2. **Create and activate a virtual environment**:
+   ```bash
+   python -m venv .venv
+   source .venv/bin/activate
+   ```
 
-2. Install the dependencies:
+3. **Install dependencies**:
+   ```bash
+   pip install -r requirements.txt
+   ```
 
-```shell
-  pip install -r requirements.txt
-```
+4. **Change in setting DATABASES**:
+   Change DATABASES variable in the project:
+   ```python
+   DATABASES = {
+    "default": {
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": "vkusiada_db",
+        "USER": "your username",
+        "PASSWORD": "your password",
+        "HOST": "127.0.0.1",
+        "PORT": "5432",
+    }
+}
+   ```
 
-3. Apply migrations:
+5. **Apply migrations**:
+   ```bash
+   python manage.py migrate
+   ```
 
-```shell
-  python manage.py migrate
-```
+6. **Create a superuser**:
+   ```bash
+   python manage.py createsuperuser
+   ```
 
-4. (Optional) Create a superuser:
-
-```shell
-  python manage.py createsuperuser
-```
-
-5. Run the development server:
-
-```shell
-  python manage.py runserver
-```
-
-6. Visit http://127.0.0.1:8000/ in your browser.
-
----
+7. **Run the development server**:
+   ```bash
+   python manage.py runserver
+   ```
 
 ## Usage
 
-- **Browse Recipes**: Explore suggested and popular recipes on the homepage, filtered by your preferences or ingredients.
-- **Search**: Use the search bar or category buttons to find recipes quickly.
-- **Manage Profile**: Register or log in to save recipes, manage your ingredient library, and personalize your profile.
-- **Interact**: Leave comments, share tips, and engage with other users in the community.
-- **Create Recipes**: Share your own recipes with the community, including photos and video instructions.
-
----
+- **Browse and search for recipes**: Explore the recipe library and use the search functionality to find specific dishes.
+- **Manage your profile**: Register or log in to create a profile, save your favorite recipes, and manage your ingredient inventory.
+- **Create and share recipes**: Share your culinary creations with the community by adding new recipes.
+- **Engage with the community**: Comment on recipes, ask questions, and connect with other food enthusiasts.
 
 ## Project Structure
 
 ```
 vkusiada/
-│
-├── accounts/                 # User authentication and profile management
-├── common/                   # Shared utilities and components
-├── ingredients/              # App for managing ingredients
-├── recipes/                  # Core app for recipe management
-├── static/                   # CSS files, images, and static assets
-├── templates/                # Django HTML templates (accounts, recipes, common, etc.)
-├── vkusiada/                 # Main Django project settings and configuration
-├── .flake8                   # Setting for flake8 linter
-├── .pre-commit-config.yaml   # Flake8 and Black pre-commit configuration
-├── LICENSE                   # MIT License
-├── manage.py                 # Django management script
-├── pyproject.toml            # Settings of black formatter
-├── README.md                 # This file
-└── requirements.txt          # Python dependencies
+├── accounts/         # User authentication and profile management
+├── common/           # Shared utilities and components
+├── ingredients/      # Ingredient management
+├── recipes/          # Recipe creation and management
+├── static/           # Static assets (CSS, images)
+├── templates/        # HTML templates
+├── vkusiada/         # Django project settings and configuration
+├── .flake8           # Flake8 linter settings
+├── .pre-commit-config.yaml # Pre-commit hook configurations
+├── LICENSE           # MIT License
+├── manage.py         # Django management script
+├── pyproject.toml    # Black formatter settings
+├── README.md         # This file
+└── requirements.txt  # Python dependencies
 ```
----
 
 ## Contributing
 
-Contributions, bug reports, and feature requests are welcome!
-To contribute:
+Contributions are welcome! To contribute:
 
 1. Fork the repository.
-2. Create a new branch: `git checkout -b feature/my-feature`
-3. Commit your changes: `git commit -am 'Add new feature'`
-4. Push to your branch: `git push origin feature/my-feature`
-5. Open a Pull Request explaining your changes.
-
----
+2. Create a new branch: `git checkout -b feature/your-feature-name`
+3. Make your changes and commit them: `git commit -m 'Add some feature'`
+4. Push to the branch: `git push origin feature/your-feature-name`
+5. Open a pull request.
 
 ## License
 
 This project is licensed under the [MIT License](https://opensource.org/license/mit).
 
----
-
 ## Contact
 
 **Author**: Mario Lupo Ciaponi
-
 **GitHub**: [Mario-Lupo-Ciaponi](https://github.com/Mario-Lupo-Ciaponi)
-
-> Vkusiada is a labor of love—helping foodies and home cooks discover their next meal, one ingredient at a time.

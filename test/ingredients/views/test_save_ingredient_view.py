@@ -62,7 +62,8 @@ class TestSaveIngredient(TestCase):
             reverse("save-ingredient", kwargs={"ingredient_pk": self.ingredient_1.pk})
         )
         response = self.client.get(
-            reverse("save-ingredient", kwargs={"ingredient_pk": self.ingredient_1.pk}), follow=True
+            reverse("save-ingredient", kwargs={"ingredient_pk": self.ingredient_1.pk}),
+            follow=True,
         )
 
         ingredient = self.ingredient_1

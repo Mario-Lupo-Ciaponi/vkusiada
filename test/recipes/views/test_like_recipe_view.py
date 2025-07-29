@@ -36,10 +36,15 @@ class TestLikeRecipeView(TestCase):
 
     def test__user_has_not_liked__like_the_recipe(self):
         response = self.client.get(
-            reverse("like-recipe", kwargs={"recipe_slug": self.test_recipe.slug, "user_pk": self.user.pk})
+            reverse(
+                "like-recipe",
+                kwargs={"recipe_slug": self.test_recipe.slug, "user_pk": self.user.pk},
+            )
         )
 
-        did_user_like_recipe = Like.objects.filter(recipe=self.test_recipe, user=self.user).exists()
+        did_user_like_recipe = Like.objects.filter(
+            recipe=self.test_recipe, user=self.user
+        ).exists()
 
         self.assertTrue(did_user_like_recipe)
 
@@ -50,17 +55,30 @@ class TestLikeRecipeView(TestCase):
         )
 
         response = self.client.get(
-            reverse("like-recipe", kwargs={"recipe_slug": self.test_recipe.slug, "user_pk": self.user.pk})
+            reverse(
+                "like-recipe",
+                kwargs={"recipe_slug": self.test_recipe.slug, "user_pk": self.user.pk},
+            )
         )
 
-        did_user_like_recipe = Like.objects.filter(recipe=self.test_recipe, user=self.user).exists()
+        did_user_like_recipe = Like.objects.filter(
+            recipe=self.test_recipe, user=self.user
+        ).exists()
 
         self.assertFalse(did_user_like_recipe)
 
     def test__like_redirects_back_to_referer(self):
         response = self.client.get(
-            reverse("like-recipe", kwargs={"recipe_slug": self.test_recipe.slug, "user_pk": self.user.pk}),
-            HTTP_REFERER=reverse("recipe_details", kwargs={"recipe_slug": self.test_recipe.slug})
+            reverse(
+                "like-recipe",
+                kwargs={"recipe_slug": self.test_recipe.slug, "user_pk": self.user.pk},
+            ),
+            HTTP_REFERER=reverse(
+                "recipe_details", kwargs={"recipe_slug": self.test_recipe.slug}
+            ),
         )
 
-        self.assertRedirects(response, reverse("recipe_details", kwargs={"recipe_slug": self.test_recipe.slug}))
+        self.assertRedirects(
+            response,
+            reverse("recipe_details", kwargs={"recipe_slug": self.test_recipe.slug}),
+        )

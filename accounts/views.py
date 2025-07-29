@@ -4,6 +4,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import redirect, get_object_or_404
 from django.urls import reverse_lazy, reverse
+from django.views.decorators.http import require_POST
 from django.views.generic import FormView, CreateView, DetailView, UpdateView
 from django.contrib.auth import get_user_model
 from django.contrib import messages
@@ -97,6 +98,7 @@ class EditProfileView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
         )
 
 
+@require_POST
 @login_required
 def follow_or_unfollow_user(request: HttpRequest, pk: int) -> HttpResponse:
     """
