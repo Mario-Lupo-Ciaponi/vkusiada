@@ -24,6 +24,7 @@ class ProfileEditForm(forms.ModelForm):
         model = Profile
         exclude = [
             "user",
+            "followers",
         ]
 
         widgets = {

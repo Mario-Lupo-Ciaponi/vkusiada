@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 
 from pathlib import Path
 
+from decouple import config
 from django.urls import reverse_lazy
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -22,12 +23,18 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-3*7)=k8^wzcbv(0e5kh!kjuejoas*+3h^c3t)aozu_d43rki_@"
+SECRET_KEY = config("SECRET_KEY", None)
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = config("DEBUG", None, cast=bool)
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = config("ALLOWED_HOSTS", "").split(",")
+
+CSRF_TRUSTED_ORIGINS = [
+    "http://127.0.0.1:81",
+    "http://localhost:81",
+    "http://vkusiada.com"
+]
 
 
 # Application definition
@@ -104,11 +111,11 @@ AUTHENTICATION_BACKENDS = [
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": "vkusiada_db",
-        "USER": "postgres",
-        "PASSWORD": "Ps1029384756,.",
-        "HOST": "127.0.0.1",
-        "PORT": "5432",
+        "NAME": config("DB_NAME", ""),
+        "USER": config("DB_USER", ""),
+        "PASSWORD": config("DB_PASSWORD", ""),
+        "HOST": config("DB_HOST", ""),
+        "PORT": config("DB_PORT", ""),
     }
 }
 
@@ -151,17 +158,20 @@ EMAIL_HOST = "localhost"
 EMAIL_PORT = 1025
 
 
-CELERY_BROKER_URL = "redis://localhost:6379/0"
+CELERY_BROKER_URL = config("CELERY_BROKER_URL", "")
 
 CELERY_ACCEPT_CONTENT = ["json"]
 CELERY_TASK_SERIALIZER = "json"
-CELERY_RESULT_BACKEND = "redis://localhost:6379/0"
+CELERY_RESULT_BACKEND = config("CELERY_RESULT_BACKEND", "")
 
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
-STATIC_URL = "static/"
+STATIC_URL = "/static/"
+
+STATIC_ROOT = BASE_DIR / "static_files"
+
 STATICFILES_DIRS = [
     BASE_DIR / "static",
 ]
