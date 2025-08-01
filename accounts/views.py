@@ -9,7 +9,6 @@ from django.views.generic import FormView, CreateView, DetailView, UpdateView
 from django.contrib.auth import get_user_model
 from django.contrib import messages
 
-from vkusiada.tasks import _send_mail
 from .forms import RegistrationForm, ContactForm, ProfileEditForm
 from .models import Profile
 
@@ -54,12 +53,12 @@ class ContactView(FormView):
         subject = form.cleaned_data["subject"]
         content = form.cleaned_data["content"]
 
-        _send_mail.delay(
-            subject=subject,
-            message=content,
-            from_email=email,
-            recipient_list=[settings.DEFAULT_EMAIL],
-        )
+        # _send_mail.delay(
+        #     subject=subject,
+        #     message=content,
+        #     from_email=email,
+        #     recipient_list=[settings.DEFAULT_EMAIL],
+        # )
 
         messages.success(self.request, message="Email sent successfully!")
 

@@ -21,7 +21,6 @@ urlpatterns = [
                 ),
                 path("save/", views.save_recipe, name="save-recipe"),
                 path("like/<int:user_pk>/", views.like_recipe, name="like-recipe"),
-                path("share/", views.copy_recipe_link, name="copy-recipe"),
             ]
         ),
     ),
