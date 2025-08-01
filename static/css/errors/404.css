@@ -1,0 +1,35 @@
+.error-container {
+  text-align: center;
+  padding: 80px 20px;
+  font-family: 'Segoe UI', sans-serif;
+  color: #333;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.error-title {
+  font-size: 6rem;
+  color: #e8263f;
+  margin-bottom: 20px;
+  font-weight: bold;
+}
+
+.error-message {
+  font-size: 1.25rem;
+  margin-bottom: 30px;
+}
+
+.home-link {
+  display: inline-block;
+  padding: 12px 24px;
+  background-color: #e8263f;
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+  border-radius: 30px;
+  transition: background-color 0.3s ease;
+}
+
+.home-link:hover {
+  background-color: #c01e34;
+}
