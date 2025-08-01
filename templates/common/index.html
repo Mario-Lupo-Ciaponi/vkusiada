@@ -56,6 +56,8 @@
         {% else %}
           <h1>No recipe suggestions...</h1>
 
+          {% include "common/search-bar.html" %}
+
           <p>
             Try to add some <a href="{% url "add-ingredient" %}">ingredients</a> then you will see all teh delicious recipes
           </p>
