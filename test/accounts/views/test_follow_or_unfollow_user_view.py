@@ -28,10 +28,12 @@ class TestFollowOrUnfollowUser(TestCase):
 
         self.client.login(
             username=self.user_credentials_1["username"],
-            password=self.user_credentials_1["password"]
+            password=self.user_credentials_1["password"],
         )
 
-        self.response = self.client.post(reverse("follow-user", kwargs={"pk": self.user_2.pk}))
+        self.response = self.client.post(
+            reverse("follow-user", kwargs={"pk": self.user_2.pk})
+        )
 
     def test__user_can_follow_other_user(self):
         user_2_profile = Profile.objects.get(user=self.user_2)
@@ -44,9 +46,10 @@ class TestFollowOrUnfollowUser(TestCase):
         self.assertIn(self.user_1, user_2_followers)
         self.assertIn(message_expected, [m.message for m in messages])
 
-
     def test__user_can_unfollow_another_user(self):
-        response = self.client.post(reverse("follow-user", kwargs={"pk": self.user_2.pk}))
+        response = self.client.post(
+            reverse("follow-user", kwargs={"pk": self.user_2.pk})
+        )
 
         user_2_profile = Profile.objects.get(user=self.user_2)
 
@@ -59,7 +62,9 @@ class TestFollowOrUnfollowUser(TestCase):
         self.assertIn(message_expected, [m.message for m in messages])
 
     def test__user_following_himself__raises_error(self):
-        response = self.client.post(reverse("follow-user", kwargs={"pk": self.user_1.pk}))
+        response = self.client.post(
+            reverse("follow-user", kwargs={"pk": self.user_1.pk})
+        )
 
         message_expected = "Cannot follow yourself!"
         messages = list(get_messages(response.wsgi_request))

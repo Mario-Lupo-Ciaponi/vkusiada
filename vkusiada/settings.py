@@ -33,7 +33,7 @@ ALLOWED_HOSTS = config("ALLOWED_HOSTS", "").split(",")
 CSRF_TRUSTED_ORIGINS = [
     "http://127.0.0.1:81",
     "http://localhost:81",
-    "http://vkusiada.com"
+    "http://vkusiada.com",
 ]
 
 

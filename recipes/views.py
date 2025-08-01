@@ -514,13 +514,3 @@ def like_recipe(request: HttpRequest, recipe_slug: str, user_pk: int) -> HttpRes
         )
 
     return redirect(request.META.get("HTTP_REFERER", "/"))
-
-
-def copy_recipe_link(request: HttpResponse, recipe_slug) -> HttpResponse:
-    """
-    It copies the recipe link to the clipboard.
-    """
-
-    copy(request.META.get("HTTP_REFERER", "/"))
-
-    return redirect(request.META.get("HTTP_REFERER", "/"))

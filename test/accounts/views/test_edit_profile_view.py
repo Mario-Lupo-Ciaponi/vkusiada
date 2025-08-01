@@ -118,4 +118,6 @@ class TestEditProfileView(TestCase):
             reverse("edit-profile", kwargs={"pk": self.user.pk}), data={"bio": "test"}
         )
 
-        self.assertRedirects(response, reverse("account-details", kwargs={"pk": self.user.pk}))
+        self.assertRedirects(
+            response, reverse("account-details", kwargs={"pk": self.user.pk})
+        )
