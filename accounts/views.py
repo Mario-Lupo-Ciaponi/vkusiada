@@ -1,6 +1,7 @@
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.core.mail import send_mail
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import redirect, get_object_or_404
 from django.urls import reverse_lazy, reverse
@@ -53,12 +54,12 @@ class ContactView(FormView):
         subject = form.cleaned_data["subject"]
         content = form.cleaned_data["content"]
 
-        # _send_mail.delay(
-        #     subject=subject,
-        #     message=content,
-        #     from_email=email,
-        #     recipient_list=[settings.DEFAULT_EMAIL],
-        # )
+        send_mail(
+            subject=subject,
+            message=f"{email} sent you an email: {content}",
+            from_email=settings.COMPANY_EMAIL,
+            recipient_list=["mario.lupo.ciaponi08@gmail.com"],
+        )
 
         messages.success(self.request, message="Email sent successfully!")
 
