@@ -77,9 +77,9 @@ Vkusiada is a Django-based web platform for recipe sharing and discovery. It hel
    ```
 
 5. **Apply migrations**:
-   ```bash
-   python manage.py migrate
-   ```
+    ```bash
+    python manage.py migrate
+    ```
 
 6. **Create a superuser**:
    ```bash

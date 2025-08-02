@@ -1,24 +1,21 @@
 {% extends "common/base.html" %}
 
 {% load static %}
-{% load url_query_append %}
 
 {% block styles %}
   <link rel="stylesheet" href="{% static "css/ingredients/add-ingredient.css" %}">
 {% endblock %}
 
 {% block title %}
-	Add ingredient
+	Add Ingredient
 {% endblock %}
 
+
 {% block content %}
-  {% include "common/search-bar.html" %}
-
-  {% include "common/messages.html" %}
-
-  {% for ingredient in ingredient_list %}
-  	{% include "ingredients/ingredients-card.html" %}
-  {% endfor %}
-
-  {% include "common/paginator.html" %}
+  <h1>Add ingredient</h1>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button>Add</button>
+  </form>
 {% endblock %}

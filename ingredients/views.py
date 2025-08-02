@@ -9,10 +9,12 @@ from django.db.models import QuerySet, Q
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.utils.timezone import now
-from django.views.generic import DetailView, ListView
+from django.views.generic import DetailView, ListView, CreateView
 from django.contrib import messages
+from rest_framework.reverse import reverse_lazy
 
 from common.forms import SearchForm
+from .forms import IngredientAddForm
 from .models import Ingredient, UserIngredient
 
 
@@ -23,9 +25,9 @@ class IngredientDetailsView(DetailView):
     slug_url_kwarg = "ingredient_slug"
 
 
-class AddIngredientView(ListView):
+class BrowseIngredients(ListView):
     model = Ingredient
-    template_name = "ingredients/add-ingredient.html"
+    template_name = "ingredients/browse-ingredients.html"
     query_param = "query"
     paginate_by = 7
     form_class = SearchForm
@@ -62,6 +64,13 @@ class AddIngredientView(ListView):
         ingredients = Ingredient.objects.filter(ingredients_query)
 
         return ingredients.order_by("name")
+
+
+class AddIngredient(CreateView):
+    model = Ingredient
+    form_class = IngredientAddForm
+    template_name = "ingredients/add-ingredient.html"
+    success_url = reverse_lazy("browse-ingredients")
 
 
 class SavedIngredientsView(LoginRequiredMixin, ListView):

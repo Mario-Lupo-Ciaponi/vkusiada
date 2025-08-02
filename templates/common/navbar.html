@@ -26,7 +26,7 @@
           <li><a href="{% url "browse-ingredients" %}">Browse</a></li>
           {% if request.user.is_authenticated %}
             {% if request.user.is_staff or request.user|has_group:"Recipe Editor" %}
-            	<li><a href="#">Add ingredients</a></li>
+            	<li><a href="{% url "add-ingredient" %}">Add ingredients</a></li>
             {% endif %} 
           	<li><a href="{% url "saved-ingredients" %}">Saved ingredients</a></li>
           {% endif %}

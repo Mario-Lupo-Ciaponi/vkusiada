@@ -1,3 +1,72 @@
-@import "ingredients-card.css";
-@import "../common/pagination.css";
-@import "../common/search-bar.css";
+form {
+  max-width: 500px;
+  margin: 60px auto;
+  background-color: #fef8f2;
+  padding: 40px;
+  border-radius: 20px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+  font-family: 'Segoe UI', sans-serif;
+}
+
+form p {
+  margin-bottom: 20px;
+}
+
+form input,
+form select,
+form textarea {
+  width: 100%;
+  padding: 12px 14px;
+  font-size: 1rem;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-family: inherit;
+  background-color: white;
+  box-sizing: border-box;
+}
+
+form input:focus,
+form textarea:focus,
+form select:focus {
+  border-color: #e8263f;
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(232, 38, 63, 0.2);
+}
+
+.errorlist {
+  list-style: none;
+  margin: 6px 0 0;
+  padding: 0;
+  color: #e8263f;
+  font-size: 0.9rem;
+  font-weight: bold;
+}
+
+h1 {
+  text-align: center;
+  color: #e8263f;
+  margin-bottom: 30px;
+  font-size: 2rem;
+}
+
+/* Submit button */
+button[type="submit"],
+form button {
+  display: block;
+  width: 100%;
+  padding: 14px;
+  background-color: #e8263f;
+  color: white;
+  border: none;
+  border-radius: 25px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-top: 10px;
+}
+
+button[type="submit"]:hover,
+form button:hover {
+  background-color: #c01e34;
+}
