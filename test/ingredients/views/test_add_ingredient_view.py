@@ -33,7 +33,7 @@ class TestAddIngredientView(TestCase):
     def test__unauthenticated_user_sees_all_ingredients(self):
         self.client.logout()
 
-        response = self.client.get(reverse("add-ingredient"))
+        response = self.client.get(reverse("browse-ingredients"))
 
         context_ingredients = list(response.context["ingredient_list"])
         all_ingredients = list(Ingredient.objects.all().order_by("name"))
@@ -41,14 +41,14 @@ class TestAddIngredientView(TestCase):
         self.assertEqual(context_ingredients, all_ingredients)
 
     def test__filter_functionality_works__returns_filtered_ingredients(self):
-        response = self.client.get(reverse("add-ingredient"), {"query": "cHEesE"})
+        response = self.client.get(reverse("browse-ingredients"), {"query": "cHEesE"})
 
         self.assertContains(response, "Cheese")
 
     def test__authenticated_user_sees_only_ingredients_they_have_not_added(self):
         UserIngredient.objects.create(user=self.user, ingredient=self.ingredient_2)
 
-        response = self.client.get(reverse("add-ingredient"))
+        response = self.client.get(reverse("browse-ingredients"))
 
         ingredients_expected = list(
             Ingredient.objects.exclude(name=self.ingredient_2.name).order_by("name")
@@ -63,7 +63,7 @@ class TestAddIngredientView(TestCase):
             ingredient=self.ingredient_3,
         )
 
-        response = self.client.get(reverse("add-ingredient"), {"query": "c"})
+        response = self.client.get(reverse("browse-ingredients"), {"query": "c"})
 
         ingredients_expected = list(
             Ingredient.objects.exclude(

@@ -1,5 +1,8 @@
 {% load static %}
 
+{% load has_group %}
+
+
 <nav class="navbar">
   <div class="nav-center">
     <div class="logo">
@@ -20,8 +23,11 @@
       <li class="dropdown">
         <a href="#" class="{% if current_page == "ingredients" %}active{% endif %}">Ingredients ▾</a>
         <ul class="dropdown-menu">
-          <li><a href="{% url "add-ingredient" %}">Browse</a></li>
+          <li><a href="{% url "browse-ingredients" %}">Browse</a></li>
           {% if request.user.is_authenticated %}
+            {% if request.user.is_staff or request.user|has_group:"Recipe Editor" %}
+            	<li><a href="#">Add ingredients</a></li>
+            {% endif %} 
           	<li><a href="{% url "saved-ingredients" %}">Saved ingredients</a></li>
           {% endif %}
         </ul>

@@ -45,7 +45,7 @@ class TestSaveIngredient(TestCase):
             reverse("save-ingredient", kwargs={"ingredient_pk": self.ingredient_1.pk})
         )
 
-        self.assertRedirects(response, reverse("add-ingredient"))
+        self.assertRedirects(response, reverse("browse-ingredients"))
 
     def test__view_redirects_to_login_if_user_is_not_login(self):
         self.client.logout()

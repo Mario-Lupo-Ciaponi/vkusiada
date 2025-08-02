@@ -3,7 +3,7 @@ from ingredients import views
 
 
 urlpatterns = [
-    path("add-ingredient/", views.AddIngredientView.as_view(), name="add-ingredient"),
+    path("add-ingredient/", views.AddIngredientView.as_view(), name="browse-ingredients"),
     path(
         "saved-ingredients/",
         views.SavedIngredientsView.as_view(),

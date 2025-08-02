@@ -112,7 +112,7 @@ def save_ingredient(request: HttpRequest, ingredient_pk: int) -> HttpResponse:
     except IntegrityError:
         messages.error(request, f"{ingredient} already added!")
 
-    return redirect("add-ingredient")
+    return redirect("browse-ingredients")
 
 
 @login_required
