@@ -36,6 +36,15 @@ p a:hover {
   text-decoration: underline;
 }
 
+main h2 {
+  text-align: center;
+  margin: 40px auto;
+  font-size: 1.5rem;
+  color: #e8263f;
+  font-weight: 500;
+  font-style: italic;
+}
+
 
 .recipe-grid {
   display: grid;

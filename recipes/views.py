@@ -273,11 +273,16 @@ class RecipesCreatedByUserView(ListView):
         """
         It updates the context with the search form, query parameter, and author.
         """
+
+        author = get_object_or_404(UserModel, pk=self.kwargs.get("user_pk"))
+        has_user_created_any_recipes = Recipe.objects.filter(author=author).exists()
+
         kwargs.update(
             {
                 "search_form": self.form_class(),
                 "query": self.request.GET.get(self.query_param, ""),
-                "author": get_object_or_404(UserModel, pk=self.kwargs.get("user_pk")),
+                "author": author,
+                "has_user_created_any_recipes": has_user_created_any_recipes,
                 "show_category_field": True,
             }
         )

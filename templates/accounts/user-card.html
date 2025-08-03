@@ -1,0 +1,16 @@
+{% load static %}
+
+<a class="link-to-user" href="{% url "account-details" user.pk %}">
+  <article class="user-card">
+    <div class="avatar">
+      <img src="{% static "images/icon/user-icon.png" %}" alt="user icon">
+    </div>
+
+    <div class="user-info">
+      <h2 class="username">{{ user.username }}</h2>
+
+      <p class="user-meta">Cooking level: {{ user.profile.cooking_level|default:"No cooking level" }}</p>
+      <p class="user-meta">Location: {{ user.profile.location|default:"No location" }}</p>
+    </div>
+  </article>
+</a>

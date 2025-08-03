@@ -16,12 +16,21 @@
       <h1>Recipes created by {{ author.username }}</h1>
     </header>
 
-    {% include "common/search-bar.html" %}
-
     {% include "common/messages.html" %}
 
-    {% include "recipes/recipe-grid.html" %}
+    {% if  has_user_created_any_recipes %}
+      {% include "common/search-bar.html" %}
 
-    {% include "common/paginator.html" %}
+      {% if recipes %}
+      	{% include "recipes/recipe-grid.html" %}
+      {% else %}
+        <h2>No recipe suggestions...</h2>
+      {% endif %}
+
+      {% include "common/paginator.html" %}
+    {% else %}
+      <h2>{{ author.username }} has not created any recipes...</h2>
+    {% endif %}
+
   </main>
 {% endblock %}

@@ -1,0 +1,52 @@
+.link-to-user{
+  text-decoration: none;
+}
+
+.user-card {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 20px;
+  background-color: #fff7f1;
+  border-radius: 16px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.06);
+  max-width: 400px;
+  margin: 20px auto;
+  font-family: "Segoe UI", sans-serif;
+}
+
+.avatar {
+  background-color: #e8263f;
+  padding: 6px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 76px;
+  height: 76px;
+}
+
+.avatar img {
+  width: 64px;
+  height: 64px;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+
+.user-info {
+  flex: 1;
+}
+
+.username {
+  font-size: 1.4rem;
+  font-weight: bold;
+  color: #e8263f;
+  margin: 0 0 6px;
+}
+
+.user-meta {
+  font-size: 0.95rem;
+  color: #555;
+  margin: 2px 0;
+}

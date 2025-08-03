@@ -40,6 +40,7 @@
         <img src="{% static 'images/icon/user-icon.png' %}" alt="User Icon">
       </div>
       <ul class="user-dropdown-menu">
+      <li><a href="{% url "search-user" %}">Search profile</a></li>
         {% if request.user.is_authenticated %}
         	<li><a href="{% url "account-details" request.user.pk %}">Profile</a></li>
           <li>

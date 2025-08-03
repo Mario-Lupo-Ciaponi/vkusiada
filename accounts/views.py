@@ -1,3 +1,5 @@
+from typing import Dict, Any
+
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
@@ -6,10 +8,11 @@ from django.http import HttpRequest, HttpResponse
 from django.shortcuts import redirect, get_object_or_404
 from django.urls import reverse_lazy, reverse
 from django.views.decorators.http import require_POST
-from django.views.generic import FormView, CreateView, DetailView, UpdateView
+from django.views.generic import FormView, CreateView, DetailView, UpdateView, ListView
 from django.contrib.auth import get_user_model
 from django.contrib import messages
 
+from common.forms import SearchForm
 from .forms import RegistrationForm, ContactForm, ProfileEditForm
 from .models import Profile
 
@@ -64,6 +67,39 @@ class ContactView(FormView):
         messages.success(self.request, message="Email sent successfully!")
 
         return super().form_valid(form)
+
+
+class SearchUser(ListView):
+    model = UserModel
+    template_name = "accounts/search-user.html"
+    context_object_name = "users"
+    paginate_by = 7
+    form_class = SearchForm
+    query_param = "query"
+
+    def get_context_data(self, *, object_list=None, **kwargs) -> Dict[str, Any]:
+        """
+        It updates the context with the search form and the query parameter.
+        This method is called when rendering the template.
+        """
+        kwargs.update(
+            {
+                "search_form": self.form_class(),
+                "query": self.request.GET.get(self.query_param, ""),
+                "is_profile_search_bar": True,
+            }
+        )
+        return super().get_context_data(object_list=object_list, **kwargs)
+
+    def get_queryset(self):
+        users = UserModel.objects.all()
+
+        search_value = self.request.GET.get("query")
+
+        if search_value:
+            users = users.filter(username__icontains=search_value)
+
+        return users
 
 
 class AccountDetails(DetailView):
