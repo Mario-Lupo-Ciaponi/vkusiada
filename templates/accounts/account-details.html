@@ -55,11 +55,14 @@
           {{ user.profile.followers.count }}
         </a>
       </p>
-      <p>Total likes: {{ user.li }}</p>
       <p>Bio: {{ user.profile.bio|default:"No Bio" }}</p>
       <p>Location: {{ user.profile.location|default:"No Location" }}</p>
       <p>Birthdate: {{ user.profile.birth_date|date:"d.m.Y"|default:"No Birthdate" }}</p>
       <p>Cooking level: {{ user.profile.cooking_level|default:"No Cooking level" }}</p>
+
+      <div class="likes-container">
+        <a class=user-button href="{% url "like-sent" user.pk %}">&#129293; Likes sent</a>
+      </div>
 
       <a class="user-button" href="{% url "recipes-created" user.pk %}">Recipes created</a>
 

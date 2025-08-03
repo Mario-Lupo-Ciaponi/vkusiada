@@ -4,6 +4,7 @@ from recipes import views
 urlpatterns = [
     path("", views.SearchRecipeView.as_view(), name="search-recipe"),
     path("saved-recipes/", views.SavedRecipesView.as_view(), name="saved-recipes"),
+    path("likes-sent/<int:pk>/", views.RecipesLikedByUser.as_view(), name="like-sent"),
     path("create/", views.CreateRecipeView.as_view(), name="create-recipe"),
     path(
         "<slug:recipe_slug>/",
@@ -23,11 +24,6 @@ urlpatterns = [
                 path("like/<int:user_pk>/", views.like_recipe, name="like-recipe"),
             ]
         ),
-    ),
-    path(
-        "category/<str:category>/",
-        views.FilteredCategoryView.as_view(),
-        name="category_recipes",
     ),
     path(
         "comment/<int:pk>/",

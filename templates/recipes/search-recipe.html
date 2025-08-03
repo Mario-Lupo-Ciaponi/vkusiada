@@ -15,7 +15,11 @@
 
   {% include "common/messages.html" %}
 
-  {% include "recipes/recipe-grid.html" %}
+  {% if recipes %}
+  	{% include "recipes/recipe-grid.html" %}
+  {% else %}
+    <h1>No recipes found...</h1>
+  {% endif %}
 
   {% include "common/paginator.html" %}
 {% endblock %}

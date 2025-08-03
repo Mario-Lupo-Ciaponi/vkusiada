@@ -7,7 +7,6 @@ from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render
 from django.views.generic import TemplateView, ListView
 
-from recipes.views import FilteredCategoryView
 from .mixins import RecipeListViewMixin, CategoryFilteringMixin
 from ingredients.models import UserIngredient
 from recipes.models import Recipe, UserRecipe

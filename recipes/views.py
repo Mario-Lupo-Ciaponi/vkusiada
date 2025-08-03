@@ -143,7 +143,8 @@ class SearchRecipeView(CategoryFilteringMixin, RecipeListViewMixin, ListView):
             "name",
         )
 
-        search_query = Q(name__icontains=search_value)
+        search_query = Q(name__icontains=search_value) if search_value else Q()
+
 
         if category_value == "All":
             category_query = Q()
@@ -153,53 +154,13 @@ class SearchRecipeView(CategoryFilteringMixin, RecipeListViewMixin, ListView):
         if search_value or category_value:
             recipes = recipes.filter(search_query, category_query)
 
+        print(recipes)
+
         if user.is_authenticated:
             user_recipes = UserRecipe.objects.filter(user=user)
             recipes_names = [r.recipe.name for r in user_recipes]
 
             recipes = recipes.exclude(name__in=recipes_names)
-
-        return recipes
-
-
-class FilteredCategoryView(RecipeListViewMixin, ListView):
-    model = Recipe
-    template_name = "recipes/category-recipes.html"
-
-    def get_context_data(self, *, object_list=None, **kwargs) -> Dict[str, Any]:
-        """
-        It updates the context with the search form and the query parameter.
-        """
-        kwargs.update(
-            {
-                "search_form": self.form_class(),
-                "query": self.request.GET.get(self.query_param, ""),
-                "category": self.kwargs.get("category"),
-            }
-        )
-
-        return super().get_context_data(object_list=object_list, **kwargs)
-
-    def get_queryset(self) -> QuerySet[Recipe]:
-        """
-        It filters the recipes based on the category and the search value.
-        If the search value is provided, it filters the recipes by name.
-        """
-        category = self.kwargs.get("category")
-        search_value = self.request.GET.get("query")
-        date_added = self.request.GET.get("date_added")
-
-        added_on_option = "-" if date_added == "on" else ""
-
-        category_query = Q(category=category)
-        name_query = Q(name__icontains="")
-
-        if search_value:
-            name_query = Q(name__icontains=search_value)
-
-        recipes = Recipe.objects.filter(category_query, name_query).order_by(
-            f"{added_on_option}added_on", "name"
-        )
 
         return recipes
 
@@ -238,7 +199,7 @@ class SavedRecipesView(LoginRequiredMixin, CategoryFilteringMixin, ListView):
         category_value = self.request.GET.get("category")
         date_added = self.request.GET.get("date_added")
 
-        search_query = Q(recipe__name__icontains=search_value)
+        search_query = Q(recipe__name__icontains=search_value) if search_value else Q()
         added_on_option = "-" if date_added == "on" else ""
 
         if category_value == "All":
@@ -310,6 +271,58 @@ class RecipesCreatedByUserView(ListView):
             category_query = Q(category=category_value)
 
         recipes = Recipe.objects.filter(author__pk=user_pk).order_by(
+            f"{added_on_option}added_on",
+            "name",
+        )
+
+        if search_value or category_value:
+            recipes = recipes.filter(search_query, category_query)
+
+        return recipes
+
+
+class RecipesLikedByUser(RecipeListViewMixin, ListView):
+    template_name = "recipes/search-recipe.html"
+
+    def get_context_data(self, *, object_list=None, **kwargs) -> Dict[str, Any]:
+        """
+        It updates the context with the search form and the query parameter.
+        This method is called when rendering the template.
+        """
+        kwargs.update(
+            {
+                "search_form": self.form_class(),
+                "query": self.request.GET.get(self.query_param, ""),
+            }
+        )
+        return super().get_context_data(object_list=object_list, **kwargs)
+
+    def get_queryset(self) -> QuerySet[Recipe]:
+        """
+        It retrieves the recipes liked by a specific user.
+        It filters the recipes based on the search value and category value.
+        If the user is authenticated, it retrieves the recipes liked by that user.
+        If the user is not authenticated, it returns an empty queryset.
+        """
+        user_pk = self.kwargs.get("pk")
+        user = UserModel.objects.get(pk=user_pk)
+
+        search_value = self.request.GET.get("query")
+        category_value = self.request.GET.get("category")
+        date_added = self.request.GET.get("date_added")
+
+        added_on_option = "-" if date_added == "on" else ""
+
+        search_query = Q(name__icontains=search_value) if search_value else Q()
+
+        if category_value == "All":
+            category_query = Q()
+        else:
+            category_query = Q(category=category_value)
+
+        liked_recipe_id = Like.objects.filter(user=user).values_list("recipe_id", flat=True)
+
+        recipes = Recipe.objects.filter(id__in=liked_recipe_id).order_by(
             f"{added_on_option}added_on",
             "name",
         )

@@ -10,6 +10,7 @@ Vkusiada is a Django-based web platform for recipe sharing and discovery. It hel
   - [Prerequisites](#prerequisites)
   - [Installation](#installation)
 - [Usage](#usage)
+- [Live Demo](#live-demo)
 - [Project Structure](#project-structure)
 - [Contributing](#contributing)
 - [License](#license)
@@ -97,6 +98,10 @@ Vkusiada is a Django-based web platform for recipe sharing and discovery. It hel
 - **Manage your profile**: Register or log in to create a profile, save your favorite recipes, and manage your ingredient inventory.
 - **Create and share recipes**: Share your culinary creations with the community by adding new recipes.
 - **Engage with the community**: Comment on recipes, ask questions, and connect with other food enthusiasts.
+
+## Live Demo
+
+You can find a live demo of the application [here](https://vkusiada-htfffgfrebc5ezbe.italynorth-01.azurewebsites.net/).
 
 ## Project Structure
 

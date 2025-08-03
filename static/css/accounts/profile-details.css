@@ -125,3 +125,9 @@ section .user-button:hover {
 .followers-button:hover {
   color: #e8263f;
 }
+
+.likes-container {
+  text-align: center;
+  margin: 24px 0;
+}
+
