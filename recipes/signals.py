@@ -1,4 +1,5 @@
 from django.conf import settings
+from django.core.mail import send_mail
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
@@ -9,14 +10,13 @@ from recipes.models import Recipe
 @receiver(post_save, sender=Like)
 def send_liked_recipe_email(sender, instance: Like, created, **kwargs):
     if created:
-        pass
-        # _send_mail.delay(
-        #     subject=f"{instance.user.username} liked your recipe.",
-        #     message=f"Greetings {instance.recipe.author.username}, \n\n "
-        #     f"{instance.user.username} liked your recipe '{instance.recipe.name}'!",
-        #     from_email=settings.DEFAULT_EMAIL,
-        #     recipient_list=[instance.recipe.author.email],
-        # )
+        send_mail(
+            subject=f"{instance.user.username} liked your recipe.",
+            message=f"Greetings {instance.recipe.author.username}, \n\n "
+            f"{instance.user.username} liked your recipe '{instance.recipe.name}'!",
+            from_email=settings.COMPANY_EMAIL,
+            recipient_list=[instance.recipe.author.email],
+        )
 
 
 @receiver(post_save, sender=Recipe)
@@ -27,9 +27,9 @@ def send_followers_notification(sender, instance: Recipe, created, **kwargs):
         author_followers = author_profile.followers.all()
 
         for follower in author_followers:
-            _send_mail.delay(
+            send_mail(
                 subject=f"{author.username} has created a new recipe!",
-                message=f"{instance.name} has been created by {author.username} that you follow.",
-                from_email=settings.DEFAULT_EMAIL,
+                message=f"{instance.name} has been created by {author.username} whom you follow.",
+                from_email=settings.COMPANY_EMAIL,
                 recipient_list=[follower.email],
             )

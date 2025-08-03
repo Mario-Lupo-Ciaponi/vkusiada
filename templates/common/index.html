@@ -40,13 +40,12 @@
       </a>
     </article>
 
+    {% include "common/messages.html" %}
 
     <section>
       {% if request.user.is_authenticated %}
         {% if recipes %}
           {% include "common/search-bar.html" %}
-
-          {% include "common/messages.html" %}
 
           <h1>Suggested recipes for you</h1>
 
