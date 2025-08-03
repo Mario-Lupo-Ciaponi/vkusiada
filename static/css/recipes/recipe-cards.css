@@ -48,6 +48,7 @@
   font-size: 0.95rem;
   transition: background-color 0.2s ease;
   border: none;
+  cursor: pointer;
 }
 
 .save-link:hover {

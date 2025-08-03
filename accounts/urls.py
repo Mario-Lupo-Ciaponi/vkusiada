@@ -20,6 +20,9 @@ urlpatterns = [
                     name="edit-profile",
                 ),
                 path("follow/", views.follow_or_unfollow_user, name="follow-user"),
+                path(
+                    "followers/", views.FollowersSearch.as_view(), name="user-followers"
+                ),
             ]
         ),
     ),

@@ -14,6 +14,7 @@ from django.contrib import messages
 
 from common.forms import SearchForm
 from .forms import RegistrationForm, ContactForm, ProfileEditForm
+from .mixins import SearchUserMixin
 from .models import Profile
 
 
@@ -69,28 +70,7 @@ class ContactView(FormView):
         return super().form_valid(form)
 
 
-class SearchUser(ListView):
-    model = UserModel
-    template_name = "accounts/search-user.html"
-    context_object_name = "users"
-    paginate_by = 7
-    form_class = SearchForm
-    query_param = "query"
-
-    def get_context_data(self, *, object_list=None, **kwargs) -> Dict[str, Any]:
-        """
-        It updates the context with the search form and the query parameter.
-        This method is called when rendering the template.
-        """
-        kwargs.update(
-            {
-                "search_form": self.form_class(),
-                "query": self.request.GET.get(self.query_param, ""),
-                "is_profile_search_bar": True,
-            }
-        )
-        return super().get_context_data(object_list=object_list, **kwargs)
-
+class SearchUser(SearchUserMixin, ListView):
     def get_queryset(self):
         users = UserModel.objects.all()
 
@@ -100,6 +80,22 @@ class SearchUser(ListView):
             users = users.filter(username__icontains=search_value)
 
         return users
+
+
+class FollowersSearch(SearchUserMixin, ListView):
+    def get_queryset(self):
+        pk = self.kwargs.get("pk")
+
+        profile = Profile.objects.get(user__pk=pk)
+
+        followers = profile.followers.all()
+
+        search_value = self.request.GET.get("query")
+
+        if search_value:
+            followers = followers.filter(username__icontains=search_value)
+
+        return followers
 
 
 class AccountDetails(DetailView):

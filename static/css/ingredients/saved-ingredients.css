@@ -41,18 +41,20 @@ section {
   text-decoration: none;
 }
 
-.remove-btn a {
+.remove-btn button {
   background-color: #e8263f;
   color: white;
   padding: 6px 16px;
   border-radius: 20px;
+  border: none;
   text-decoration: none;
   font-size: 0.95rem;
   font-weight: bold;
   transition: background-color 0.2s ease;
+  cursor: pointer;
 }
 
-.remove-btn a:hover {
+.remove-btn button:hover {
   background-color: #c51e33;
 }
 

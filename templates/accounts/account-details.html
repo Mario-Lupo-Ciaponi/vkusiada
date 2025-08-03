@@ -49,16 +49,23 @@
     <section>
       <p>Date joined: {{ user.date_joined }}</p>
       <p>Email: {{ user.email }}</p>
+      <p>
+        Followers:
+        <a class="followers-button" href="{% url "user-followers" user.pk %}">
+          {{ user.profile.followers.count }}
+        </a>
+      </p>
+      <p>Total likes: {{ user.li }}</p>
       <p>Bio: {{ user.profile.bio|default:"No Bio" }}</p>
       <p>Location: {{ user.profile.location|default:"No Location" }}</p>
       <p>Birthdate: {{ user.profile.birth_date|date:"d.m.Y"|default:"No Birthdate" }}</p>
       <p>Cooking level: {{ user.profile.cooking_level|default:"No Cooking level" }}</p>
 
-      <a href="{% url "recipes-created" user.pk %}">Recipes created</a>
+      <a class="user-button" href="{% url "recipes-created" user.pk %}">Recipes created</a>
 
       {% if request.user.pk == user.pk %}
-        	<a href="{% url "saved-recipes" %}">Saved recipes</a>
-          <a href="{% url "saved-ingredients" %}">Ingredient's library </a>
+        	<a class="user-button" href="{% url "saved-recipes" %}">Saved recipes</a>
+          <a class="user-button" href="{% url "saved-ingredients" %}">Ingredient's library </a>
       {% endif %}
     </section>
   </main>

@@ -13,19 +13,14 @@ class IngredientBaseForm(forms.ModelForm):
         }
 
         error_messages = {
-            "name": {
-                "unique": "Oh, no! Seems like this ingredient is already added!"
-            }
+            "name": {"unique": "Oh, no! Seems like this ingredient is already added!"}
         }
 
         widgets = {
             "name": forms.widgets.TextInput(
-                attrs={
-                    "placeholder": "Type Ingredient's name"
-                }
+                attrs={"placeholder": "Type Ingredient's name"}
             )
         }
 
 
-class IngredientAddForm(IngredientBaseForm):
-    ...
+class IngredientAddForm(IngredientBaseForm): ...

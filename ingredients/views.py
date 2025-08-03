@@ -9,6 +9,7 @@ from django.db.models import QuerySet, Q
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.utils.timezone import now
+from django.views.decorators.http import require_POST
 from django.views.generic import DetailView, ListView, CreateView
 from django.contrib import messages
 from rest_framework.reverse import reverse_lazy
@@ -107,6 +108,7 @@ class SavedIngredientsView(LoginRequiredMixin, ListView):
         return [i for i in saved_ingredients]
 
 
+@require_POST
 @login_required
 def save_ingredient(request: HttpRequest, ingredient_pk: int) -> HttpResponse:
     ingredient = Ingredient.objects.get(pk=ingredient_pk)
@@ -124,6 +126,7 @@ def save_ingredient(request: HttpRequest, ingredient_pk: int) -> HttpResponse:
     return redirect("browse-ingredients")
 
 
+@require_POST
 @login_required
 def remove_ingredient(request: HttpRequest, ingredient_pk: int) -> HttpResponse:
     user_ingredient = get_object_or_404(

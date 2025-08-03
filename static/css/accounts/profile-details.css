@@ -70,7 +70,7 @@ section p {
   line-height: 1.6;
 }
 
-section a {
+section .user-button {
   display: inline-block;
   margin: 12px 8px;
   padding: 12px 22px;
@@ -84,7 +84,7 @@ section a {
   transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
-section a:hover {
+section .user-button:hover {
   background-color: #c01e34;
   transform: translateY(-2px);
 }
@@ -114,4 +114,14 @@ section a:hover {
 .edit-icon:hover {
   transform: scale(1.2);
   filter: brightness(1.2);
+}
+
+.followers-button {
+  color: black;
+  transition: color 0.5s;
+  text-decoration: none;
+}
+
+.followers-button:hover {
+  color: #e8263f;
 }
