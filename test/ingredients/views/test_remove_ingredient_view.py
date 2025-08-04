@@ -33,7 +33,9 @@ class TestRemoveIngredientView(TestCase):
         UserIngredient.objects.create(ingredient=self.ingredient_2, user=self.user)
 
     def test__removes_correct_ingredient_for_the_logged_in_user(self):
-        response = self.client.get(
+        self.assertTrue(UserIngredient.objects.filter(ingredient=self.ingredient_1, user=self.user).exists())
+
+        response = self.client.post(
             reverse("remove-ingredient", kwargs={"ingredient_pk": self.ingredient_1.pk})
         )
 
@@ -50,7 +52,7 @@ class TestRemoveIngredientView(TestCase):
         self.assertIn(message_expected, [m.message for m in messages])
 
     def test__if_redirects_to_saved_ingredients_page(self):
-        response = self.client.get(
+        response = self.client.post(
             reverse(
                 "remove-ingredient", kwargs={"ingredient_pk": self.ingredient_1.pk}
             ),
@@ -62,7 +64,7 @@ class TestRemoveIngredientView(TestCase):
     def test__when_trying_to_remove_a_ingredient_that_does_not_exist__returns_status_code_404(
         self,
     ):
-        response = self.client.get(
+        response = self.client.post(
             reverse("remove-ingredient", kwargs={"ingredient_pk": 999}),
         )
 

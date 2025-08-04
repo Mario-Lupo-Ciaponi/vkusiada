@@ -30,7 +30,7 @@ class TestSaveIngredient(TestCase):
         self.ingredient_3 = Ingredient.objects.create(name="Cucumber")
 
     def test__adds_to_user_ingredients_if_user_has_not_already_saved_it(self):
-        response = self.client.get(
+        response = self.client.post(
             reverse("save-ingredient", kwargs={"ingredient_pk": self.ingredient_1.pk})
         )
 
@@ -49,7 +49,7 @@ class TestSaveIngredient(TestCase):
 
     def test__view_redirects_to_login_if_user_is_not_login(self):
         self.client.logout()
-        response = self.client.get(
+        response = self.client.post(
             reverse("save-ingredient", kwargs={"ingredient_pk": self.ingredient_1.pk})
         )
 
@@ -58,10 +58,10 @@ class TestSaveIngredient(TestCase):
         self.assertRedirects(response, expected_login_url)
 
     def test_does_not_add_duplicate_if_already_saved(self):
-        response = self.client.get(
+        response = self.client.post(
             reverse("save-ingredient", kwargs={"ingredient_pk": self.ingredient_1.pk})
         )
-        response = self.client.get(
+        response = self.client.post(
             reverse("save-ingredient", kwargs={"ingredient_pk": self.ingredient_1.pk}),
             follow=True,
         )
