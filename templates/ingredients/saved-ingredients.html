@@ -25,7 +25,7 @@
               <a href="{% url "ingredient-details" ingredient.ingredient.slug %}">{{ ingredient.ingredient.name }}</a>
             </div>
             <div class="remove-btn">
-              <form method="post" action="{% url "remove-ingredient" ingredient.pk %}">
+              <form method="post" action="{% url "remove-ingredient" ingredient.ingredient.pk %}">
                 {% csrf_token %}
                 <button>Remove</button>
               </form>

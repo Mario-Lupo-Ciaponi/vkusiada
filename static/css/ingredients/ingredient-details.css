@@ -1,4 +1,3 @@
-/* Outer Card Styling */
 .ingredient-details-card {
   background-color: rgb(251, 241, 223); /* soft cream */
   max-width: 900px;
@@ -10,7 +9,6 @@
   position: relative;
 }
 
-/* Title */
 .ingredient-name {
   font-size: 3rem;
   font-weight: bold;
@@ -66,3 +64,28 @@
   color: #e8263f;
   transform: translateY(-3px);
 }
+
+.save-button {
+  margin-top: 40px;
+  display: flex;
+  justify-content: center;
+}
+
+.save-button button {
+  background-color: #28a745;
+  color: white;
+  padding: 12px 30px;
+  font-size: 1rem;
+  border: none;
+  border-radius: 30px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.save-button button:hover {
+  background-color: #218838;
+  transform: translateY(-2px);
+}
+

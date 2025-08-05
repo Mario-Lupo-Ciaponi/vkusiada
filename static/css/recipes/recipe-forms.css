@@ -138,3 +138,20 @@ input[type="checkbox"][name$="-DELETE"] {
 #mark-deletions:hover {
   background-color: #c82333;
 }
+
+.form-field {
+  margin-bottom: 20px;
+}
+
+.form-field.has-error input,
+.form-field.has-error textarea,
+.form-field.has-error select {
+  border-color: #cc3300;
+}
+
+.field-error {
+  margin-top: 6px;
+  font-size: 0.85rem;
+  color: #cc3300;
+  font-weight: 600;
+}

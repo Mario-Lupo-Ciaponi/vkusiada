@@ -129,14 +129,17 @@ def save_ingredient(request: HttpRequest, ingredient_pk: int) -> HttpResponse:
 @require_POST
 @login_required
 def remove_ingredient(request: HttpRequest, ingredient_pk: int) -> HttpResponse:
+    ingredient = get_object_or_404(Ingredient, pk=ingredient_pk)
+
     user_ingredient = get_object_or_404(
-        UserIngredient, ingredient__pk=ingredient_pk, user=request.user
+        UserIngredient, ingredient=ingredient, user=request.user
     )
+    ingredient_name = user_ingredient.ingredient.name
     user_ingredient.delete()
 
     messages.success(
         request,
-        f"Ingredient {user_ingredient.ingredient.name} was removed successfully",
+        f"Ingredient {ingredient_name} was removed successfully",
     )
 
     return redirect(request.META.get("HTTP_REFERER", "/"))

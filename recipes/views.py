@@ -480,6 +480,7 @@ def save_recipe(request: HttpRequest, recipe_slug) -> HttpResponse:
             recipe=recipe,
             added_on=now,
         )
+        messages.success(request, "Recipe saved successfully!")
     except django.db.utils.IntegrityError:
         messages.warning(request, "You already saved the recipe!")
 

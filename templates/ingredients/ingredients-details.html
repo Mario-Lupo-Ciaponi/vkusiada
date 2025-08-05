@@ -31,5 +31,10 @@
         {% endfor %}
       </ul>
     </div>
+
+    <form class="save-button" method="post" action="{% url "save-ingredient" ingredient.pk %}">
+      {% csrf_token %}
+      <button>Save</button>
+    </form>
   </article>
 {% endblock %}

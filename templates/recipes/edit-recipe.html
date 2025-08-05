@@ -14,7 +14,15 @@
   <div class="form-container">
     <form method="post" novalidate>
       {% csrf_token %}
-      {{ form.as_p }}
+      {% for field in form %}
+        <div class="form-field {% if field.errors %}has-error{% endif %}">
+          {{ field.label_tag }}
+          {{ field }}
+          {% for error in field.errors %}
+            <div class="field-error">{{ error }}</div>
+          {% endfor %}
+        </div>
+      {% endfor %}
 
       <div id="ingredients-formset">
       {{ formset.management_form }}

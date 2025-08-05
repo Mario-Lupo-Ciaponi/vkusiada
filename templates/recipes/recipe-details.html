@@ -12,6 +12,7 @@
 {% endblock %}
 
 {% block content %}
+  {% include "common/messages.html" %}
   <section class="recipe-details-card">
     <img src="{{ recipe.image_url }}" alt="{{ recipe.name }}" class="recipe-detail-img">
 
@@ -74,6 +75,11 @@
           {% endif %}
         </a>
       {% endif %}
+
+      <form class="save-button" method="post" action="{% url "save-recipe" recipe.slug %}">
+        {% csrf_token %}
+        <button>Save</button>
+      </form>
     </div>
 
 
