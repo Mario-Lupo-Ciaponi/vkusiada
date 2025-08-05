@@ -41,8 +41,6 @@ Vkusiada is an innovative, Django-based web platform designed to help users expl
 - **Framework**: Django (Python web framework)
 - **API**: Django REST Framework for RESTful API endpoints
 - **Database**: PostgreSQL for robust data management
-- **Caching**: Redis for high-performance caching and session management
-- **Task Processing**: Celery for asynchronous task handling
 
 ### Frontend Technologies
 - **Styling**: Custom CSS for responsive and modern UI design
@@ -50,7 +48,6 @@ Vkusiada is an innovative, Django-based web platform designed to help users expl
 
 ### Development Tools
 - **Code Formatting**: Black for consistent Python code formatting
-- **Linting**: Flake8 for code quality assurance
 - **Version Control**: Git with pre-commit hooks for code quality
 
 ## System Requirements
@@ -58,7 +55,6 @@ Vkusiada is an innovative, Django-based web platform designed to help users expl
 ### Prerequisites
 - Python 3.8 or higher
 - PostgreSQL database server
-- Redis server (for caching and task queue)
 - Git for version control
 
 ### Hardware Requirements
@@ -200,37 +196,13 @@ vkusiada/
 #### Authentication
 The platform uses Django's built-in authentication system with session-based authentication for web interface and token-based authentication for API access.
 
-#### Custom Management Commands
-```bash
-# Import sample data
-python manage.py loaddata sample_recipes
-
-# Generate recipe thumbnails
-python manage.py generate_thumbnails
-
-# Clean up unused media files
-python manage.py cleanup_media
-```
-
-## API Documentation
-
-### Authentication
-Most API endpoints require authentication. Include the authentication token in the request header:
-```
-Authorization: Token your_api_token
-```
-
 ### Recipe Endpoints
-- **List Recipes**: `GET /api/recipes/`
-- **Create Recipe**: `POST /api/recipes/`
-- **Recipe Details**: `GET /api/recipes/{id}/`
-- **Update Recipe**: `PUT /api/recipes/{id}/`
-- **Delete Recipe**: `DELETE /api/recipes/{id}/`
+- **List Recipes**: `GET /api/recipe/`
+- **Recipe Details**: `GET /api/recipe/{id}/`
 
 ### Ingredient Endpoints
-- **List Ingredients**: `GET /api/ingredients/`
-- **User Inventory**: `GET /api/ingredients/inventory/`
-- **Add to Inventory**: `POST /api/ingredients/inventory/`
+- **List Ingredients**: `GET /api/ingredient/`
+- **Recipe Details**: `GET /api/ingredient/{id}/`
 
 ## Contributing
 
