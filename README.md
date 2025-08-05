@@ -192,11 +192,10 @@ vkusiada/
 ### For Developers
 
 #### API Endpoints
-- `GET /api/recipes/` - List all recipes
-- `POST /api/recipes/` - Create new recipe
-- `GET /api/recipes/{id}/` - Retrieve specific recipe
-- `PUT /api/recipes/{id}/` - Update recipe
-- `DELETE /api/recipes/{id}/` - Delete recipe
+- `GET /api/recipe/` - List all recipes
+- `GET /api/recipe/{id}/` - Retrieve specific recipe
+- `GET /api/ingredient/` - List all ingredients
+- `GET /api/ingredient/{id}/` - Retrieve specific ingredient
 
 #### Authentication
 The platform uses Django's built-in authentication system with session-based authentication for web interface and token-based authentication for API access.
