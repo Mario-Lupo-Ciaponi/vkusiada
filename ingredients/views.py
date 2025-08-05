@@ -143,4 +143,3 @@ def remove_ingredient(request: HttpRequest, ingredient_pk: int) -> HttpResponse:
     )
 
     return redirect(request.META.get("HTTP_REFERER", "/"))
-

@@ -145,7 +145,6 @@ class SearchRecipeView(CategoryFilteringMixin, RecipeListViewMixin, ListView):
 
         search_query = Q(name__icontains=search_value) if search_value else Q()
 
-
         if category_value == "All":
             category_query = Q()
         else:
@@ -320,7 +319,9 @@ class RecipesLikedByUser(RecipeListViewMixin, ListView):
         else:
             category_query = Q(category=category_value)
 
-        liked_recipe_id = Like.objects.filter(user=user).values_list("recipe_id", flat=True)
+        liked_recipe_id = Like.objects.filter(user=user).values_list(
+            "recipe_id", flat=True
+        )
 
         recipes = Recipe.objects.filter(id__in=liked_recipe_id).order_by(
             f"{added_on_option}added_on",

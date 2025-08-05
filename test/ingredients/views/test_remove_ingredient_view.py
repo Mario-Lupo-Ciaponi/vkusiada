@@ -33,7 +33,11 @@ class TestRemoveIngredientView(TestCase):
         UserIngredient.objects.create(ingredient=self.ingredient_2, user=self.user)
 
     def test__removes_correct_ingredient_for_the_logged_in_user(self):
-        self.assertTrue(UserIngredient.objects.filter(ingredient=self.ingredient_1, user=self.user).exists())
+        self.assertTrue(
+            UserIngredient.objects.filter(
+                ingredient=self.ingredient_1, user=self.user
+            ).exists()
+        )
 
         response = self.client.post(
             reverse("remove-ingredient", kwargs={"ingredient_pk": self.ingredient_1.pk})

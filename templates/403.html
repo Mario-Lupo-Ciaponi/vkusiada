@@ -1,0 +1,24 @@
+{% extends "common/base.html" %}
+
+{% load static %}
+
+{% block title %}
+  403 - Access denied
+{% endblock %}
+
+{% block styles %}
+  <link rel="stylesheet" href="{% static "css/errors/403.css" %}">
+{% endblock %}
+
+{% block content %}
+	<main>
+    <h1 class="error-title">403</h1>
+    <p class="error-message">Sorry, you don’t have permission to view this page.</p>
+    <p>If you believe this is a mistake, please check:</p>
+    <ul>
+      <li>That you're logged in with the correct account</li>
+      <li>Your access level for this page</li>
+    </ul>
+    <p class="help-p">Need help?  <a href="{% url "contact" %}" class="contact-link">Contact support</a></p>
+  </main>
+{% endblock %}

@@ -1,0 +1,64 @@
+main {
+  max-width: 700px;
+  margin: 80px auto;
+  padding: 60px 50px;
+  background-color: rgb(251, 241, 223);
+  border-radius: 30px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+  text-align: center;
+  font-family: "Segoe UI", sans-serif;
+}
+
+.error-title {
+  font-size: 6rem;
+  color: #e8263f;
+  margin-bottom: 20px;
+}
+
+.error-message {
+  font-size: 1.5rem;
+  font-weight: 500;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+main ul {
+  list-style: none;
+  padding: 0;
+  margin: 20px 0;
+  text-align: left;
+  max-width: 400px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+main ul li {
+  margin: 10px 0;
+  padding-left: 25px;
+  position: relative;
+  font-size: 1rem;
+  color: #444;
+}
+
+main ul li::before {
+  content: "✔";
+  color: #e8263f;
+  position: absolute;
+  left: 0;
+  font-size: 1rem;
+}
+
+.help-p {
+  margin-top: 30px;
+  font-size: 1rem;
+}
+
+.contact-link {
+  color: #e8263f;
+  text-decoration: underline;
+  font-weight: bold;
+}
+
+.contact-link:hover {
+  color: #c01e34;
+}

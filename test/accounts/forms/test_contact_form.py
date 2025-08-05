@@ -8,7 +8,7 @@ class TestContactForm(TestCase):
         self.form_data = {
             "email": "mario.lupo.ciaponi08@gmail.com",
             "subject": "Test Subject",
-            "content": "This is just a test content to see if everything is alright!"
+            "content": "This is just a test content to see if everything is alright!",
         }
 
     def test__if_form_passes_with_valid_data__returns_true(self):
@@ -19,7 +19,7 @@ class TestContactForm(TestCase):
     def test__if_form_passes_with_missing_data__returns_false(self):
         form_data = {
             "email": "mario.lupo.ciaponi08@gmail.com",
-            "content": "This is just a test content to see if everything is alright!"
+            "content": "This is just a test content to see if everything is alright!",
         }
 
         form = ContactForm(data=form_data)

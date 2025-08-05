@@ -6,9 +6,7 @@ from ingredients.models import Ingredient
 
 class TestIngredientBaseForm(TestCase):
     def setUp(self):
-        self.form_data = {
-            "name": "tomato"
-        }
+        self.form_data = {"name": "tomato"}
 
     def test__form_with_valid_field_name__returns_true(self):
         form = IngredientBaseForm(data=self.form_data)
@@ -23,9 +21,7 @@ class TestIngredientBaseForm(TestCase):
 
     def test__when_name_field_is_a_duplicate__raises_custom_validation_error(self):
         unique_error_message = "Oh, no! Seems like this ingredient is already added!"
-        Ingredient.objects.create(
-            name="tomato"
-        )
+        Ingredient.objects.create(name="tomato")
 
         form = IngredientBaseForm(data=self.form_data)
 
