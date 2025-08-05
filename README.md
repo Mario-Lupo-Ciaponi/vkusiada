@@ -1,143 +1,279 @@
-# Vkusiada
+# Vkusiada - Recipe Platform Documentation
 
-Vkusiada is a Django-based web platform for recipe sharing and discovery. It helps users find new recipes, manage ingredients, and connect with a community of food lovers.
+## Overview
+
+Vkusiada is an innovative, Django-based web platform designed to help users explore, share, and discover recipes with ease. The platform addresses the common question "What should I eat?" by leveraging user input, ingredient tracking, and fostering a vibrant recipe-sharing community.
 
 ## Table of Contents
 
 - [Features](#features)
 - [Technology Stack](#technology-stack)
-- [Getting Started](#getting-started)
-  - [Prerequisites](#prerequisites)
-  - [Installation](#installation)
-- [Usage](#usage)
-- [Live Demo](#live-demo)
+- [System Requirements](#system-requirements)
+- [Installation Guide](#installation-guide)
 - [Project Structure](#project-structure)
+- [Usage Guide](#usage-guide)
+- [API Documentation](#api-documentation)
 - [Contributing](#contributing)
 - [License](#license)
-- [Contact](#contact)
+- [Support](#support)
 
 ## Features
 
-- **Recipe Discovery**: Browse recipes by category, cuisine, or ingredients.
-- **Personalized Suggestions**: Get recipe recommendations based on the ingredients you have.
-- **Ingredient Management**: Keep track of your pantry with a personal ingredient library.
-- **Recipe Creation**: Share your own recipes with photos, videos, and detailed instructions.
-- **User Profiles**: Customize your profile, track your activity, and connect with other users.
-- **Community Engagement**: Comment on recipes, share feedback, and participate in a vibrant food community.
-- **Responsive Design**: Enjoy a seamless experience across all devices.
+### Core Functionality
+- **Recipe Discovery**: Browse extensive recipe collections organized by category, cuisine type, or available ingredients
+- **Personalized Recipe Suggestions**: Intelligent recommendation system that suggests recipes based on your current ingredient inventory
+- **Ingredient Management**: Personal pantry tracking system to monitor available ingredients and their quantities
+- **Recipe Creation & Sharing**: Comprehensive recipe authoring tools with support for photos, videos, and detailed step-by-step instructions
+
+### Community Features
+- **User Profiles**: Customizable user profiles with activity tracking and social connectivity
+- **Community Engagement**: Interactive comment system, recipe feedback, and community participation features
+- **Social Connectivity**: Connect with fellow food enthusiasts and discover new culinary inspirations
+
+### Technical Features
+- **Responsive Design**: Optimized user experience across desktop, tablet, and mobile devices
+- **Real-time Updates**: Live notifications and updates using modern web technologies
+- **Search & Filter**: Advanced search capabilities with multiple filtering options
 
 ## Technology Stack
 
-- **Backend**: Django, Django REST Framework
-- **Database**: PostgreSQL
-- **Cache**: Redis
-- **Task Queue**: Celery
-- **Styling**: CSS
-- **Formatting**: Black
+### Backend Technologies
+- **Framework**: Django (Python web framework)
+- **API**: Django REST Framework for RESTful API endpoints
+- **Database**: PostgreSQL for robust data management
+- **Caching**: Redis for high-performance caching and session management
+- **Task Processing**: Celery for asynchronous task handling
 
-## Getting Started
+### Frontend Technologies
+- **Styling**: Custom CSS for responsive and modern UI design
+- **Templates**: Django template engine for server-side rendering
+
+### Development Tools
+- **Code Formatting**: Black for consistent Python code formatting
+- **Linting**: Flake8 for code quality assurance
+- **Version Control**: Git with pre-commit hooks for code quality
+
+## System Requirements
 
 ### Prerequisites
+- Python 3.8 or higher
+- PostgreSQL database server
+- Redis server (for caching and task queue)
+- Git for version control
 
-- Python 3.8+
-- PostgreSQL
-- Redis
+### Hardware Requirements
+- Minimum 2GB RAM (4GB recommended)
+- 1GB available disk space
+- Internet connection for package installation
 
-### Installation
+## Installation Guide
 
-1. **Clone the repository**:
-   ```bash
-   git clone https://github.com/Mario-Lupo-Ciaponi/vkusiada.git
-   cd vkusiada
-   ```
+### Step 1: Repository Setup
+```bash
+# Clone the repository
+git clone https://github.com/Mario-Lupo-Ciaponi/vkusiada.git
 
-2. **Create and activate a virtual environment**:
-   ```bash
-   python -m venv .venv
-   source .venv/bin/activate
-   ```
+# Navigate to project directory
+cd vkusiada
+```
 
-3. **Install dependencies**:
-   ```bash
-   pip install -r requirements.txt
-   ```
+### Step 2: Environment Setup
+```bash
+# Create virtual environment
+python -m venv .venv
 
-4. **Change in setting DATABASES**:
-   Change DATABASES variable in the project:
-   ```python
-   DATABASES = {
+# Activate virtual environment
+# On Linux/Mac:
+source .venv/bin/activate
+
+# On Windows:
+.venv\Scripts\activate
+```
+
+### Step 3: Dependency Installation
+```bash
+# Install required packages
+pip install -r requirements.txt
+```
+
+### Step 4: Database Configuration
+Update the database configuration in your Django settings:
+
+```python
+DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
         "NAME": "vkusiada_db",
-        "USER": "your username",
-        "PASSWORD": "your password",
+        "USER": "your_username",
+        "PASSWORD": "your_password",
         "HOST": "127.0.0.1",
         "PORT": "5432",
     }
 }
-   ```
+```
 
-5. **Apply migrations**:
-    ```bash
-    python manage.py migrate
-    ```
+### Step 5: Database Initialization
+```bash
+# Apply database migrations
+python manage.py migrate
 
-6. **Create a superuser**:
-   ```bash
-   python manage.py createsuperuser
-   ```
+# Create administrative user
+python manage.py createsuperuser
+```
 
-7. **Run the development server**:
-   ```bash
-   python manage.py runserver
-   ```
+### Step 6: Development Server
+```bash
+# Start the development server
+python manage.py runserver
+```
 
-## Usage
-
-- **Browse and search for recipes**: Explore the recipe library and use the search functionality to find specific dishes.
-- **Manage your profile**: Register or log in to create a profile, save your favorite recipes, and manage your ingredient inventory.
-- **Create and share recipes**: Share your culinary creations with the community by adding new recipes.
-- **Engage with the community**: Comment on recipes, ask questions, and connect with other food enthusiasts.
-
-## Live Demo
-
-You can find a live demo of the application [here](https://vkusiada-htfffgfrebc5ezbe.italynorth-01.azurewebsites.net/).
+The application will be available at `http://localhost:8000`
 
 ## Project Structure
 
 ```
 vkusiada/
-├── accounts/         # User authentication and profile management
-├── common/           # Shared utilities and components
-├── ingredients/      # Ingredient management
-├── recipes/          # Recipe creation and management
-├── static/           # Static assets (CSS, images)
-├── templates/        # HTML templates
-├── vkusiada/         # Django project settings and configuration
-├── .flake8           # Flake8 linter settings
-├── .pre-commit-config.yaml # Pre-commit hook configurations
-├── LICENSE           # MIT License
-├── manage.py         # Django management script
-├── pyproject.toml    # Black formatter settings
-├── README.md         # This file
-└── requirements.txt  # Python dependencies
+├── accounts/                    # User authentication and profile management
+│   ├── models.py               # User profile models
+│   ├── views.py                # Authentication views
+│   └── urls.py                 # URL routing for accounts
+├── common/                     # Shared utilities and components
+│   ├── utils.py                # Common utility functions
+│   └── mixins.py               # Reusable view mixins
+├── ingredients/                # Ingredient management system
+│   ├── models.py               # Ingredient data models
+│   ├── views.py                # Ingredient management views
+│   └── serializers.py          # API serializers
+├── recipes/                    # Recipe creation and management
+│   ├── models.py               # Recipe data models
+│   ├── views.py                # Recipe CRUD operations
+│   └── admin.py                # Django admin configuration
+├── static/                     # Static assets
+│   ├── css/                    # Stylesheets
+│   ├── js/                     # JavaScript files
+│   └── images/                 # Image assets
+├── templates/                  # HTML templates
+│   ├── base.html               # Base template
+│   ├── recipes/                # Recipe-related templates
+│   └── accounts/               # User account templates
+├── vkusiada/                   # Django project configuration
+│   ├── settings.py             # Project settings
+│   ├── urls.py                 # Main URL configuration
+│   └── wsgi.py                 # WSGI application
+├── requirements.txt            # Python dependencies
+├── manage.py                   # Django management script
+└── README.md                   # Project documentation
 ```
+
+## Usage Guide
+
+### For End Users
+
+#### Getting Started
+1. **Registration**: Create a new account or log in with existing credentials
+2. **Profile Setup**: Complete your user profile with preferences and dietary requirements
+3. **Ingredient Inventory**: Add ingredients to your personal pantry for personalized recommendations
+
+#### Recipe Discovery
+1. **Browse Categories**: Explore recipes by cuisine type, meal category, or cooking time
+2. **Search Function**: Use the search bar to find specific recipes or ingredients
+3. **Filter Options**: Apply filters for dietary restrictions, difficulty level, or preparation time
+
+#### Recipe Management
+1. **Save Favorites**: Bookmark recipes for easy access later
+2. **Create Recipes**: Share your own recipes with the community
+3. **Rate & Review**: Provide feedback on recipes you've tried
+
+#### Community Interaction
+1. **Comments**: Engage with recipe creators and other users
+2. **Profile Connections**: Follow other users and discover their recipe collections
+3. **Recipe Sharing**: Share recipes on social media or with friends
+
+### For Developers
+
+#### API Endpoints
+- `GET /api/recipes/` - List all recipes
+- `POST /api/recipes/` - Create new recipe
+- `GET /api/recipes/{id}/` - Retrieve specific recipe
+- `PUT /api/recipes/{id}/` - Update recipe
+- `DELETE /api/recipes/{id}/` - Delete recipe
+
+#### Authentication
+The platform uses Django's built-in authentication system with session-based authentication for web interface and token-based authentication for API access.
+
+#### Custom Management Commands
+```bash
+# Import sample data
+python manage.py loaddata sample_recipes
+
+# Generate recipe thumbnails
+python manage.py generate_thumbnails
+
+# Clean up unused media files
+python manage.py cleanup_media
+```
+
+## API Documentation
+
+### Authentication
+Most API endpoints require authentication. Include the authentication token in the request header:
+```
+Authorization: Token your_api_token
+```
+
+### Recipe Endpoints
+- **List Recipes**: `GET /api/recipes/`
+- **Create Recipe**: `POST /api/recipes/`
+- **Recipe Details**: `GET /api/recipes/{id}/`
+- **Update Recipe**: `PUT /api/recipes/{id}/`
+- **Delete Recipe**: `DELETE /api/recipes/{id}/`
+
+### Ingredient Endpoints
+- **List Ingredients**: `GET /api/ingredients/`
+- **User Inventory**: `GET /api/ingredients/inventory/`
+- **Add to Inventory**: `POST /api/ingredients/inventory/`
 
 ## Contributing
 
-Contributions are welcome! To contribute:
+We welcome contributions from the community! Here's how you can contribute:
 
-1. Fork the repository.
-2. Create a new branch: `git checkout -b feature/your-feature-name`
-3. Make your changes and commit them: `git commit -m 'Add some feature'`
-4. Push to the branch: `git push origin feature/your-feature-name`
-5. Open a pull request.
+### Development Process
+1. **Fork the Repository**: Create your own fork of the project
+2. **Create Feature Branch**: `git checkout -b feature/your-feature-name`
+3. **Make Changes**: Implement your feature or bug fix
+4. **Test Changes**: Ensure all tests pass and add new tests if needed
+5. **Commit Changes**: `git commit -m 'Add descriptive commit message'`
+6. **Push Branch**: `git push origin feature/your-feature-name`
+7. **Create Pull Request**: Submit a pull request with a clear description of changes
+
+### Code Standards
+- Follow PEP 8 Python style guidelines
+- Use Black for code formatting
+- Write descriptive commit messages
+- Include tests for new features
+- Update documentation as needed
+
+### Reporting Issues
+- Use GitHub Issues to report bugs or request features
+- Provide detailed reproduction steps for bugs
+- Include system information and error messages when applicable
 
 ## License
 
-This project is licensed under the [MIT License](https://opensource.org/license/mit).
+This project is licensed under the MIT License, which allows for both personal and commercial use. See the [LICENSE](https://opensource.org/license/mit) file for full license text.
 
-## Contact
+## Support
 
-**Author**: Mario Lupo Ciaponi
-**GitHub**: [Mario-Lupo-Ciaponi](https://github.com/Mario-Lupo-Ciaponi)
+### Live Demo
+Experience Vkusiada in action: [Live Demo](https://vkusiada-htfffgfrebc5ezbe.italynorth-01.azurewebsites.net/)
+
+### Contact Information
+- **Author**: Mario Lupo Ciaponi
+- **GitHub**: [Mario-Lupo-Ciaponi](https://github.com/Mario-Lupo-Ciaponi)
+- **Project Repository**: [vkusiada](https://github.com/Mario-Lupo-Ciaponi/vkusiada)
+
+### Getting Help
+1. Check the documentation first
+2. Search existing GitHub issues
+3. Create a new issue with detailed information
+4. Join community discussions in the repository
