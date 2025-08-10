@@ -38,4 +38,5 @@ class TestFuncCommentMixin:
         return (
             self.request.user.pk == self.get_object().author.pk
             or self.request.user.is_superuser
+            or self.request.user.groups.filter(name="Comment Moderator").exists()
         )
