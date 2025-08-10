@@ -1,4 +1,6 @@
 from django import forms
+from django.core.validators import MinLengthValidator
+
 from common.choices import CategoryChoices
 
 

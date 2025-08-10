@@ -73,6 +73,13 @@ class AddIngredient(CreateView):
     template_name = "ingredients/add-ingredient.html"
     success_url = reverse_lazy("browse-ingredients")
 
+    def form_valid(self, form):
+        try:
+            super().form_valid(form)
+        except IntegrityError:
+            messages.error(self.request, "Oh, no! Seems like this ingredient is already added!")
+            return redirect(self.request.path)
+
 
 class SavedIngredientsView(LoginRequiredMixin, ListView):
     model = UserIngredient
